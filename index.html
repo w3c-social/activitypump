@@ -1,667 +1,667 @@
-	<!DOCTYPE html>
-	<html>
-	  <head>
-	    <title>ActivityPub</title>
-	    <meta charset='utf-8'>
-	    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
-	            async class='remove'></script>
-	    <script class='remove'>
-	      var respecConfig = {
-	          specStatus: "unofficial",
-	          shortName:  "activitypub",
-	          editors: [
-	                {
-	                    name:       "Christopher Allan Webber",
-	                    url:        "http://dustycloud.org/",
-	                    mailto:     "cwebber@dustycloud.org"
-	                },
-	                {
-	                    name:       "Jessica Tallon",
-	                    url:        "http://theperplexingpariah.co.uk",
-	                    mailto:     "jessica@megworld.co.uk"
-	                },
-	                {
-	                    name:       "Owen Shepherd",
-	                    url:        "http://owenshepherd.net/",
-	                    mailto:     "owen.shepherd@e43.eu"
-	                },
-	          ],
-	          localBiblio:  {
-	            "ActivityStreams": {
-	              title:    "ActivityStreams 2.0",
-	              href:     "http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2.html",
-	              authors:  [
-	                "J. Snell",
-	              ],
-	              status:   "Editors Draft",
-	              publisher:  "ActivityStreams Working Group",
-	            },
-	          },
-	      };
-	    </script>
-	  </head>
-	  <body>
-	    <section id='abstract'>
-	      <p>The ActivityPub protocol is a social networking protocol based upon
-	      the ActivityStreams 2.0 data format. It is based upon experience gained from
-	      implementing and working with the OStatus and Pump.io protocols.</p>
-	    </section>
-	
-	    <section id='sotd'>
-	      <p>This document is a proposed submission to the W3C Social working
-	      group</p>
-	    </section>
-	
-	    <section id="Overview">
-	      <h2>Overview</h2>
-	      <p>The ActivityPub protocol is broadly based on the distribution of
-	      <i>activities</i>, described using [[!ActivityStreams]]; these activities
-	      are produced in response to a user performing an action. Most activities
-	      are purely responsive in nature - they are produced as a response to a
-	      user <i>having</i> done something. In addition, certain actions posted
-	      by a user to their <a href="#outbox">outbox</a> may trigger certain
-	      operations on the user's behalf. Finally, actions may have side effects
-	      as they propagate throughout the social graph. As an example of this:</p>
-	      <ol>
-	        <li>A user posts the <code>like</code> activity to their outbox. This
-	        activity causes the user's server to perform an action on behalf of
-	        the user; in particular, it adds the specified object to the collection
-	        of objects the user has liked.</li>
-	        <li>A consequence of the above action (per
-	        <a href="#notification"></a>) is that the server hosting
-	        the liked object will be notified of the operation, and will normally
-	        add the activity to the list of "likes" the object has received.</li>
-	        <li>Finally, the server receiving the like will distribute this activity
-	        to everyone it distributed the original object to.</li>
-	      </ol>
-	    </section>
-	    <section id="specification-profiles">
-	      <h2>Specification Profiles</h2>
-	      <p>This specification defines two closely related and interacting
-	      protocols:</p>
-	      <dl>
-	        <dt>A client to server protocol, or "Social API"</dt>
-	        <dd>This protocol permits a client to act <i>on behalf</i> of a user.
-	        For example, this protocol is used by a mobile phone application to
-	        interact with the user's social stream</dd>
-	        <dt>A server to server protocol, or "Federation Protocol"</dt>
-	        <dd>This protocol is used to distribute activities between users on
-	        different servers, tying them into one social graph.</dd>
-	      </dl>
-	      <p>All servers claiming conformance to this specification are required to
-	      implement the former protocol, and may optionally implement the latter.
-	      This gives three conformance classes:</p>
-	      <dl>
-	        <dt>ActivityPub conformant Client</dt>
-	        <dd>This designation applies to any implementation of the entirety
-	        of the client portion of the client to server protocol</dd>
-	        <dt>ActivityPub conformant Server</dt>
-	        <dd>This designation applies to any implementation of the entirety
-	        of the server portion of the client to server protocol</dd>
-	        <dt>ActivityPub conformant Federated Server</dt>
-	        <dd>This designation applies to any implementation of the entirety of
-	        the server portion of both the client to server and federation
-	        protocols</dd>
-	      </dl>
-	      <p>It is called out whenever a portion of the specification only applies
-	      to implementation of the federation protocol. In addition, whenever
-	      requirements are specified, it is called out whether they apply to the
-	      client or server (for the client-to-server protocol) or which of a pair of
-	      servers in the server-to-server protocol.</p>
-	    </section>
-	  </section>
-	
-	  <section id="obj">
-	    <h2>Objects</h2>
-	    <p>Objects are the core concept around which both [[!ActivityStreams]] and
-	    ActivityPub are built. Objects can be divided into three main categories:
-	    <a href="#activities">Activities</a>, <a href="#content-objects">Content
-	    Objects</a> and <a href="#actors">Actors</a>, plus a small collection of
-	    objects which do not fit into the previous categories such as
-	    <a href="#groups">groups</a>.</p>
-	    <p>Servers MUST validate the content they receive to avoid content spoofing
-	    attacks. In particular, servers MUST NOT trust client submitted content, and
-	    federated servers also MUST NOT trust content received from a server other than the content's
-	    origin. Servers MUST validate such against its originating server.</p>
-	    <div class="informative">
-	      As an example, if example.com receives the activity
-	      <pre class="example">
-	       {
-	         "@context": "http://www.w3.org/ns/activitystreams",
-	         "@type": "Like",
-	         "actor": "https://example.net/~mallory",
-	         "object": {
-	           "@id": "https://example.org/~alice/note/23",
-	           "author": "https://example.org/~alice",
-	           "content": "I'm a goat"
-	         }
-	       }
-	      </pre>
-	      it should dereference the <code>id</code> both to ensure that it exists
-	      and is a valid object, and that it is not misrepresenting the object.
-	      (In this example, Mallory is likely spoofing an object allegedly posted
-	      by Alice.)
-	    </div>
-	    <div class="issue">Mention requirement of <em>JSON-LD @context</em></div>
-	    <section id="obj-id">
-	      <h2>Object Identifiers</h2>
-	      <p>All Objects in [[!ActivityStreams]] should have unique global identifiers.
-	      ActivityPub extends this requirement; all objects distributed by the
-	      ActivityPub protocol MUST have unique global identifiers; these identifiers
-	      must fall into one of the following groups:</p>
-	      <ol>
-	        <li>HTTPS URIs with their authority belonging to that of their originating
-	        server.</li>
-	        <li>An ID explicitly specified as the JSON <code>null</code> object, which
-	        implies an anonymous object (a part of its parent context)</li>
-	      </ol>
-	      <p>A server receiving an object with no specified <code>id</code> should
-	      allocate an object ID in the user's namespace and attach it to the posted
-	      object.</p>
-	      <p>All objects must have the following properties:</p>
-	      <dl>
-	        <dt>@id</dt><dd>The object's unique global identifier</dd>
-	        <dt>@type</dt><dd>The type of the object</dd>
-	      </dl>
-	    </section>
-	
-	    <section id="obj-uri">
-	      <h2>Dereferenceable Object URIs</h2>
-	      <p>As illustrated by the example in the previous section, it is sometimes
-	      necessary to dereference an object in order to retrieve its contents. It
-	      is therefore first necessary to identify the URI to dereference. The
-	      procedure for doing this depends upon which of the URI groups defined in
-	      the previous section the ID belongs to:</p>
-	      <ol>
-	        <li>If the object's ID is a HTTPS URI, it must be directly dereferencable</li>
-	        <li>Objects with a <code>null</code> ID have no authority and are not
-	        dereferencable (their content is a part of their parent object)</li>
-	      </ol>
-	    </section>
-	    <section id="obj-methods">
-	      <h2>Methods on objects</h2>
-	      <p>There are several common operations upon social objects, which
-	      are expressed using standard HTTP methods applied to the Object's
-	      <a href="#obj-uri">dereferencable URI</a>. To avoid conflict with existing
-	      standards (and hence support "multiprotocol" server implementations),
-	      the scope of requests which servers are required to honor as defined in
-	      this specification is limited as follows:</p>
-	      <ul>
-	        <li>Notwithstanding the following, the <code>DELETE</code> method will
-	        always be honored as specified in <a href="#method-delete"></a></li>
-	        <li>All non-idempotent operations shall have a request body.</li>
-	        <li>For all operations with a request body, it MUST have the media type
-	        <code>application/activity+json</code>, or where explicitly
-	        permitted the <code>multipart/related</code> media type with a root part
-	        of type <code>application/activity+json</code></li>
-	        <li>Servers MAY use HTTP content negotiation as defined in [[!RFC7231]]
-	        to select the type of data to return in response to a request. For
-	        requests without a body, an <code>Accept</code> header MUST be
-	        specified, and the behavior defined by this specification ONLY applies
-	        if content negotiation results in the selection of the
-	        <code>application/activity+json</code> media type. For requests
-	        with a body, the client MAY omit the <code>Accept</code> header, in
-	        which case the server MUST provide successful responses as defined by this
-	        specification</li>
-	      </ul>
-	      <p>Servers MAY implement other behavior for requests which do not comply
-	      with the above requirements. (For example, servers may implement additional
-	      legacy protocols, or may use the same URI for both HTML and
-	      ActivityStreams representations of a resource)</p>
-	      <p>Servers MAY require authorization as specified in
-	      <a href="#authorization"></a>, and may additionally implement their own
-	      authentication rules. Servers SHOULD fail requests which do not pass their
-	      authorization or authentication checks with the appropriate HTTP error
-	      code, or the 404 Not Found error code where the existence of the object
-	      is considered private.</p>
-	
-	      <section id="method-get">
-	        <h2>The <code>GET</code> method</h2>
-	        <p>The GET method shall return an up-to-date version of the object.</p>
-	      </section>
-	      <section id="method-put">
-	        <h2>The <code>PUT</code> method</h2>
-	        <p><b>This method requires <a href="#authorization-user">user authorization</a></b></p>
-	        <p>The PUT method may be used by a client to update the version of the
-	        object stored on the server.</p>
-	        <p>The server MUST insert an activity with the <code>@type</code> <code>Update</code>
-	        and this object as its <code>object</code> into the actor's
-	        <a href="#outbox">feed</a>.</p>
-	      </section>
-	      <section id="method-delete">
-	        <h2>The <code>DELETE</code> method</h2>
-	        <p><b>This method requires <a href="#authorization-user">user authorization</a></b></p>
-	        <p>The <code>DELETE</code> method may be used by a client to delete the
-	        object. If successful, all requests to the URI which would have
-	        previously been successful SHOULD return the 410 Gone response code.</p>
-	      </section>
-	    </section>
-	  </section>
-	
-	  <section id="actors">
-	    <h2>Actors</h2>
-	    <p>Actors in ActivityPub are represented by HTTP URI. When entered directly into a user interface (for
-	    example on a login form), it is desirable to support simplified naming. For
-	    this purpose cases, ID normalization SHOULD be performed as follows:</p>
-	    <ol>
-	      <li>If the entered ID is a valid URI, then it is to be used directly</li>
-	      <li>Otherwise, the entered value should be considered invalid</li>
-	    </ol>
-	    <div class="issue">How to normalize entries without URI scheme, e.g. <em>tantek.com</em></div>
-	    <p>Once the actor's URI has been identified, it should be dereferenced.</p>
-	    <a href="#obj-dereference"></a></p>
-	
-	    <section id="actor-objects">
-	      <h2><i>Actor</i> objects</h2>
-	      <p>Actor objects are ActivityStreams objects which are subclasses of the
-	      <code>actor</code> type. Actor objects MUST have, in addition to the
-	      properties mandated by <a href="#obj-id"></a>, the following properties:</p>
-	      <dl>
-	        <dt>url</dt><dd>A link to the actor's "profile web page", if it is not
-	        equal to the value of <code>id</code></dd>
-	
-	        <dt>following</dt><dd>An [[!ActivityStreams]] collection of the actors
-	        that this actor is following</dd>
-	
-	        <dt>followers</dt><dd>An [[!ActivityStreams]] collection of the actors
-	        that follow this actor</dd>
-	
-	        <dt>inbox</dt><dd>A reference to an [[!ActivityStreams]] collection comprising of all the
-	        messages received by the actor; see <a href="#inbox"></a></dd>
-	        <dt>outbox</dt><dd>An [[!ActivityStreams]] collection comprising of all the messages
-	        produced by the actor; see <a href="#outbox"></a>
-	      </dl>
-	      <p>Implementations should, in addition, provide the following properties:</p>
-	      <dl>
-	        <dt>preferredUsername</dt><dd>A short username which may be used to
-	        refer to the actor, with no uniqueness guarantees</dd>
-	        <dt>displayName</dt><dd>The preferred "nickname" or "display name" of
-	        the actor</dd>
-	        <dt>summary</dt><dd>A quick summary or bio by the user about themselves</dd>
-	        <dt>icon</dt><dd>A media link to the user's profile picture (this may
-	        be a thumbnail)</dd>
-	      </dl>
-	      <pre class="example">
-	        {
-	          "@context": [
-	            "http://www.w3.org/ns/activitystreams",
-	            "http://www.w3.org/ns/activitypub"
-	          ],
-	          "@type": "Person",
-	          "@id": "https://johnsmith.example.com/",
-	          "following": "https://johnsmith.example.com/following.json",
-	          "followers": "https://johnsmith.example.com/followers.json",
-	          "inbox": "https://johnsmith.example.com/inbox.json",
-	          "outbox": "https://johnsmith.example.com/feed.json",
-	          "preferredUsername": "johnsmith",
-	          "displayName": "John Smith",
-	          "summary": "Just an example guy",
-	          "icon": [
-	            "https://johnsmith.example.com/image/165987aklre4"
-	          ]
-	        }
-	      </pre>
-	    </section>
-	  </section>
-	
-	  <section id="authorization">
-	    <h2>Authorization</h2>
-	    <p><b>This is a stub, to be expanded. OAuth 2.0 is an open question.</b></p>
-	    <p>ActivityPub uses authorization for two purposes; first, to
-	    authenticate clients to servers, and secondly in federated implementations
-	    to authenticate servers to each other. These methods are based upon the
-	    OAuth 2.0 authorization framework as specified in [[!RFC6749]]. </p>
-	    <section id="authorization-user">
-	      <h2>User Authentication</h2>
-	      <p>User authentication is used in order to identify clients acting on
-	      behalf of an <a href="#actors">actor</a> their origin server, and for
-	      federated implementations to other servers. There are two types of
-	      authentication permitted for this:</p>
-	      <section id="authorization-user-bearer">
-	        <h2>Bearer Authorization</h2>
-	        <p>For clients which only need to interact with the user's origin server,
-	        or communicating with a non-federated server, clients may use OAuth 2.0
-	        bearer tokens</p>
-	      </section>
-	      <section id="authorization-user-jws">
-	        <h2>JSON Web Signature authorization</h2>
-	        <p><b>This method is only mandatory for federated implementations</b></p>
-	        <p>For clients which need to interact with servers beyond the user's
-	        origin server, clients MUST support use of OAuth 2.0 with JSON Web
-	        Signatures</p>
-	      </section>
-	    </section>
-	    <section id="authorization-origin">
-	      <h2>Origin Authorization</h2>
-	      <p><b>This method is only applicable to federated implementations</b></p>
-	      <p>A server performing an operation on behalf of an actor (e.g. delivery
-	      to a recipient) must authenticate itself with the 3rd party server as
-	      such. One method for doing so is defined in this specification.</p>
-	      <section id="authorization-origin-jws">
-	        <h2>JSON Web Signature authorization</h2>
-	        <p>Servers MUST support use of OAuth 2.0 with JSON Web Signatures</p>
-	      </section>
-	    </section>
-	  </section>
-	
-	  <section id="endpoint-discovery">
-	    <h2>Endpoint Discovery</h2>
-	    <p>When a user dereferences an actor's ID the page MUST contain HTML script
-	    element with the <code>type</code> attribute set to
-	    <code>application/ld+json</code>.</p>
-	    <pre class="example">
-	      &lt;script type="application/ld+json"&gt;
-	        {
-	          "@context": [
-	            "http://www.w3.org/ns/activitystreams",
-	            "http://www.w3.org/ns/activitypub"
-	          ],
-	          "@id": "https://example.com/~alice/my-stream",
-	          "@type": "Person",
-	          "displayName": "Alice",
-	          "summary": "Hai, I'm Alice!",
-	          "inbox": "https://example.com/~alice/inbox",
-	          "outbox": "https://example.com/~alice/feed",
-	          "followers": "https://example.com/~alice/collections/followers",
-	          "following": "https://example.com/~alice/collections/following"
-	        }
-	      &lt;/script&gt;
-	    </pre>
-	
-	  </section>
-	
-	  <section id="collections">
-	    <h2>Collections and Streams</h2>
-	    <p>[[!ActivityStreams]] defines the collection concept; ActivityPub defines several
-	    collections with special behavior. Additionally, it defines a subset of
-	    collections termed <a href="#streams">streams</a>. </p>
-	
-	    <section id="followers">
-	      <h2>Followers Collection</h2>
-	      <p>Every <a href="#actors">actor</a> MUST have a followers collection.
-	      This is the default recipient list for otherwise unaddressed activities,
-	      and additionally is used as a distribution target for any activities
-	      addressed to the <a href="#public"></a></p>
-	    </section>
-	
-	    <section id="following">
-	      <h2>Following Collection</h2>
-	      <p>Every actor MAY have a following collection. This is a list of everybody
-	      that the actor has followed</p>
-	    </section>
-	
-	    <section id="favorites">
-	      <h2>Favorites Collection</h2>
-	      <p>Every actor MAY have a favorites collection. This is a list of every
-	      object that the actor has favorited (See <a href="#activity-favorite"></a>)
-	      </p>
-	    </section>
-	
-	    <section id="streams">
-	      <h2>Streams</h2>
-	      <p>The streams nomenclature is applied to any collection comprised purely of
-	      activities. These objects should be so declared using the <code>objectTypes</code>
-	      property:</p>
-	      <pre class="example">
-	        {
-	          "@context": [
-	            "http://www.w3.org/ns/activitystreams",
-	            "http://www.w3.org/ns/activitypub"
-	          ],
-	          "@id": "https://example.com/~alice/my-stream",
-	          "@type": "Collection",
-	          "itemsType": ["activity"]
-	          "items": [ ... ]
-	        }
-	      </pre>
-	      <p>Streams are always presented in reverse chronological order</p>
-	      <section id="outbox">
-	        <h2>Outbox</h2>
-	        <p>The <code>outbox</code> stream contains every object that the user
-	        has ever published, subject to the ability of the requestor to retrieve
-	        the object (That is, the contents of the outbox are filtered by the
-	        permissions of the person reading it). If a user submits a request
-	        without <a href="authorization">Authorization</a> the server should
-	        respond with all of the <a href="public-addressing">Public</a> posts.</p>
-	
-	        <p>A client may submit an [[!ActivityStreams]] activity to the server
-	        using a HTTP POST request to the dereferencable URI of the outbox collection.
-	        In this case, the request's Content-Type MUST
-	        be <code>application/activity+json</code>, and the request MUST be authenticated
-	        with credentials authorized to act on behalf of the user to whom the
-	        outbox belongs. Such submitted activities will be added to the front of
-	        the feed retrieved by GET requests to the same endpoint.</p>
-	      </section>
-	
-	      <section id="inbox">
-	        <h2>Inbox</h2>
-	
-	        <p>The <code>inbox</code> stream contains all objects received by the user.
-	        The inbox MUST be filtered according to the requester's permission; this
-	        MAY include allowing read access only to the owning user</p>
-	
-	        <p>A server may submit a HTTP POST to the <a href="#obj-dereference">
-	        dereferencable URI</a> of the <code>inbox</code> endpoint. This request
-	        MUST be authenticated with the credentials of the user identified by the
-	        <code>actor</code> stanza of the activity being delivered. The request
-	        MUST be of the [[!ActivityStreams]] content type; it MUST be a single activity.</p>
-	
-	        <p>The server MUST perform de-duplication of activities, whereby it
-	        discards repeats of already delivered activities (this can occur if an
-	        activity is addressed both to a user's followers, and a specific user
-	        which happens to follow said user, and the server has failed to
-	        de-duplicate the recipients list, for example). Such deduplication MUST
-	        be performed by comparing the <code>@id</code> of the activities and
-	        dropping any activities already seen.</p>
-	      </section>
-	    </section>
-	  </section>
-	
-	  <section id="notification-and-delivery">
-	    <h2>Notification and Delivery</h2>
-	    <p>Notification and Delivery are two closely related acts. Notifications are
-	    sent to <i>objects</i> and are used to perform updates on the
-	    social graph, whilst delivery is the act of inserting an activity into a
-	    recipient <i>agent's</i> inbox</p>
-	    <section id="delivery">
-	      <h2>Delivery</h2>
-	      <p>Activity distribution and access control is per the audience targeting
-	      properties from the [[!ActivityStreams]] specification. For each entry in the
-	      addressing properties of an object, the server shall</p>
-	      <ol>
-	        <li>If the entry is a collection, then the server MUST dereference the
-	        collection (with the user's credentials) and add each person in the
-	        collection to the list of recipients for the message. Servers MUST
-	        limit the number of layers of indirections through collections which
-	        will be performed, which MAY be one.
-	        <li>If the entry is not a collection, then the server MUST perform
-	        discovery on the object (which may not be of person
-	        <code>@type</code>) to discover its activity-inbox address
-	        <li>Once the complete list of recipients has been determined, the
-	        server MUST then deliver the activity to each recipient. For a federated
-	        implementation, this must be done by performing a HTTP POST, with prohom
-	        authorization as the submitting user, of the submitted activity body to
-	        the URI of the <a href="#inbox">inbox</a> collection of each recipient
-	      </ol>
-	      <p>For federated servers performing delivery to a 3rd party server,
-	      delivery SHOULD be performed asynchronously to completion of
-	      the original activity submission request, and SHOULD additionally retry
-	      delivery to recipients if it fails due to network error</p>
-	      <p>If no recipients are specified, the user's preferred default audience
-	      should be applied. The default value for the default audience is
-	      implementation specific but MAY be the user's
-	      <a href="#followers">followers</a> collection</p>
-	      <p>In addition to delivery to recipients, the server MUST also perform
-	      notification as specified by <a href="#notification"></a></p>
-	    </section>
-	    <section id="notification">
-	      <h2>Notification</h2>
-	      <p>When a user creates an activity (by submitting it to their
-	      <a href="#outbox">outbox</a>), the server should perform <i>notification</i>.
-	      Notification is the process of propagating awareness of the new activity to
-	      the activity's origin server such that the origin can act upon the activity
-	      (for example, notification that a user has liked an object is used to update
-	      the object's like count) and distribute the activity to ensure that it is
-	      propagated to the whole social graph which received the original object.</p>
-	      <p>Notifications shall be sent to each of the following objects:</p>
-	      <ul>
-	        <li>The Objects specified by the activity's "object" and "target" properties</li>
-	        <li>Any Objects specified in the activity object's "inReplyTo" property</li>
-	      </ul>
-	      <p>An object notified of an activity MUST <a href="#delivery">deliver</a>
-	      that activity to all <a href="#object-recipient">recipients of the object</a>
-	      and in addition notify all <a href="#activity-share">share activities</a>
-	      of the object.</p>
-	    </section>
-	    <section id="public-addressing">
-	      <h2>Public Addressing</h2>
-	      <p>In addition to [[!ActivityStreams]] collections and objects,
-	      Activities may additionally be addressed to the special "public"
-	      audience denoted by the object</p>
-	      <pre class="example">
-	        {
-	          "@context": "http://www.w3.org/ns/activitystreams",
-	          "@id": "http://activityschema.org/collection/public",
-	          "@type": "Collection"
-	        }
-	      </pre>
-	      <p>Activities addressed to this special URI shall be accessible to all
-	      users, without authentication.</p>
-	      <p>For the purposes of delivery, the server shall treat the public
-	      collection as if it contains the same entries as the user's
-	      <a href="#followers">followers collection</a>.
-	      <p>TODO: New URI? Can we get as:public in the schema or such?</p>
-	    </section>
-	  </section>
-	  <section id="binary-data">
-	    <h2>Binary Data</h2>
-	    <p>There is the ability to submit binary data such as images, video or other
-	       binary data you wish to use in activitypub. This is done by means of submitting
-	       the binary data to the user's <code>file</code> endpoint. The request MUST contain
-	       the HTTP headers <code>Content-Type</code> and <code>Content-Length</code>. Upon
-	       successful submission a response containing the object with an ID is returned that
-	       can be posted to the users outbox.</p>
-	
-	    <p>An example response for an image I might upload is</p>:
-	    <pre class="example">
-	      {
-	        "@context": "",
-	        "@id": "http://example.com/~erik/photos/1",
-	        "@type": "Image",
-	        "url": [
-	          {
-	            "@type": "Link",
-	            "href": "http://example.com/~erik/photos/1.png",
-	            "mediaType": "image/png"
-	          }
-	        ]
-	      }
-	    </pre>
-	  <section id="content-objects">
-	    <h2>Content Objects</h2>
-	    <p>There are objects which have a <code>content</code> property, the value of which
-	    is provided by the user. These can be for example note, blog, image, etc.
-	
-	    <section id="reply-objects">
-	      <h3>Reply Objects</h3>
-	      <p>A response can be any content object. The object MUST have an additional
-	      <code>inReplyTo</code> property. This property should have the object that
-	      your reply is in response to.</p>
-	      <pre class="example">
-	        {
-	          "@context": "http://www.w3.org/ns/activitystreams",
-	          "@id": "https://example.com/~alice/note/72",
-	          "@type": "Note",
-	          "content": "This is a reply to a note posted by John Smith!",
-	          "inReplyTo": {
-	            "@id": "https://example.org/~john/note/5",
-	            "@type": "Note",
-	            "content": "Hey! This is a note in ActivityPub ^_^"
-	          }
-	        }
-	      </pre>
-	      <p><b>This is only applicable to federated implementations:</b> When a response
-	      is sent to the outbox of a user, it should be propagated to the original server
-	      that authored the object that the response is in reply to. That server should then
-	      send that response to all recipients that the original object was sent to.</p>
-	    </section>
-	  </section>
-	
-	  <section id="activities">
-	    <h2>Activities</h2>
-	    <p>The core of any [[!ActivityStreams]] based protocol is activities within.
-	    Users post activities to their <a href="#outbox">outbox</a>, from which they
-	    are distributed to recipients' <a href="#inbox">inboxes</a>. ActivityPub
-	    places no restrictions on the activities which may be distributed; however,
-	    it defines certain activities with special behaviors</p>
-	    <section id="post-activity">
-	      <h3>Create Activity</h3>
-	      <p>The <code>Create</code> activity is used to when posting a new object. This has the
-		side effect that of the object that they are posting is being created.</p>
-	    </section>
-	    <section id="update-activity">
-	      <h3>Update Activity</h3>
-	      <p>The <code>Update</code> activity is used when updating an already existing object.
-		The object should be modified to reflect the new structure in defined in the update
-		activity.</p>
-	    </section>
-	    <section id="delete-activity">
-	      <h3>Delete Activity</h3>
-	      <p>The <code>Delete</code> activity is used to delete an already existing object. This
-		MUST leave a shell of the object that will be displayed in activities which reference
-		the deleted object. If the deleted object is requested the server should respond with
-		the HTTP 410 Gone status code.
-	
-		A deleted object:
-	<pre class="example">
-	  {
-	    "@context": "http://www.w3.org/ns/activitystreams",
-	    "@id": "https://example.com/~alice/note/72",
-	    "@type": "Note",
-	    "published": "2015-02-10T15:04:55Z",
-	    "updated": "2015-02-10T15:04:55Z",
-	    "deleted": "2015-02-10T15:04:55Z",
-	  }
-	</pre>
-	    </section>
-	    <section id="follow-activity">
-	      <h3>Follow Activity</h3>
-	      <p>The <code>Follow</code> activity is used to subscribe to the activities of another user.
-		Once the user has followed a user, activities shared with the Follows of that user
-		SHOULD be added to the actors's inbox.</p>
-	    </section>
-	    <section id="unfollow-activity">
-	      <h3>Unfollow Activity</h3>
-	      <p>The <code>Unfollow</code> activity is used to unsubscribe to the activities of actor.
-		Once the user has unfollowed a user, the new activities posted to the Followers collection
-		of that user SHOULD not be added to the actors's inbox.</p>
-	    </section>
-	    <section id="favorite-like-activity">
-	      <h3>Favourite or Like Activity</h3>
-	      <p>The <code>Favorite</code> and <code>Like</code> activities are synonyms. These are used to add
-		the actor to list of users who have liked or favorited the object.</p>
-	    </section>
-	    <section id="unfavorite-unlike-activity">
-	      <h3>Unfavorite or Unlike Activity</h3>
-	      <p>The <code>Unfavorite</code> and <code>Unlike</code> activity are synonyms. These are used to
-		remove the actor from the list of users who have liked or favorited the object.</p>
-	    </section>
-	    <section id="add-activity">
-	      <h3>Add Activity</h3>
-	      <p>The <code>Add</code> activity is used to add the object to the collection specified in the
-		<code>target</code> property of the activity.
-	    </section>
-	    <section id="remove-activity">
-	      <h3>Remove Activity</h3>
-	      <p>The <code>Remove</code> activity is used to remove the object from the collection specified in the
-		<code>target</code> property of the activity.
-	    </section>
-	    <section id="block-activity">
-	      <h3>Block Activity</h3>
-	      <p>The <code>Block</code> activity is used to indicate that the actor does not want a user (defined in
-		the <code>object</code> property) to be able to interact with objects posted by the user. The
-		server SHOULD prevent the user from interacting with any object posted by the actor.</p>
-	    </section>
-	  </section>
-	  </body>
-	</html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ActivityPub</title>
+    <meta charset='utf-8'>
+    <script src='https://www.w3.org/Tools/respec/respec-w3c-common'
+            async class='remove'></script>
+    <script class='remove'>
+      var respecConfig = {
+          specStatus: "unofficial",
+          shortName:  "activitypub",
+          editors: [
+                {
+                    name:       "Christopher Allan Webber",
+                    url:        "http://dustycloud.org/",
+                    mailto:     "cwebber@dustycloud.org"
+                },
+                {
+                    name:       "Jessica Tallon",
+                    url:        "http://theperplexingpariah.co.uk",
+                    mailto:     "jessica@megworld.co.uk"
+                },
+                {
+                    name:       "Owen Shepherd",
+                    url:        "http://owenshepherd.net/",
+                    mailto:     "owen.shepherd@e43.eu"
+                },
+          ],
+          localBiblio:  {
+            "ActivityStreams": {
+              title:    "ActivityStreams 2.0",
+              href:     "http://jasnell.github.io/w3c-socialwg-activitystreams/activitystreams2.html",
+              authors:  [
+                "J. Snell",
+              ],
+              status:   "Editors Draft",
+              publisher:  "ActivityStreams Working Group",
+            },
+          },
+      };
+    </script>
+  </head>
+  <body>
+    <section id='abstract'>
+      <p>The ActivityPub protocol is a social networking protocol based upon
+      the ActivityStreams 2.0 data format. It is based upon experience gained from
+      implementing and working with the OStatus and Pump.io protocols.</p>
+    </section>
+
+    <section id='sotd'>
+      <p>This document is a proposed submission to the W3C Social working
+      group</p>
+    </section>
+
+    <section id="Overview">
+      <h2>Overview</h2>
+      <p>The ActivityPub protocol is broadly based on the distribution of
+      <i>activities</i>, described using [[!ActivityStreams]]; these activities
+      are produced in response to a user performing an action. Most activities
+      are purely responsive in nature - they are produced as a response to a
+      user <i>having</i> done something. In addition, certain actions posted
+      by a user to their <a href="#outbox">outbox</a> may trigger certain
+      operations on the user's behalf. Finally, actions may have side effects
+      as they propagate throughout the social graph. As an example of this:</p>
+      <ol>
+        <li>A user posts the <code>like</code> activity to their outbox. This
+        activity causes the user's server to perform an action on behalf of
+        the user; in particular, it adds the specified object to the collection
+        of objects the user has liked.</li>
+        <li>A consequence of the above action (per
+        <a href="#notification"></a>) is that the server hosting
+        the liked object will be notified of the operation, and will normally
+        add the activity to the list of "likes" the object has received.</li>
+        <li>Finally, the server receiving the like will distribute this activity
+        to everyone it distributed the original object to.</li>
+      </ol>
+    </section>
+    <section id="specification-profiles">
+      <h2>Specification Profiles</h2>
+      <p>This specification defines two closely related and interacting
+      protocols:</p>
+      <dl>
+        <dt>A client to server protocol, or "Social API"</dt>
+        <dd>This protocol permits a client to act <i>on behalf</i> of a user.
+        For example, this protocol is used by a mobile phone application to
+        interact with the user's social stream</dd>
+        <dt>A server to server protocol, or "Federation Protocol"</dt>
+        <dd>This protocol is used to distribute activities between users on
+        different servers, tying them into one social graph.</dd>
+      </dl>
+      <p>All servers claiming conformance to this specification are required to
+      implement the former protocol, and may optionally implement the latter.
+      This gives three conformance classes:</p>
+      <dl>
+        <dt>ActivityPub conformant Client</dt>
+        <dd>This designation applies to any implementation of the entirety
+        of the client portion of the client to server protocol</dd>
+        <dt>ActivityPub conformant Server</dt>
+        <dd>This designation applies to any implementation of the entirety
+        of the server portion of the client to server protocol</dd>
+        <dt>ActivityPub conformant Federated Server</dt>
+        <dd>This designation applies to any implementation of the entirety of
+        the server portion of both the client to server and federation
+        protocols</dd>
+      </dl>
+      <p>It is called out whenever a portion of the specification only applies
+      to implementation of the federation protocol. In addition, whenever
+      requirements are specified, it is called out whether they apply to the
+      client or server (for the client-to-server protocol) or which of a pair of
+      servers in the server-to-server protocol.</p>
+    </section>
+  </section>
+
+  <section id="obj">
+    <h2>Objects</h2>
+    <p>Objects are the core concept around which both [[!ActivityStreams]] and
+    ActivityPub are built. Objects can be divided into three main categories:
+    <a href="#activities">Activities</a>, <a href="#content-objects">Content
+    Objects</a> and <a href="#actors">Actors</a>, plus a small collection of
+    objects which do not fit into the previous categories such as
+    <a href="#groups">groups</a>.</p>
+    <p>Servers MUST validate the content they receive to avoid content spoofing
+    attacks. In particular, servers MUST NOT trust client submitted content, and
+    federated servers also MUST NOT trust content received from a server other than the content's
+    origin. Servers MUST validate such against its originating server.</p>
+    <div class="informative">
+      As an example, if example.com receives the activity
+      <pre class="example">
+       {
+         "@context": "http://www.w3.org/ns/activitystreams",
+         "@type": "Like",
+         "actor": "https://example.net/~mallory",
+         "object": {
+           "@id": "https://example.org/~alice/note/23",
+           "author": "https://example.org/~alice",
+           "content": "I'm a goat"
+         }
+       }
+      </pre>
+      it should dereference the <code>id</code> both to ensure that it exists
+      and is a valid object, and that it is not misrepresenting the object.
+      (In this example, Mallory is likely spoofing an object allegedly posted
+      by Alice.)
+    </div>
+    <div class="issue">Mention requirement of <em>JSON-LD @context</em></div>
+    <section id="obj-id">
+      <h2>Object Identifiers</h2>
+      <p>All Objects in [[!ActivityStreams]] should have unique global identifiers.
+      ActivityPub extends this requirement; all objects distributed by the
+      ActivityPub protocol MUST have unique global identifiers; these identifiers
+      must fall into one of the following groups:</p>
+      <ol>
+        <li>HTTPS URIs with their authority belonging to that of their originating
+        server.</li>
+        <li>An ID explicitly specified as the JSON <code>null</code> object, which
+        implies an anonymous object (a part of its parent context)</li>
+      </ol>
+      <p>A server receiving an object with no specified <code>id</code> should
+      allocate an object ID in the user's namespace and attach it to the posted
+      object.</p>
+      <p>All objects must have the following properties:</p>
+      <dl>
+        <dt>@id</dt><dd>The object's unique global identifier</dd>
+        <dt>@type</dt><dd>The type of the object</dd>
+      </dl>
+    </section>
+
+    <section id="obj-uri">
+      <h2>Dereferenceable Object URIs</h2>
+      <p>As illustrated by the example in the previous section, it is sometimes
+      necessary to dereference an object in order to retrieve its contents. It
+      is therefore first necessary to identify the URI to dereference. The
+      procedure for doing this depends upon which of the URI groups defined in
+      the previous section the ID belongs to:</p>
+      <ol>
+        <li>If the object's ID is a HTTPS URI, it must be directly dereferencable</li>
+        <li>Objects with a <code>null</code> ID have no authority and are not
+        dereferencable (their content is a part of their parent object)</li>
+      </ol>
+    </section>
+    <section id="obj-methods">
+      <h2>Methods on objects</h2>
+      <p>There are several common operations upon social objects, which
+      are expressed using standard HTTP methods applied to the Object's
+      <a href="#obj-uri">dereferencable URI</a>. To avoid conflict with existing
+      standards (and hence support "multiprotocol" server implementations),
+      the scope of requests which servers are required to honor as defined in
+      this specification is limited as follows:</p>
+      <ul>
+        <li>Notwithstanding the following, the <code>DELETE</code> method will
+        always be honored as specified in <a href="#method-delete"></a></li>
+        <li>All non-idempotent operations shall have a request body.</li>
+        <li>For all operations with a request body, it MUST have the media type
+        <code>application/activity+json</code>, or where explicitly
+        permitted the <code>multipart/related</code> media type with a root part
+        of type <code>application/activity+json</code></li>
+        <li>Servers MAY use HTTP content negotiation as defined in [[!RFC7231]]
+        to select the type of data to return in response to a request. For
+        requests without a body, an <code>Accept</code> header MUST be
+        specified, and the behavior defined by this specification ONLY applies
+        if content negotiation results in the selection of the
+        <code>application/activity+json</code> media type. For requests
+        with a body, the client MAY omit the <code>Accept</code> header, in
+        which case the server MUST provide successful responses as defined by this
+        specification</li>
+      </ul>
+      <p>Servers MAY implement other behavior for requests which do not comply
+      with the above requirements. (For example, servers may implement additional
+      legacy protocols, or may use the same URI for both HTML and
+      ActivityStreams representations of a resource)</p>
+      <p>Servers MAY require authorization as specified in
+      <a href="#authorization"></a>, and may additionally implement their own
+      authentication rules. Servers SHOULD fail requests which do not pass their
+      authorization or authentication checks with the appropriate HTTP error
+      code, or the 404 Not Found error code where the existence of the object
+      is considered private.</p>
+
+      <section id="method-get">
+        <h2>The <code>GET</code> method</h2>
+        <p>The GET method shall return an up-to-date version of the object.</p>
+      </section>
+      <section id="method-put">
+        <h2>The <code>PUT</code> method</h2>
+        <p><b>This method requires <a href="#authorization-user">user authorization</a></b></p>
+        <p>The PUT method may be used by a client to update the version of the
+        object stored on the server.</p>
+        <p>The server MUST insert an activity with the <code>@type</code> <code>Update</code>
+        and this object as its <code>object</code> into the actor's
+        <a href="#outbox">feed</a>.</p>
+      </section>
+      <section id="method-delete">
+        <h2>The <code>DELETE</code> method</h2>
+        <p><b>This method requires <a href="#authorization-user">user authorization</a></b></p>
+        <p>The <code>DELETE</code> method may be used by a client to delete the
+        object. If successful, all requests to the URI which would have
+        previously been successful SHOULD return the 410 Gone response code.</p>
+      </section>
+    </section>
+  </section>
+
+  <section id="actors">
+    <h2>Actors</h2>
+    <p>Actors in ActivityPub are represented by HTTP URI. When entered directly into a user interface (for
+    example on a login form), it is desirable to support simplified naming. For
+    this purpose cases, ID normalization SHOULD be performed as follows:</p>
+    <ol>
+      <li>If the entered ID is a valid URI, then it is to be used directly</li>
+      <li>Otherwise, the entered value should be considered invalid</li>
+    </ol>
+    <div class="issue">How to normalize entries without URI scheme, e.g. <em>tantek.com</em></div>
+    <p>Once the actor's URI has been identified, it should be dereferenced.</p>
+    <a href="#obj-dereference"></a></p>
+
+    <section id="actor-objects">
+      <h2><i>Actor</i> objects</h2>
+      <p>Actor objects are ActivityStreams objects which are subclasses of the
+      <code>actor</code> type. Actor objects MUST have, in addition to the
+      properties mandated by <a href="#obj-id"></a>, the following properties:</p>
+      <dl>
+        <dt>url</dt><dd>A link to the actor's "profile web page", if it is not
+        equal to the value of <code>id</code></dd>
+
+        <dt>following</dt><dd>An [[!ActivityStreams]] collection of the actors
+        that this actor is following</dd>
+
+        <dt>followers</dt><dd>An [[!ActivityStreams]] collection of the actors
+        that follow this actor</dd>
+
+        <dt>inbox</dt><dd>A reference to an [[!ActivityStreams]] collection comprising of all the
+        messages received by the actor; see <a href="#inbox"></a></dd>
+        <dt>outbox</dt><dd>An [[!ActivityStreams]] collection comprising of all the messages
+        produced by the actor; see <a href="#outbox"></a>
+      </dl>
+      <p>Implementations should, in addition, provide the following properties:</p>
+      <dl>
+        <dt>preferredUsername</dt><dd>A short username which may be used to
+        refer to the actor, with no uniqueness guarantees</dd>
+        <dt>displayName</dt><dd>The preferred "nickname" or "display name" of
+        the actor</dd>
+        <dt>summary</dt><dd>A quick summary or bio by the user about themselves</dd>
+        <dt>icon</dt><dd>A media link to the user's profile picture (this may
+        be a thumbnail)</dd>
+      </dl>
+      <pre class="example">
+        {
+          "@context": [
+            "http://www.w3.org/ns/activitystreams",
+            "http://www.w3.org/ns/activitypub"
+          ],
+          "@type": "Person",
+          "@id": "https://johnsmith.example.com/",
+          "following": "https://johnsmith.example.com/following.json",
+          "followers": "https://johnsmith.example.com/followers.json",
+          "inbox": "https://johnsmith.example.com/inbox.json",
+          "outbox": "https://johnsmith.example.com/feed.json",
+          "preferredUsername": "johnsmith",
+          "displayName": "John Smith",
+          "summary": "Just an example guy",
+          "icon": [
+            "https://johnsmith.example.com/image/165987aklre4"
+          ]
+        }
+      </pre>
+    </section>
+  </section>
+
+  <section id="authorization">
+    <h2>Authorization</h2>
+    <p><b>This is a stub, to be expanded. OAuth 2.0 is an open question.</b></p>
+    <p>ActivityPub uses authorization for two purposes; first, to
+    authenticate clients to servers, and secondly in federated implementations
+    to authenticate servers to each other. These methods are based upon the
+    OAuth 2.0 authorization framework as specified in [[!RFC6749]]. </p>
+    <section id="authorization-user">
+      <h2>User Authentication</h2>
+      <p>User authentication is used in order to identify clients acting on
+      behalf of an <a href="#actors">actor</a> their origin server, and for
+      federated implementations to other servers. There are two types of
+      authentication permitted for this:</p>
+      <section id="authorization-user-bearer">
+        <h2>Bearer Authorization</h2>
+        <p>For clients which only need to interact with the user's origin server,
+        or communicating with a non-federated server, clients may use OAuth 2.0
+        bearer tokens</p>
+      </section>
+      <section id="authorization-user-jws">
+        <h2>JSON Web Signature authorization</h2>
+        <p><b>This method is only mandatory for federated implementations</b></p>
+        <p>For clients which need to interact with servers beyond the user's
+        origin server, clients MUST support use of OAuth 2.0 with JSON Web
+        Signatures</p>
+      </section>
+    </section>
+    <section id="authorization-origin">
+      <h2>Origin Authorization</h2>
+      <p><b>This method is only applicable to federated implementations</b></p>
+      <p>A server performing an operation on behalf of an actor (e.g. delivery
+      to a recipient) must authenticate itself with the 3rd party server as
+      such. One method for doing so is defined in this specification.</p>
+      <section id="authorization-origin-jws">
+        <h2>JSON Web Signature authorization</h2>
+        <p>Servers MUST support use of OAuth 2.0 with JSON Web Signatures</p>
+      </section>
+    </section>
+  </section>
+
+  <section id="endpoint-discovery">
+    <h2>Endpoint Discovery</h2>
+    <p>When a user dereferences an actor's ID the page MUST contain HTML script
+    element with the <code>type</code> attribute set to
+    <code>application/ld+json</code>.</p>
+    <pre class="example">
+      &lt;script type="application/ld+json"&gt;
+        {
+          "@context": [
+            "http://www.w3.org/ns/activitystreams",
+            "http://www.w3.org/ns/activitypub"
+          ],
+          "@id": "https://example.com/~alice/my-stream",
+          "@type": "Person",
+          "displayName": "Alice",
+          "summary": "Hai, I'm Alice!",
+          "inbox": "https://example.com/~alice/inbox",
+          "outbox": "https://example.com/~alice/feed",
+          "followers": "https://example.com/~alice/collections/followers",
+          "following": "https://example.com/~alice/collections/following"
+        }
+      &lt;/script&gt;
+    </pre>
+
+  </section>
+
+  <section id="collections">
+    <h2>Collections and Streams</h2>
+    <p>[[!ActivityStreams]] defines the collection concept; ActivityPub defines several
+    collections with special behavior. Additionally, it defines a subset of
+    collections termed <a href="#streams">streams</a>. </p>
+
+    <section id="followers">
+      <h2>Followers Collection</h2>
+      <p>Every <a href="#actors">actor</a> MUST have a followers collection.
+      This is the default recipient list for otherwise unaddressed activities,
+      and additionally is used as a distribution target for any activities
+      addressed to the <a href="#public"></a></p>
+    </section>
+
+    <section id="following">
+      <h2>Following Collection</h2>
+      <p>Every actor MAY have a following collection. This is a list of everybody
+      that the actor has followed</p>
+    </section>
+
+    <section id="favorites">
+      <h2>Favorites Collection</h2>
+      <p>Every actor MAY have a favorites collection. This is a list of every
+      object that the actor has favorited (See <a href="#activity-favorite"></a>)
+      </p>
+    </section>
+
+    <section id="streams">
+      <h2>Streams</h2>
+      <p>The streams nomenclature is applied to any collection comprised purely of
+      activities. These objects should be so declared using the <code>objectTypes</code>
+      property:</p>
+      <pre class="example">
+        {
+          "@context": [
+            "http://www.w3.org/ns/activitystreams",
+            "http://www.w3.org/ns/activitypub"
+          ],
+          "@id": "https://example.com/~alice/my-stream",
+          "@type": "Collection",
+          "itemsType": ["activity"]
+          "items": [ ... ]
+        }
+      </pre>
+      <p>Streams are always presented in reverse chronological order</p>
+      <section id="outbox">
+        <h2>Outbox</h2>
+        <p>The <code>outbox</code> stream contains every object that the user
+        has ever published, subject to the ability of the requestor to retrieve
+        the object (That is, the contents of the outbox are filtered by the
+        permissions of the person reading it). If a user submits a request
+        without <a href="authorization">Authorization</a> the server should
+        respond with all of the <a href="public-addressing">Public</a> posts.</p>
+
+        <p>A client may submit an [[!ActivityStreams]] activity to the server
+        using a HTTP POST request to the dereferencable URI of the outbox collection.
+        In this case, the request's Content-Type MUST
+        be <code>application/activity+json</code>, and the request MUST be authenticated
+        with credentials authorized to act on behalf of the user to whom the
+        outbox belongs. Such submitted activities will be added to the front of
+        the feed retrieved by GET requests to the same endpoint.</p>
+      </section>
+
+      <section id="inbox">
+        <h2>Inbox</h2>
+
+        <p>The <code>inbox</code> stream contains all objects received by the user.
+        The inbox MUST be filtered according to the requester's permission; this
+        MAY include allowing read access only to the owning user</p>
+
+        <p>A server may submit a HTTP POST to the <a href="#obj-dereference">
+        dereferencable URI</a> of the <code>inbox</code> endpoint. This request
+        MUST be authenticated with the credentials of the user identified by the
+        <code>actor</code> stanza of the activity being delivered. The request
+        MUST be of the [[!ActivityStreams]] content type; it MUST be a single activity.</p>
+
+        <p>The server MUST perform de-duplication of activities, whereby it
+        discards repeats of already delivered activities (this can occur if an
+        activity is addressed both to a user's followers, and a specific user
+        which happens to follow said user, and the server has failed to
+        de-duplicate the recipients list, for example). Such deduplication MUST
+        be performed by comparing the <code>@id</code> of the activities and
+        dropping any activities already seen.</p>
+      </section>
+    </section>
+  </section>
+
+  <section id="notification-and-delivery">
+    <h2>Notification and Delivery</h2>
+    <p>Notification and Delivery are two closely related acts. Notifications are
+    sent to <i>objects</i> and are used to perform updates on the
+    social graph, whilst delivery is the act of inserting an activity into a
+    recipient <i>agent's</i> inbox</p>
+    <section id="delivery">
+      <h2>Delivery</h2>
+      <p>Activity distribution and access control is per the audience targeting
+      properties from the [[!ActivityStreams]] specification. For each entry in the
+      addressing properties of an object, the server shall</p>
+      <ol>
+        <li>If the entry is a collection, then the server MUST dereference the
+        collection (with the user's credentials) and add each person in the
+        collection to the list of recipients for the message. Servers MUST
+        limit the number of layers of indirections through collections which
+        will be performed, which MAY be one.
+        <li>If the entry is not a collection, then the server MUST perform
+        discovery on the object (which may not be of person
+        <code>@type</code>) to discover its activity-inbox address
+        <li>Once the complete list of recipients has been determined, the
+        server MUST then deliver the activity to each recipient. For a federated
+        implementation, this must be done by performing a HTTP POST, with prohom
+        authorization as the submitting user, of the submitted activity body to
+        the URI of the <a href="#inbox">inbox</a> collection of each recipient
+      </ol>
+      <p>For federated servers performing delivery to a 3rd party server,
+      delivery SHOULD be performed asynchronously to completion of
+      the original activity submission request, and SHOULD additionally retry
+      delivery to recipients if it fails due to network error</p>
+      <p>If no recipients are specified, the user's preferred default audience
+      should be applied. The default value for the default audience is
+      implementation specific but MAY be the user's
+      <a href="#followers">followers</a> collection</p>
+      <p>In addition to delivery to recipients, the server MUST also perform
+      notification as specified by <a href="#notification"></a></p>
+    </section>
+    <section id="notification">
+      <h2>Notification</h2>
+      <p>When a user creates an activity (by submitting it to their
+      <a href="#outbox">outbox</a>), the server should perform <i>notification</i>.
+      Notification is the process of propagating awareness of the new activity to
+      the activity's origin server such that the origin can act upon the activity
+      (for example, notification that a user has liked an object is used to update
+      the object's like count) and distribute the activity to ensure that it is
+      propagated to the whole social graph which received the original object.</p>
+      <p>Notifications shall be sent to each of the following objects:</p>
+      <ul>
+        <li>The Objects specified by the activity's "object" and "target" properties</li>
+        <li>Any Objects specified in the activity object's "inReplyTo" property</li>
+      </ul>
+      <p>An object notified of an activity MUST <a href="#delivery">deliver</a>
+      that activity to all <a href="#object-recipient">recipients of the object</a>
+      and in addition notify all <a href="#activity-share">share activities</a>
+      of the object.</p>
+    </section>
+    <section id="public-addressing">
+      <h2>Public Addressing</h2>
+      <p>In addition to [[!ActivityStreams]] collections and objects,
+      Activities may additionally be addressed to the special "public"
+      audience denoted by the object</p>
+      <pre class="example">
+        {
+          "@context": "http://www.w3.org/ns/activitystreams",
+          "@id": "http://activityschema.org/collection/public",
+          "@type": "Collection"
+        }
+      </pre>
+      <p>Activities addressed to this special URI shall be accessible to all
+      users, without authentication.</p>
+      <p>For the purposes of delivery, the server shall treat the public
+      collection as if it contains the same entries as the user's
+      <a href="#followers">followers collection</a>.
+      <p>TODO: New URI? Can we get as:public in the schema or such?</p>
+    </section>
+  </section>
+  <section id="binary-data">
+    <h2>Binary Data</h2>
+    <p>There is the ability to submit binary data such as images, video or other
+       binary data you wish to use in activitypub. This is done by means of submitting
+       the binary data to the user's <code>file</code> endpoint. The request MUST contain
+       the HTTP headers <code>Content-Type</code> and <code>Content-Length</code>. Upon
+       successful submission a response containing the object with an ID is returned that
+       can be posted to the users outbox.</p>
+
+    <p>An example response for an image I might upload is</p>:
+    <pre class="example">
+      {
+        "@context": "",
+        "@id": "http://example.com/~erik/photos/1",
+        "@type": "Image",
+        "url": [
+          {
+            "@type": "Link",
+            "href": "http://example.com/~erik/photos/1.png",
+            "mediaType": "image/png"
+          }
+        ]
+      }
+    </pre>
+  <section id="content-objects">
+    <h2>Content Objects</h2>
+    <p>There are objects which have a <code>content</code> property, the value of which
+    is provided by the user. These can be for example note, blog, image, etc.
+
+    <section id="reply-objects">
+      <h3>Reply Objects</h3>
+      <p>A response can be any content object. The object MUST have an additional
+      <code>inReplyTo</code> property. This property should have the object that
+      your reply is in response to.</p>
+      <pre class="example">
+        {
+          "@context": "http://www.w3.org/ns/activitystreams",
+          "@id": "https://example.com/~alice/note/72",
+          "@type": "Note",
+          "content": "This is a reply to a note posted by John Smith!",
+          "inReplyTo": {
+            "@id": "https://example.org/~john/note/5",
+            "@type": "Note",
+            "content": "Hey! This is a note in ActivityPub ^_^"
+          }
+        }
+      </pre>
+      <p><b>This is only applicable to federated implementations:</b> When a response
+      is sent to the outbox of a user, it should be propagated to the original server
+      that authored the object that the response is in reply to. That server should then
+      send that response to all recipients that the original object was sent to.</p>
+    </section>
+  </section>
+
+  <section id="activities">
+    <h2>Activities</h2>
+    <p>The core of any [[!ActivityStreams]] based protocol is activities within.
+    Users post activities to their <a href="#outbox">outbox</a>, from which they
+    are distributed to recipients' <a href="#inbox">inboxes</a>. ActivityPub
+    places no restrictions on the activities which may be distributed; however,
+    it defines certain activities with special behaviors</p>
+    <section id="post-activity">
+      <h3>Create Activity</h3>
+      <p>The <code>Create</code> activity is used to when posting a new object. This has the
+	side effect that of the object that they are posting is being created.</p>
+    </section>
+    <section id="update-activity">
+      <h3>Update Activity</h3>
+      <p>The <code>Update</code> activity is used when updating an already existing object.
+	The object should be modified to reflect the new structure in defined in the update
+	activity.</p>
+    </section>
+    <section id="delete-activity">
+      <h3>Delete Activity</h3>
+      <p>The <code>Delete</code> activity is used to delete an already existing object. This
+	MUST leave a shell of the object that will be displayed in activities which reference
+	the deleted object. If the deleted object is requested the server should respond with
+	the HTTP 410 Gone status code.
+
+	A deleted object:
+<pre class="example">
+  {
+    "@context": "http://www.w3.org/ns/activitystreams",
+    "@id": "https://example.com/~alice/note/72",
+    "@type": "Note",
+    "published": "2015-02-10T15:04:55Z",
+    "updated": "2015-02-10T15:04:55Z",
+    "deleted": "2015-02-10T15:04:55Z",
+  }
+</pre>
+    </section>
+    <section id="follow-activity">
+      <h3>Follow Activity</h3>
+      <p>The <code>Follow</code> activity is used to subscribe to the activities of another user.
+	Once the user has followed a user, activities shared with the Follows of that user
+	SHOULD be added to the actors's inbox.</p>
+    </section>
+    <section id="unfollow-activity">
+      <h3>Unfollow Activity</h3>
+      <p>The <code>Unfollow</code> activity is used to unsubscribe to the activities of actor.
+	Once the user has unfollowed a user, the new activities posted to the Followers collection
+	of that user SHOULD not be added to the actors's inbox.</p>
+    </section>
+    <section id="favorite-like-activity">
+      <h3>Favourite or Like Activity</h3>
+      <p>The <code>Favorite</code> and <code>Like</code> activities are synonyms. These are used to add
+	the actor to list of users who have liked or favorited the object.</p>
+    </section>
+    <section id="unfavorite-unlike-activity">
+      <h3>Unfavorite or Unlike Activity</h3>
+      <p>The <code>Unfavorite</code> and <code>Unlike</code> activity are synonyms. These are used to
+	remove the actor from the list of users who have liked or favorited the object.</p>
+    </section>
+    <section id="add-activity">
+      <h3>Add Activity</h3>
+      <p>The <code>Add</code> activity is used to add the object to the collection specified in the
+	<code>target</code> property of the activity.
+    </section>
+    <section id="remove-activity">
+      <h3>Remove Activity</h3>
+      <p>The <code>Remove</code> activity is used to remove the object from the collection specified in the
+	<code>target</code> property of the activity.
+    </section>
+    <section id="block-activity">
+      <h3>Block Activity</h3>
+      <p>The <code>Block</code> activity is used to indicate that the actor does not want a user (defined in
+	the <code>object</code> property) to be able to interact with objects posted by the user. The
+	server SHOULD prevent the user from interacting with any object posted by the actor.</p>
+    </section>
+  </section>
+  </body>
+</html>
