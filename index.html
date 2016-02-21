@@ -95,12 +95,12 @@
       user <i>having</i> done something. In addition, certain activities posted
       by a user to their <a href="#outbox">outbox</a> may trigger certain
       operations on the user's behalf. Finally, activities may have side effects
-      as they propogate throughout the social graph. As an example of this:</p>
+      as they propagate throughout the social graph. As an example of this:</p>
       <ol>
-        <li>A user posts the <code>like</code> activity to their outbox. This
-        activity causes the user's server to perform an activity on behalf of
-        the user; in particular, it adds the specified object to the collection
-        of objects the user has liked.</li>
+        <li>A user posts a <code>Like</code> activity to their outbox. This
+        causes the user's server to perform an action on behalf of
+        the user. In particular, it adds a link (to the liked object) to the
+        collection of objects the user has liked.</li>
         <li>A consequence of the above activity (per
         <a href="#notification"></a>) is that the server hosting
         the liked object will be notified of the operation, and will normally
@@ -154,18 +154,25 @@
       <a href="https://www.w3.org/TR/activitystreams-vocabulary/">ActivityStreams Vocabulary</a>
       document, particularly the
       <a href="https://www.w3.org/TR/activitystreams-vocabulary/#types">Core Classes</a>,
-      to get a sense of how this lays out; ActivityPub follows the
+      to get a sense of how this lays out. ActivityPub follows the
       mapping of this vocabulary very closely.
     </p>
     <p>
       Servers SHOULD validate the content they receive to avoid content spoofing attacks.
-      In particular, servers SHOULD NOT trust client submitted content, and federated servers also SHOULD NOT trust content received from a server other than the content's origin without some form of verification.
-      The general mecahism that is specified for this at this time is for a recipient of some referenced activitystreams object to verify the presence of that object on the original server.
-      Other mechanisms such as verifying signatures are left out of scope of this document.
-      (However, if other generally agreed upon mechanisms for handling verification become available in the future, servers are welcome to use those methods, in the future.)
+      In particular, servers SHOULD NOT trust client-submitted content, and
+      federated servers also SHOULD NOT trust content received from a server
+      (other than the content's origin) without some form of verification.
+      The general mechanism that is currently specified for this is for the
+      recipient of some referenced ActivityStreams object to verify the presence
+      of that object on the original server.
+      Other mechanisms such as verifying signatures are left out of scope of
+      this document.
+      (However, if other generally agreed upon mechanisms for handling
+      verification become available in the future, servers are welcome to use
+      those methods.)
     </p>
     <div class="informative">
-      As an example, if example.com receives the activity
+      As an example, if <code>example.com</code> receives the activity
       <pre class="example">
        {
          "@context": "http://www.w3.org/ns/activitystreams",
@@ -191,7 +198,7 @@
       must fall into one of the following groups:</p>
       <ol>
         <li>
-          Publicly dereferencable URIs, such as HTTPS URIs, with their
+          Publicly dereferenceable URIs, such as HTTPS URIs, with their
           authority belonging to that of their originating server.
           (Publicly facing content SHOULD use HTTPS URIs.)
         </li>
@@ -212,8 +219,8 @@
       <h2>Methods on objects</h2>
       <p>There are several common operations upon social objects, which
       are expressed using standard HTTP methods applied to the Object's
-      dereferencable URI. To avoid conflict with existing
-      standards (and hence support "multiprotocol" server implemnetations),
+      dereferenceable URI. To avoid conflict with existing
+      standards (and hence support "multiprotocol" server implementations),
       the scope of requests which servers are required to honor as defined in
       this specification is limited as follows:</p>
       <ul>
@@ -256,7 +263,7 @@
         object stored on the server.</p>
         <p>The server MUST insert an activity with the <code>@type</code> <code>Update</code>
         and this object as its <code>object</code> into the actor's
-        <a href="#outbox">feed</a>.</p>
+        <a href="#outbox">outbox</a>.</p>
       </section>
       <section id="method-delete">
         <h2>The <code>DELETE</code> method</h2>
@@ -270,7 +277,7 @@
 
   <section id="actors">
     <h2>Actors</h2>
-    <p>Actors in ActivityPub are represented by HTTP URI. When entered directly into a user interface (for
+    <p>Actors in ActivityPub are represented by HTTP URIs. When entered directly into a user interface (for
     example on a login form), it is desirable to support simplified naming. For
     this purpose cases, ID normalization SHOULD be performed as follows:</p>
     <ol>
@@ -286,10 +293,10 @@
       <code>actor</code> type. Actor objects MUST have, in addition to the
       properties mandated by <a href="#obj-id"></a>, the following properties:</p>
       <dl>
-        <dt>inbox</dt><dd>A reference to an [[!ActivityStreams]] collection comprising of all the
-          messages received by the actor; see <a href="#inbox"></a></dd>
-        <dt>outbox</dt><dd>An [[!ActivityStreams]] collection comprising of all the messages
-          produced by the actor; see <a href="#outbox"></a></dd>
+        <dt>inbox</dt><dd>A reference to an [[!ActivityStreams]] collection containing all the
+          messages received by the actor (see <a href="#inbox"></a>)</dd>
+        <dt>outbox</dt><dd>An [[!ActivityStreams]] collection containing all the messages
+          produced by the actor (see <a href="#outbox"></a>)</dd>
       </dl>
       <p>Implementations SHOULD, in addition, provide the following properties:</p>
       <dl>
@@ -372,8 +379,8 @@
 
   <section id="endpoint-discovery">
     <h2>Endpoint Discovery</h2>
-    <p>When a user dereferences an actor's ID the page MUST contain HTML script
-    element with the <code>type</code> attribute set to
+    <p>When a user dereferences an actor's ID the page MUST contain an HTML
+    <code>script</code> element with the <code>type</code> attribute set to
     <code>application/ld+json</code>.</p>
     <pre class="example">
       &lt;script type="application/ld+json"&gt;
@@ -404,7 +411,7 @@
 
     <section id="followers">
       <h2>Followers Collection</h2>
-      <p>Every <a href="#actors">actor</a> MUST have a followers collection.
+      <p>Every <a href="#actors">actor</a> MAY have a followers collection.
       This is the default recipient list for otherwise unaddressed activities,
       and additionally is used as a distribution target for any activities
       addressed to the <a href="#public-addressing">public</a>.</p>
@@ -439,17 +446,18 @@
         <h2>Outbox</h2>
         <p>The <code>outbox</code> stream contains objects the user
         has published, subject to the ability of the requestor to retrieve
-        the object (That is, the contents of the outbox are filtered by the
-        permissions of the person reading it). If a user submits a request
+        the object. (That is, the contents of the outbox are filtered by the
+        permissions of the person reading it.) If a user submits a request
         without <a href="#authorization">Authorization</a> the server should
         respond with all of the <a href="#public-addressing">Public</a> posts.
         This could potentially be all relevant objects published by
-        the user, though the number of available items is left to the descretion
+        the user, though the number of available items is left to the discretion
         of those implementing and deploying the server.</p>
 
         <p>A client may submit an [[!ActivityStreams]] activity to the server
-        using a HTTP POST request to the dereferencable URI of the outbox collection.
-        In this case, the request's Content-Type MUST
+        using a HTTP POST request to the dereferenceable URI of the
+        <code>outbox</code> collection.
+        In this case, the request's <code>Content-Type</code> MUST
         be <code>application/activity+json</code>, and the request MUST be authenticated
         with credentials authorized to act on behalf of the user to whom the
         outbox belongs. Such submitted activities will be added to the front of
@@ -463,18 +471,19 @@
         The inbox MUST be filtered according to the requester's permission; this
         MAY include allowing read access only to the owning user</p>
 
-        <p>A server may submit a HTTP POST to the
-        dereferencable URI of the <code>inbox</code> endpoint. This request
+        <p>A server may submit an HTTP POST to the
+        dereferenceable URI of the <code>inbox</code> endpoint. This request
         MUST be authenticated with the credentials of the user identified by the
-        <code>actor</code> stanza of the activity being delivered. The request
-        MUST be of the [[!ActivityStreams]] content type; it MUST be a single activity.</p>
+        <code>actor</code> property of the activity being delivered. The request
+        MUST be of the [[!ActivityStreams]] content type; it MUST be a single
+        activity.</p>
 
         <p>The server MUST perform de-duplication of activities, whereby it
         discards repeats of already delivered activities (this can occur if an
         activity is addressed both to a user's followers, and a specific user
         which happens to follow said user, and the server has failed to
         de-duplicate the recipients list, for example). Such deduplication MUST
-        be performed by comparing the <code>@id</code> of the activities and
+        be performed by comparing the <code>@id</code>s of the activities and
         dropping any activities already seen.</p>
       </section>
     </section>
@@ -482,54 +491,59 @@
 
   <section id="notification-and-delivery">
     <h2>Notification and Delivery</h2>
+
     <p>Notification and Delivery are two closely related acts. Notifications are
-    sent to <i>objects</i> and are used to perform updates on the
-    social graph, whilst delivery is the act of inserting an activity into a
+    sent to <i>objects</i> and are used to perform updates to the
+    social graph, while Delivery is the act of inserting an activity into a
     recipient <i>agent's</i> inbox</p>
+
     <section id="delivery">
       <h2>Delivery</h2>
-      <p>Activity distribution and access control is per the audience targetting
+      <p>Activity distribution is done using Audience Targeting
       properties from the [[!ActivityStreams]] specification. For each entry in the
-      addressing properties of an object, the server shall</p>
+      addressing properties of an object, the server shall:</p>
       <ol>
         <li>If the entry is a collection, then the server MUST dereference the
         collection (with the user's credentials) and add each person in the
         collection to the list of recipients for the message. Servers MUST
         limit the number of layers of indirections through collections which
-        will be performed, which MAY be one.
+        will be performed, which MAY be one.</li>
         <li>If the entry is not a collection, then the server MUST perform
-        discovery on the object (which may not be of person
-        <code>@type</code>) to discover its activity-inbox address
+        discovery on the object (which may not be of Person
+        <code>@type</code>) to discover its activity-inbox address</li>
         <li>Once the complete list of recipients has been determined, the
         server MUST then deliver the activity to each recipient. For a federated
         implementation, this must be done by performing a HTTP POST, with
         authorization as the submitting user, of the submitted activity body to
-        the URI of the <a href="#inbox">inbox</a> collection of each recipient
+        the URI of the <a href="#inbox">inbox</a> collection of each
+        recipient.</li>
       </ol>
       <p>For federated servers performing delivery to a 3rd party server,
       delivery SHOULD be performed asynchronously to completion of
       the original activity submission request, and SHOULD additionally retry
-      delivery to recipients if it fails due to network error</p>
+      delivery to recipients if it fails due to network error.</p>
       <p>If no recipients are specified, the user's preferred default audience
       should be applied. The default value for the default audience is
       implementation specific but MAY be the user's
-      <a href="#followers">followers</a> collection</p>
+      <a href="#followers">followers</a> collection.</p>
       <p>In addition to delivery to recipients, the server MUST also perform
-      notification as specified by <a href="#notification"></a></p>
+      notification as specified by <a href="#notification"></a>.</p>
     </section>
+
     <section id="notification">
       <h2>Notification</h2>
       <p>When a user creates an activity (by submitting it to their
       <a href="#outbox">outbox</a>), the server should perform <i>notification</i>.
-      Notification is the process of propogating awareness of the new activity to
+      Notification is the process of propagating awareness of the new activity to
       the activity's origin server such that the origin can act upon the activity
       (for example, notification that a user has liked an object is used to update
       the object's like count) and distribute the activity to ensure that it is
-      propogated to the whole social graph which received the original object.</p>
-      <p>Notifications shall be sent to each of the following objects:</p>
+      propagated to the whole social graph which received the original object.</p>
+      <p>Notifications shall be sent to each of the following:</p>
       <ul>
-        <li>The Objects specified by the activity's "object" and "target" properties</li>
-        <li>Any Objects specified in the activity object's "inReplyTo" property</li>
+        <li>The Objects specified by the activity's <code>object</code> and
+        <code>target</code> properties</li>
+        <li>Any Objects specified in the activity object's <code>inReplyTo</code> property</li>
       </ul>
       <p>An object notified of an activity MUST <a href="#delivery">deliver</a>
       that activity to all
@@ -558,13 +572,13 @@
   <section id="binary-data">
     <h2>Binary Data</h2>
     <p>There is the ability to submit binary data such as images, video or other
-       binary data you wish to use in activitypub. This is done by means of submitting
+       binary data you wish to use in ActivityPub. This is done by means of submitting
        the binary data to the user's <code>file</code> endpoint. The request MUST contain
        the HTTP headers <code>Content-Type</code> and <code>Content-Length</code>. Upon
        successful submission a response containing the object with an ID is returned that
        can be posted to the users outbox.</p>
 
-    <p>An example response for an image I might upload is</p>:
+    <p>An example response for an uploaded image would be:</p>
     <pre class="example">
       {
         "@context": "",
@@ -587,9 +601,9 @@
 
     <section id="reply-objects">
       <h3>Reply Objects</h3>
-      <p>A response can be any content object. The object MUST have an additional
-      <code>inReplyTo</code> property. This property should have the object that
-      your reply is in response to.</p>
+      <p>A response can be any content object. The object MUST have an
+      <code>inReplyTo</code> property, which specifies the object
+      that the reply is in response to.</p>
       <pre class="example">
         {
           "@context": "http://www.w3.org/ns/activitystreams",
@@ -606,82 +620,85 @@
       <p><b>This is only applicable to federated implementations:</b> When a response
       is sent to the outbox of a user, it should be propagated to the original server
       that authored the object that the response is in reply to. That server should then
-      send that response to all recipiants that the original object was sent to.</p>
+      send that response to all recipients that the original object was sent to.</p>
     </section>
   </section>
 
   <section id="activities">
     <h2>Activities</h2>
-    <p>The core of any [[!ActivityStreams]] based protocol is activities within.
+    <p>Activities are the core of any [[!ActivityStreams]] based protocol.
     Users post activities to their <a href="#outbox">outbox</a>, from which they
     are distributed to recipients' <a href="#inbox">inboxes</a>. ActivityPub
     places no restrictions on the activities which may be distributed; however,
     it defines certain activities with special behaviors</p>
     <section id="post-activity">
       <h3>Create Activity</h3>
-      <p>The <code>Create</code> activity is used to when posting a new object. This has the
-	side effect that of the object that they are posting is being created.</p>
+      <p>The <code>Create</code> activity is used to when posting a new object,
+      and has the side effect of creating that object.</p>
     </section>
     <section id="update-activity">
       <h3>Update Activity</h3>
-      <p>The <code>Update</code> activity is used when updating an already existing object.
-	The object should be modified to reflect the new structure in defined in the update
-	activity.</p>
+      <p>The <code>Update</code> activity is used when updating an already existing object. The object is modified to reflect the new
+      structure specified in the update activity.</p>
     </section>
     <section id="delete-activity">
       <h3>Delete Activity</h3>
-      <p>The <code>Delete</code> activity is used to delete an already existing object. This
-	MUST leave a shell of the object that will be displayed in activities which reference
-	the deleted object. If the deleted object is requested the server should respond with
-	the HTTP 410 Gone status code.
+      <p>The <code>Delete</code> activity is used to delete an already existing
+      object. This MUST leave a <i>tombstone</i> object that will be displayed
+      in activities which reference the deleted object. If the deleted object is
+      requested, the server should respond with the HTTP 410 Gone status
+      code.</p>
 
-	A deleted object:
-<pre class="example">
-  {
-    "@context": "http://www.w3.org/ns/activitystreams",
-    "@id": "https://example.com/~alice/note/72",
-    "@type": "Note",
-    "published": "2015-02-10T15:04:55Z",
-    "updated": "2015-02-10T15:04:55Z",
-    "deleted": "2015-02-10T15:04:55Z",
-  }
-</pre>
+      <p>An example deleted object:</p>
+      <pre class="example">
+        {
+          "@context": "http://www.w3.org/ns/activitystreams",
+          "@id": "https://example.com/~alice/note/72",
+          "@type": "Note",
+          "published": "2015-02-10T15:04:55Z",
+          "updated": "2015-02-10T15:04:55Z",
+          "deleted": "2015-02-10T15:04:55Z",
+        }
+      </pre>
     </section>
     <section id="follow-activity">
       <h3>Follow Activity</h3>
-      <p>The <code>Follow</code> activity is used to subscribe to the activities of another user.
-	Once the user has followed a user, activities shared with the Follows of that user
-	SHOULD be added to the actors's inbox.</p>
+      <p>The <code>Follow</code> activity is used to subscribe to the activities
+      of another user. Once the user has followed a user, activities shared with
+      the Followers of that user SHOULD be added to the actors's inbox.</p>
     </section>
     <section id="add-activity">
       <h3>Add Activity</h3>
-      <p>The <code>Add</code> activity is used to add the object to the collection specified in the
-	<code>target</code> property of the activity.</p>
+      <p>The <code>Add</code> activity is used to add the object to the
+      collection specified in the <code>target</code> property of the
+      activity.</p>
     </section>
     <section id="remove-activity">
       <h3>Remove Activity</h3>
-      <p>The <code>Remove</code> activity is used to remove the object from the collection specified in the
-	<code>target</code> property of the activity.</p>
+      <p>The <code>Remove</code> activity is used to remove the object from the
+      collection specified in the <code>target</code> property of the
+      activity.</p>
     </section>
     <section id="block-activity">
       <h3>Block Activity</h3>
-      <p>The <code>Block</code> activity is used to indicate that the actor does not want a user (defined in
-	the <code>object</code> property) to be able to interact with objects posted by the user. The
-	server SHOULD prevent the user from interacting with any object posted by the actor.</p>
+      <p>The <code>Block</code> activity is used to indicate that the actor does
+      not want a user (defined in the <code>object</code> property) to be able
+      to interact with objects posted by the user. The server SHOULD prevent the
+      blocked user from interacting with any object posted by the actor.</p>
     </section>
     <section id="undo-activity">
       <h3>Undo Activity</h3>
-      <p>
-        The <code>Undo</code> activity is used to undo a previous activity.
-        For example, <code>Undo</code> may be used to undo a previous <code>Like</code> or <code>Follow</code>.
-        The undo activity and the activity being undone MUST both have the same author.
-        Side effects (such as adding activities to a user's inbox after a <code>Follow</code>) should be undone, to the extent possible.
-      </p>
+      <p>The <code>Undo</code> activity is used to undo a previous activity.
+      For example, <code>Undo</code> may be used to undo a previous
+      <code>Like</code> or <code>Follow</code>. The undo activity and the
+      activity being undone MUST both have the same author. Side effects (such
+      as adding activities to a user's inbox after a <code>Follow</code>) should
+      be undone, to the extent possible.</p>
 
-      <p>
-        There are some exceptions where there is an existing and explicit "inverse activity" which should be used instead.
-        <code>Create</code> based activities should instead use <code>Delete</code>, and <code>Add</code> activities should use <code>Remove</code>.
-      </p>
+      <p>There are some exceptions where there is an existing and explicit
+      "inverse activity" which should be used instead. <code>Create</code>
+      activities should instead use <code>Delete</code> to undo, and
+      <code>Add</code> activities should use <code>Remove</code>.</p>
     </section>
   </section>
   </body>
