@@ -482,58 +482,35 @@
 
   <section id="notification-and-delivery">
     <h2>Notification and Delivery</h2>
-    <p>Notification and Delivery are two closely related acts. Notifications are
-    sent to <i>objects</i> and are used to perform updates on the
-    social graph, whilst delivery is the act of inserting an activity into a
-    recipient <i>agent's</i> inbox</p>
-    <section id="delivery">
-      <h2>Delivery</h2>
-      <p>Activity distribution and access control is per the audience targetting
-      properties from the [[!ActivityStreams]] specification. For each entry in the
-      addressing properties of an object, the server shall</p>
-      <ol>
-        <li>If the entry is a collection, then the server MUST dereference the
-        collection (with the user's credentials) and add each person in the
-        collection to the list of recipients for the message. Servers MUST
-        limit the number of layers of indirections through collections which
-        will be performed, which MAY be one.
-        <li>If the entry is not a collection, then the server MUST perform
-        discovery on the object (which may not be of person
-        <code>@type</code>) to discover its activity-inbox address
-        <li>Once the complete list of recipients has been determined, the
-        server MUST then deliver the activity to each recipient. For a federated
-        implementation, this must be done by performing a HTTP POST, with
-        authorization as the submitting user, of the submitted activity body to
-        the URI of the <a href="#inbox">inbox</a> collection of each recipient
-      </ol>
-      <p>For federated servers performing delivery to a 3rd party server,
-      delivery SHOULD be performed asynchronously to completion of
-      the original activity submission request, and SHOULD additionally retry
-      delivery to recipients if it fails due to network error</p>
-      <p>If no recipients are specified, the user's preferred default audience
-      should be applied. The default value for the default audience is
-      implementation specific but MAY be the user's
-      <a href="#followers">followers</a> collection</p>
-      <p>In addition to delivery to recipients, the server MUST also perform
-      notification as specified by <a href="#notification"></a></p>
-    </section>
+    <p>Notification and Delivery are two closely related acts. Notifications are sent to <em>objects</em> in order to propagate changes to linked objects throughout the social graph. Notification causes an appropriate Activity to be passed between a series of one or more objects until it reaches an <em>agent</em> (the owner of an object). Then, Delivery is the act of inserting the Activity into the recipient agent's inbox.</p>
     <section id="notification">
       <h2>Notification</h2>
-      <p>When a user creates an activity (by submitting it to their
-      <a href="#outbox">outbox</a>), the server should perform <i>notification</i>.
-      Notification is the process of propogating awareness of the new activity to
-      the activity's origin server such that the origin can act upon the activity
-      (for example, notification that a user has liked an object is used to update
-      the object's like count) and distribute the activity to ensure that it is
-      propogated to the whole social graph which received the original object.</p>
+      <p>When a user creates an Activity (by submitting it to their <a href="#outbox">outbox</a>), the server should perform <em>notification</em>. Notification is the process of propagating awareness of the new Activity to the origin server(s) of any linked objects, such that the origin(s) can:</p>
+      <ul>
+        <li>act upon the Activity (for example, notification that a user has liked an object is used to update the object's like count);</li>
+        <li><a href="#delivery">deliver</a> the Activity to recipients of the original object, to ensure updates are propagated to the whole social graph.</li>
+      </ul>
       <p>Notifications shall be sent to each of the following objects:</p>
       <ul>
-        <li>The Objects specified by the activity's "object" and "target" properties</li>
-        <li>Any Objects specified in the activity object's "inReplyTo" property</li>
+        <li>The Objects specified by the activity's <code>object</code> and <code>target</code> properties</li>
+        <li>Any Objects specified in the activity object's <code>inReplyTo</code> property</li>
       </ul>
-      <p>An object notified of an activity MUST <a href="#delivery">deliver</a>
-      that activity to all
-      <a href="https://www.w3.org/TR/activitystreams-vocabulary/#audienceTargeting">recipients of the object</a>.</p>
+      <p>Upon receipt of a Notification, an object must:</p>
+      <ul>
+        <li>perform <a href="#notification">Notification</a> on further objects linked from the recipient object;</li>
+        <li>perform <a href="delivery">delivery</a>.</li>
+      </ul>
+    </section>
+    <section id="delivery">
+      <h2>Delivery</h2>
+      <p>Activity distribution and access control is per the audience targeting properties from the <a href="http://w3c-social.github.io/activitypub/#bib-ActivityStreams">ActivityStreams</a> specification. For each entry in the addressing properties of an object, the server shall:</p>
+      <ol>
+        <li>If the entry is a collection, the server must dereference the collection (with the user's credentials) and add each person in the collection to the list of recipients for the message. Servers must limit the number of layers of indirections through collections which will be performed, which may be one. Proceed to 2.</li>
+        <li>For each entry (that is not a collection), the server must perform discovery on the object to discover its <a href="#inbox">inbox</a> address.</li>
+        <li>The server must then deliver the activity to each recipient by performing a HTTP <code>POST</code> to the URI of the recipient's inbox, containing the contents of the Activity. For a federated implementation, this must include authorization of the submitting user.</li>
+      </ol>
+      <p>For federated servers performing delivery to a 3rd party server, delivery should be performed asynchronously to completion of the original activity submission request, and should additionally retry delivery to recipients if it fails due to network error.</p>
+      <p>If no recipients are specified, the user's preferred default audience should be applied. The default value for the default audience is implementation specific but may be the user's followers collection.</p>
     </section>
     <section id="public-addressing">
       <h2>Public Addressing</h2>
