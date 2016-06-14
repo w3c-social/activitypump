@@ -101,7 +101,7 @@
       user <i>having</i> done something. In addition, certain activities posted
       by a user to their <a href="#outbox">outbox</a> may trigger certain
       operations on the user's behalf. Finally, activities may have side effects
-      as they propogate throughout the social graph. As an example of this:</p>
+      as they propagate throughout the social graph. As an example of this:</p>
       <ol>
         <li>A user posts the <code>like</code> activity to their outbox. This
         activity causes the user's server to perform an activity on behalf of
@@ -170,7 +170,7 @@
       federated servers also SHOULD NOT trust content received from a
       server other than the content's origin without some form of
       verification.
-      The general mecahism that is specified for this at this time is for a
+      The general mechanism that is specified for this at this time is for a
       recipient of some referenced activitystreams object to verify the
       presence of that object on the original server.
       Other mechanisms such as verifying signatures are left out of scope
@@ -234,7 +234,7 @@
       <p>There are several common operations upon social objects, which
       are expressed using standard HTTP methods applied to the Object's
       dereferencable URI. To avoid conflict with existing
-      standards (and hence support "multiprotocol" server implemnetations),
+      standards (and hence support "multiprotocol" server implementations),
       the scope of requests which servers are required to honor as defined in
       this specification is limited as follows:</p>
       <ul>
@@ -249,7 +249,7 @@
         to select the type of data to return in response to a request. For
         requests without a body, an <code>Accept</code> header MUST be
         specified, and the behavior defined by this specification ONLY applies
-        if content negotion results in the selection of the
+        if content negotiation results in the selection of the
         <code>application/activity+json</code> media type. For requests
         with a body, the client MAY omit the <code>Accept</code> header, in
         which case the server MUST provide successful responses as defined by this
@@ -351,7 +351,7 @@
         </dd>
         <dt>preferredUsername</dt><dd>A short username which may be used to
           refer to the actor, with no uniqueness guarantees</dd>
-        <dt>summary</dt><dd>A quick summary or bio by the user about themself</dd>
+        <dt>summary</dt><dd>A quick summary or bio by the user about themselves</dd>
         <dt>icon</dt><dd>A media link to the user's profile picture (this may
           be a thumbnail)</dd>
       </dl>
@@ -441,7 +441,7 @@
       <p class="note" title="Suggested default">The follow activity
       generally is a request to see the objects a user creates, this
       would make the "followers" collection a good default collection
-      to provide to the user when selecting the audience targetting.</p>
+      to provide to the user when selecting the audience targeting.</p>
     </section>
 
     <section id="following">
@@ -482,7 +482,7 @@
           posts.
           This could potentially be all relevant objects published by the
           user, though the number of available items is left to the
-          descretion of those implementing and deploying the server.
+          discretion of those implementing and deploying the server.
         </p>
 
         <p>
@@ -538,7 +538,7 @@
     recipient <i>agent's</i> inbox</p>
     <section id="delivery">
       <h2>Delivery</h2>
-      <p>Activity distribution is per the audience targetting
+      <p>Activity distribution is per the audience targeting
       properties from the [[!ActivityStreams]] specification. For each entry in the
       addressing properties of an object, the server shall</p>
       <ol>
@@ -567,11 +567,11 @@
       notification as specified by <a href="#notification"></a></p>
       <p class="note" title="Silent and private activities">
 	What to do when there are no recipients specified is not
-	defined, however it's recomended that if no recipients
+	defined, however it's recommended that if no recipients
 	are specified the object remains completely private and access
 	controls restrict the access to object. If the object is just
 	sent to the "public" collection the object is not federated to
-	any users but is publically viewable in the person's outbox.
+	any users but is publicly viewable in the person's outbox.
       </p>
 
     </section>
@@ -608,11 +608,11 @@
       <h2>Notification</h2>
       <p>When a user creates an activity (by submitting it to their
       <a href="#outbox">outbox</a>), the server should perform <i>notification</i>.
-      Notification is the process of propogating awareness of the new activity to
+      Notification is the process of propagating awareness of the new activity to
       the activity's origin server such that the origin can act upon the activity
       (for example, notification that a user has liked an object is used to update
       the object's like count) and distribute the activity to ensure that it is
-      propogated to the whole social graph which received the original object.</p>
+      propagated to the whole social graph which received the original object.</p>
       <p>Notifications shall be sent to each of the following objects:</p>
       <ul>
         <li>The Objects specified by the activity's "object" and "target" properties</li>
@@ -708,7 +708,7 @@
       <p><b>This is only applicable to federated implementations:</b> When a response
       is sent to the outbox of a user, it should be propagated to the original server
       that authored the object that the response is in reply to. That server should then
-      send that response to all recipiants that the original object was sent to.</p>
+      send that response to all recipients that the original object was sent to.</p>
     </section>
   </section>
 
@@ -738,7 +738,7 @@
 	created activity upon creation and removed as properties from the submitted
 	object.</p>
 
-      <pre class="example" title="object with audience targetting to post">
+      <pre class="example" title="object with audience targeting to post">
 	{
 	  "@context": "http://www.w3.org/ns/activitystreams",
 	  "type": "Note",
