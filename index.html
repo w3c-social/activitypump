@@ -271,43 +271,17 @@
       <section id="obj-methods">
         <h2>Methods on objects</h2>
         <p>
-          There are several common operations upon social objects, which are
-          expressed using standard HTTP methods applied to the Object's
-          dereferencable URI.
-          To avoid conflict with existing standards (and hence support
-          "multiprotocol" server implemnetations), the scope of requests which
-          servers are required to honor as defined in this specification is
-          limited as follows:
+          The HTTP GET method may be dereferenced against an object's
+          <code>id</code> property to retrieve the activity.
+          Servers MAY use HTTP content negotiation as defined in [[!RFC7231]] to
+          select the type of data to return in response to a request.
+          The client MUST specify an <code>Accept</code> header, this
+          specification only applies in the selection of the
+          <code>application/activity+json</code> media type.
         </p>
-        <ul>
-          <li>
-            Notwithstanding the following, the <code>DELETE</code> method will
-            always be honored as specified in <a href="#method-delete"></a>.
-          </li>
-          <li>
-            All non-idempotent operations shall have a request body.
-          </li>
-          <li>
-            For all operations with a request body, it MUST have the media type
-            <code>application/activity+json</code>, or where explicitly
-            permitted the <code>multipart/related</code> media type with a root
-            part of type <code>application/activity+json</code>.
-          </li>
-          <li>
-            Servers MAY use HTTP content negotiation as defined in [[!RFC7231]]
-            to select the type of data to return in response to a request.
-            For requests without a body, an <code>Accept</code> header MUST be
-            specified, and the behavior defined by this specification ONLY
-            applies if content negotion results in the selection of the
-            <code>application/activity+json</code> media type.
-            For requests with a body, the client MAY omit the
-            <code>Accept</code> header, in which case the server MUST provide
-            successful responses as defined by this specification.
-          </li>
-        </ul>
         <p>
           Servers MAY implement other behavior for requests which do not comply
-          with the above requirements.
+          with the above requirement.
           (For example, servers may implement additional legacy protocols, or
           may use the same URI for both HTML and ActivityStreams
           representations of a resource)
@@ -321,42 +295,13 @@
           404 Not Found error code where the existence of the object is
           considered private.
         </p>
-
         <section id="method-get">
           <h2>The <code>GET</code> method</h2>
           <p>
-            The GET method shall return an up-to-date version of the object.
+            The HTTP GET method shall return an up-to-date version of the
+            object.
           </p>
         </section>
-        <section id="method-put">
-          <h2>The <code>PUT</code> method</h2>
-          <p><b>
-            This method requires
-            <a href="#authorization-user">user authorization</a>.
-          </b></p>
-          <p>
-            The PUT method may be used by a client to update the version of the
-            object stored on the server.</p>
-          <p>
-            The server MUST insert an activity with the <code>type</code>
-            <code>Update</code> and this object as its <code>object</code> into
-            the actor's <a href="#outbox">feed</a>.
-          </p>
-        </section>
-        <section id="method-delete">
-          <h2>The <code>DELETE</code> method</h2>
-          <p><b>
-            This method requires
-            <a href="#authorization-user">user authorization</a>
-          </b></p>
-          <p>
-            The <code>DELETE</code> method may be used by a client to delete
-            the object.
-            If successful, all requests to the URI which would have previously
-            been successful SHOULD return the 410 Gone response code.
-          </p>
-        </section>
-      </section>
     </section>
 
     <section id="actors">
