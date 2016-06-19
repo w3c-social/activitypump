@@ -271,8 +271,8 @@
       <section id="obj-methods">
         <h2>Methods on objects</h2>
         <p>
-          There is a HTTP GET method an object's dereferencable URI that
-          provides a mechanism to retrieve the activity.
+          The HTTP GET method may be dereferenced against an object's
+          <code>id</code> property to retrieve the activity.
           Servers MAY use HTTP content negotiation as defined in [[!RFC7231]] to
           select the type of data to return in response to a request.
           The client MUST specify an <code>Accept</code> header, this
