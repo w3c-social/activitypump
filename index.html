@@ -50,12 +50,20 @@
                     mailto:     "tsyesika@tsyesika.se",
                     w3cid:      "72695"
                 },
-              /* We should credit Owen, but he isn't an editor. */
-              /* {
-                 name:       "Owen Shepherd",
-                 url:        "http://owenshepherd.net/",
-                 mailto:     "owen.shepherd@e43.eu"
-                 }, */
+          ],
+          authors: [
+              {
+                  name:       "Owen Shepherd",
+                  url:        "http://owenshepherd.net/",
+                  mailto:     "owen.shepherd@e43.eu"
+              },
+              {
+                  name: "Evan Prodromou",
+                  url: "https://fuzzy.ai/about#evan",
+                  company: "Fuzzy.ai",
+                  companyUrl: "https://fuzzy.ai",
+                  w3cid: "43626"
+              },
           ],
           localBiblio:  {
             "ActivityStreams": {
@@ -600,8 +608,14 @@
           <p>
             The <code>inbox</code> stream contains all objects received by the
             user.
-            The inbox MUST be filtered according to the requester's permission;
-            this MUST include allowing read access only to the owning user.</p>
+            The server SHOULD filter content according to the requester's
+            permission.
+            In general, the owner of an inbox is likely to be able to access
+            all of their inbox whereas depending on access control, some
+            other content may be public, whereas other content may require
+            authentication for non-owner users, if they can access the inbox
+            at all.
+          </p>
 
           <p>
             A server may submit a HTTP POST to the dereferencable URI of the
