@@ -631,128 +631,94 @@
       </section>
     </section>
 
-    <section id="notification-and-delivery">
-      <h2>Notification and Delivery</h2>
+    <section id="targeting-and-delivery">
+      <h2>Targeting and Delivery of notifications</h2>
       <p>
-        Notification and Delivery are two closely related acts.
-        Notifications are sent to <i>objects</i> and are used to perform
-        updates on the social graph, whilst delivery is the act of inserting an
-        activity into a recipient <i>agent's</i> inbox.
+        In order to propagate updates throughout the social graph, Activities
+        are sent to the appropriate recipients. First, these recipients are
+        determined through following the appropriate links between objects 
+        until you reach an agent (<a href="#targeting">targeting</a>), and then 
+        the Activity is inserted into the agent's <em>inbox</em> 
+        (<a href="#delivery">delivery</a>). This allows recipient servers to:
       </p>
-      <section id="delivery">
-        <h2>Delivery</h2>
-        <p>
-          Activity distribution is per the audience targetting properties from
-          the [[!ActivityStreams]] specification.
-          For each entry in the addressing properties of an object, the server
-          shall
-        </p>
-        <ol>
-          <li>
-            If the entry is a collection, then the server MUST dereference the
-            collection (with the user's credentials) and deliver the object to
-            each person in the collection.
-            Servers MUST limit the number of layers of indirections through
-            collections which will be performed, which MAY be one.
-          </li>
-          <li>
-            If the entry is not a collection, then the server MUST perform
-            discovery on the object (which may not be of person
-            <code>type</code>) to discover its activity-inbox address.
-          </li>
-          <li>
-            Once the complete list of recipients has been determined, the
-            server MUST then deliver the activity to each recipient.
-            For a federated implementation, this must be done by performing a
-            HTTP POST, with authorization as the submitting user, of the
-            submitted activity body to the URI of the
-            <a href="#inbox">inbox</a> collection of each recipient.</li>
-        </ol>
-        <p>
-          For federated servers performing delivery to a 3rd party server,
-          delivery SHOULD be performed asynchronously to completion of the
-          original activity submission request, and SHOULD additionally retry
-          delivery to recipients if it fails due to network error.
-        </p>
-        <a href="#followers">followers</a> collection</p>
-        <p>
-          In addition to delivery to recipients, the server MUST also perform
-          notification as specified by <a href="#notification"></a>.
-        </p>
+      <ul>
+        <li>conduct any side-effects related to the Activity (for example, 
+        notification that a user has liked an object is used to update the 
+        object's like count);</li>
+        <li>deliver the Activity to recipients of the original object, to 
+        ensure updates are propagated to the whole social graph.</li>
+      </ul>
+      <p>Delivery is usually triggered by, for example:</p>
+      <ul>
+        <li>an Activity being created in a user's <a href="#outbox">outbox</a> 
+        with their <a href="#followers">Followers Collection</a> as the recipient.</li>
+        <li>an Activity being created in a user's <a href="#outbox">outbox</a> with 
+        directly addressed recipients.</li>
+        <li>an Activity being created in a user's <a href="#outbox">outbox</a> or 
+        <a href="#inbox">inbox</a> which references another object.</li>
+      </ul>
+
+      <section id="targeting">
+        <h2>Targeting</h2>
+        <p>Primary targeting is per the audience targetting properties from
+          the [[!ActivityStreams]] specification. Notification targeting ensures
+          the owners of all linked objects are notified of a new Activity that
+          relates to them. Thus, the target(s) for final delivery of an Activity 
+          are:</p>
+        <ul>
+          
+          <li><strong>Primary targeting:</strong> the values of the 
+          <code>to</code>, <code>cc</code> or <code>bcc</code> fields (likely to 
+          include the <a href="#followers">followers</a> collection)</li>
+          
+          <li><strong>Notification targeting:</strong> the <code>actors</code> 
+          for all objects in the <code>object</code>, <code>target</code> or 
+          <code>inReplyTo</code> fields</li>
+        
+        </ul>
+        
+        <p>Excluding any actors which are the same as the <code>actor</code> 
+        of the Activity being notified about.</p>
+        <p>If the entry is a collection, then the server MUST dereference the
+        collection (with the user's credentials) and discover inboxes for
+        each item in the collection.
+        Servers MUST limit the number of layers of indirections through
+        collections which will be performed, which MAY be one.</p>
+
         <p class="note" title="Silent and private activities">
           What to do when there are no recipients specified is not defined,
-          however it's recomended that if no recipients are specified the
+          however it's recommended that if no recipients are specified the
           object remains completely private and access controls restrict the
           access to object.
           If the object is just sent to the "public" collection the object is
-          not federated to any users but is publically viewable in the person's
+          not delivered to any users but is publicly viewable in the actor's
           outbox.
         </p>
       </section>
 
-      <section id="access-control">
-        <h2>Access Control</h2>
+      <section id="delivery">
+        <h2>Delivery</h2>
         <p>
-          Access control is used to enforce permissions on objects; see
-          <a href="#authorization"></a>.
+        Once the target(s) for delivery have been determined, discovery of the 
+        recipient <a href="#inbox">inbox(es)</a>, and delivery, are performed 
+        according to [[!LDN]].
+        </p>
+        <p>
+        In summary, the <a href="#inbox">inbox</a> is determined through the
+        <code>inbox</code> property in the actor's profile, and an HTTP POST 
+        request (with authorization of the submitting user) is made to to the 
+        <a href="#inbox">inbox</a>, with the Activity as the body of the
+        request. This Activity is added by the receiver as an <code>item</code>
+        in the <a href="#inbox">inbox</a> Collection.
         </p>
 
-        <p>
-          Access control is largely informed by addressing and
-          <a href="#delivery"></a>.
-          (Implementations MAY provide additional methods of expansion or
-          redaction of access beyond that of delivery.)
-          Most implementations will resolve this via internally maintained
-          access control lists.
-          Implementations SHOULD provide initial access to recipients specified
-          for delivery on an activity (recipients on a wrapped object however
-          SHOULD be ignored).
-        </p>
-
-        <p>
-          A recipient receiving access through addressing to special
-          collections of actors
-          <!-- TODO: Include link to description of group collections,
-             when this exists -->
-          MAY be later removed from this group, and thus MAY also be removed
-          from future access to the activity (and potentially its enclosing
-          object).
-        </p>
+        <p>For federated servers performing delivery to a 3rd party server,
+        delivery SHOULD be performed asynchronously to completion of the
+        original activity submission request, and SHOULD additionally retry
+        delivery to recipients if it fails due to network error.</p>
+        
       </section>
-      <section id="notification">
-        <h2>Notification</h2>
-        <p>
-          When a user creates an activity (by submitting it to their <a
-          href="#outbox">outbox</a>), the server should perform
-          <i>notification</i>.
-          Notification is the process of propogating awareness of the new
-          activity to the activity's origin server such that the origin can act
-          upon the activity (for example, notification that a user has liked an
-          object is used to update the object's like count) and distribute the
-          activity to ensure that it is propogated to the whole social graph
-          which received the original object.
-        </p>
-        <p>
-          Notifications shall be sent to each of the following objects:
-        </p>
-        <ul>
-          <li>
-            The Objects specified by the activity's "object" and "target"
-            properties.
-          </li>
-          <li>
-            Any Objects specified in the activity object's "inReplyTo"
-            property.
-          </li>
-        </ul>
-        <p>
-          An object notified of an activity MUST
-          <a href="#delivery">deliver</a>
-          that activity to all
-          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#audienceTargeting">recipients of the object</a>,
-          as well as the actors on the "actor" and "attributedTo" fields.
-        </p>
-      </section>
+    
       <section id="public-addressing">
         <h2>Public Addressing</h2>
         <p>
@@ -779,6 +745,37 @@
         <p>TODO: New URI? Can we get as:public in the schema or such?</p>
       </section>
     </section>
+
+    <section id="access-control">
+      <h2>Access Control</h2>
+      <p>
+        Access control is used to enforce permissions on objects; see
+        <a href="#authorization"></a>.
+      </p>
+
+      <p>
+        Access control is largely informed by addressing and
+        <a href="#delivery"></a>.
+        (Implementations MAY provide additional methods of expansion or
+        redaction of access beyond that of delivery.)
+        Most implementations will resolve this via internally maintained
+        access control lists.
+        Implementations SHOULD provide initial access to recipients specified
+        for delivery on an activity (recipients on a wrapped object however
+        SHOULD be ignored).
+      </p>
+
+      <p>
+        A recipient receiving access through addressing to special
+        collections of actors
+        <!-- TODO: Include link to description of group collections,
+           when this exists -->
+        MAY be later removed from this group, and thus MAY also be removed
+        from future access to the activity (and potentially its enclosing
+        object).
+      </p>
+    </section>
+
     <section id="binary-data">
       <h2>Binary Data</h2>
       <p>
