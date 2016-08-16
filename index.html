@@ -649,55 +649,76 @@
       <h2>Targeting and Delivery of notifications</h2>
       <p>
         In order to propagate updates throughout the social graph, Activities
-        are sent to the appropriate recipients. First, these recipients are
-        determined through following the appropriate links between objects 
-        until you reach an agent (<a href="#targeting">targeting</a>), and then 
-        the Activity is inserted into the agent's <em>inbox</em> 
-        (<a href="#delivery">delivery</a>). This allows recipient servers to:
+        are sent to the appropriate recipients.
+        First, these recipients are determined through following the
+        appropriate links between objects until you reach an agent
+        (<a href="#targeting">targeting</a>), and then the Activity is inserted
+        into the agent's <em>inbox</em> (<a href="#delivery">delivery</a>).
+        This allows recipient servers to:
       </p>
       <ul>
-        <li>conduct any side-effects related to the Activity (for example, 
-          notification that a user has liked an object is used to update the 
-          object's like count);</li>
-        <li>deliver the Activity to recipients of the original object, to 
-          ensure updates are propagated to the whole social graph.</li>
+        <li>
+          conduct any side-effects related to the Activity (for example,
+          notification that a user has liked an object is used to update the
+          object's like count);
+        </li>
+        <li>
+          deliver the Activity to recipients of the original object, to ensure
+          updates are propagated to the whole social graph.
+        </li>
       </ul>
       <p>Delivery is usually triggered by, for example:</p>
       <ul>
-        <li>an Activity being created in a user's <a href="#outbox">outbox</a> 
-          with their <a href="#followers">Followers Collection</a> as the recipient.</li>
-        <li>an Activity being created in a user's <a href="#outbox">outbox</a> with 
-          directly addressed recipients.</li>
-        <li>an Activity being created in a user's <a href="#outbox">outbox</a> or 
-          <a href="#inbox">inbox</a> which references another object.</li>
+        <li>
+          an Activity being created in a user's <a href="#outbox">outbox</a>
+          with their <a href="#followers">Followers Collection</a> as the
+          recipient.
+        </li>
+        <li>
+          an Activity being created in a user's <a href="#outbox">outbox</a>
+          with directly addressed recipients.
+        </li>
+        <li>
+          an Activity being created in a user's <a href="#outbox">outbox</a> or
+          <a href="#inbox">inbox</a> which references another object.
+        </li>
       </ul>
 
       <section id="targeting">
         <h2>Targeting</h2>
-        <p>Primary targeting is per the audience targetting properties from
-          the [[!ActivityStreams]] specification. Notification targeting ensures
-          the owners of all linked objects are notified of a new Activity that
-          relates to them. Thus, the target(s) for final delivery of an Activity 
-          are:</p>
+        <p>
+          Primary targeting is per the audience targetting properties from the
+          [[!ActivityStreams]] specification.
+          Notification targeting ensures the owners of all linked objects are
+          notified of a new Activity that relates to them.
+          Thus, the target(s) for final delivery of an Activity are:
+        </p>
+
         <ul>
-          
-          <li><strong>Primary targeting:</strong> the values of the 
-            <code>to</code>, <code>cc</code> or <code>bcc</code> fields (likely to 
-            include the <a href="#followers">followers</a> collection)</li>
-          
-          <li><strong>Notification targeting:</strong> the <code>actors</code> 
-            for all objects in the <code>object</code>, <code>target</code> or 
-            <code>inReplyTo</code> fields</li>
-          
+          <li>
+            <strong>Primary targeting:</strong> the values of the
+            <code>to</code>, <code>cc</code> or <code>bcc</code> fields (likely
+            to include the <a href="#followers">followers</a> collection)
+          </li>
+
+          <li>
+            <strong>Notification targeting:</strong> the <code>actors</code>
+            for all objects in the <code>object</code>, <code>target</code> or
+            <code>inReplyTo</code> fields
+          </li>
         </ul>
-        
-        <p>Excluding any actors which are the same as the <code>actor</code> 
-          of the Activity being notified about.</p>
-        <p>If the entry is a collection, then the server MUST dereference the
+
+        <p>
+          Excluding any actors which are the same as the <code>actor</code>
+          of the Activity being notified about.
+        </p>
+        <p>
+          If the entry is a collection, then the server MUST dereference the
           collection (with the user's credentials) and discover inboxes for
           each item in the collection.
           Servers MUST limit the number of layers of indirections through
-          collections which will be performed, which MAY be one.</p>
+          collections which will be performed, which MAY be one.
+        </p>
 
         <p class="note" title="Silent and private activities">
           What to do when there are no recipients specified is not defined,
@@ -713,14 +734,14 @@
       <section id="delivery">
         <h2>Delivery</h2>
         <p>
-          Once the target(s) for delivery have been determined, discovery of the 
-          recipient <a href="#inbox">inbox(es)</a>, and delivery, are performed 
+          Once the target(s) for delivery have been determined, discovery of the
+          recipient <a href="#inbox">inbox(es)</a>, and delivery, are performed
           according to [[!LDN]].
         </p>
         <p>
           In summary, the <a href="#inbox">inbox</a> is determined through the
-          <code>inbox</code> property in the actor's profile, and an HTTP POST 
-          request (with authorization of the submitting user) is made to to the 
+          <code>inbox</code> property in the actor's profile, and an HTTP POST
+          request (with authorization of the submitting user) is made to to the
           <a href="#inbox">inbox</a>, with the Activity as the body of the
           request. This Activity is added by the receiver as an <code>item</code>
           in the <a href="#inbox">inbox</a> Collection.
@@ -730,9 +751,9 @@
           delivery SHOULD be performed asynchronously to completion of the
           original activity submission request, and SHOULD additionally retry
           delivery to recipients if it fails due to network error.</p>
-        
+
       </section>
-      
+
       <section id="public-addressing">
         <h2>Public Addressing</h2>
         <p>
