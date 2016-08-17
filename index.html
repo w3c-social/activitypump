@@ -14,10 +14,10 @@
           license: "w3c-software-doc",
           shortName:  "activitypub",
           wg: "Social Web Working Group",
-          wgURI: "http://www.w3.org/Social/WG",
+          wgURI: "https://www.w3.org/Social/WG",
           wgPublicList: "public-socialweb",
-          wgPatentURI: "http://www.w3.org/2004/01/pp-impl/72531/status",
-          edDraftURI: "http://w3c-social.github.io/activitypub/",
+          wgPatentURI: "https://www.w3.org/2004/01/pp-impl/72531/status",
+          edDraftURI: "https://w3c-social.github.io/activitypub/",
           otherLinks: [
               {
                   "key": "Repository",
@@ -40,13 +40,13 @@
           editors: [
                 {
                     name:       "Christopher Allan Webber",
-                    url:        "http://dustycloud.org/",
+                    url:        "https://dustycloud.org/",
                     mailto:     "cwebber@dustycloud.org",
                     w3cid:      "57007"
                 },
                 {
                     name:       "Jessica Tallon",
-                    url:        "http://theperplexingpariah.co.uk",
+                    url:        "https://theperplexingpariah.co.uk",
                     mailto:     "tsyesika@tsyesika.se",
                     w3cid:      "72695"
                 },
@@ -54,7 +54,7 @@
           authors: [
               {
                   name:       "Owen Shepherd",
-                  url:        "http://owenshepherd.net/",
+                  url:        "https://owenshepherd.net/",
                   mailto:     "owen.shepherd@e43.eu"
               },
               {
@@ -392,8 +392,8 @@
         <pre class="example">
           {
             "@context": [
-              "http://www.w3.org/ns/activitystreams",
-              "http://www.w3.org/ns/activitypub"
+              "https://www.w3.org/ns/activitystreams",
+              "https://www.w3.org/ns/activitypub"
             ],
             "type": "Person",
             "id": "https://johnsmith.example.com/",
@@ -457,7 +457,7 @@ Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystream
   "@context": "https://www.w3.org/ns/activitystreams#",
   "type": "Like",
   "name": "Chris liked 'Minimal ActivityPub update client'",
-  "object": "http://rhiaro.co.uk/2016/05/minimal-activitypub"
+  "object": "https://rhiaro.co.uk/2016/05/minimal-activitypub"
 }
       </pre>
       <p>
@@ -492,7 +492,7 @@ Location: https://dustycloud.org/likes/345
 
       <pre class="example">
 {
-  "id": "http://rhiaro.co.uk/2016/05/minimal-activitypub",
+  "id": "https://rhiaro.co.uk/2016/05/minimal-activitypub",
   "type": "Article",
   "name": "Minimal ActivityPub update client",
   "contnet": "Today I finished morph, a client for posting ActivityStreams2...",
@@ -509,7 +509,7 @@ Location: https://dustycloud.org/likes/345
   "type": "Like",
   "actor": "https://dustycloud.org/chris/"
   "name": "Chris liked 'Minimal ActivityPub update client'",
-  "object": "http://rhiaro.co.uk/2016/05/minimal-activitypub",
+  "object": "https://rhiaro.co.uk/2016/05/minimal-activitypub",
   "to": ["https://dustycloud.org/followers", "https://rhiaro.co.uk/followers/"],
   "cc": "https://e14n.com/evan"
 }
@@ -558,7 +558,7 @@ Location: https://dustycloud.org/likes/345
           "content": "This is a note",
           "published": "2015-02-10T15:04:55Z",
           "to": ["https://example.org/~john/"],
-          "cc": ["http://example.com/~erik/followers"]
+          "cc": ["https://example.com/~erik/followers"]
         }
         </pre>
 
@@ -576,11 +576,11 @@ Location: https://dustycloud.org/likes/345
             "content": "This is a note",
             "published": "2015-02-10T15:04:55Z",
             "to": ["https://example.org/~john/"],
-            "cc": ["http://example.com/~erik/followers"]
+            "cc": ["https://example.com/~erik/followers"]
           },
           "published": "2015-02-10T15:04:55Z",
           "to": ["https://example.org/~john/"],
-          "cc": ["http://example.com/~erik/followers"]
+          "cc": ["https://example.com/~erik/followers"]
         }
         </pre>
         </section>
@@ -765,7 +765,7 @@ Location: https://dustycloud.org/likes/345
         <h2>Streams</h2>
         <p>
           Streams are collections of ActivityStreams objects, generally
-          <a href="http://www.w3.org/ns/activitystreams#Activity">Activities</a>,
+          <a href="https://www.w3.org/ns/activitystreams#Activity">Activities</a>,
           which are always presented in reverse chronological order.
         </p>
         <section id="outbox">
@@ -853,15 +853,15 @@ Location: https://dustycloud.org/likes/345
       <pre class="example">
         {
           "@context": "",
-          "id": "http://example.com/~erik/photos/1",
+          "id": "https://example.com/~erik/photos/1",
           "type": "Image",
-          "to": ["http://example.com/~erik/public",
-                 "http://example.org/~sarah/"],
-          "cc": ["http://example.com/~erik/followers"],
+          "to": ["https://example.com/~erik/public",
+                 "https://example.org/~sarah/"],
+          "cc": ["https://example.com/~erik/followers"],
           "url": [
             {
               "type": "Link",
-              "href": "http://example.com/~erik/photos/1.png",
+              "href": "https://example.com/~erik/photos/1.png",
               "mediaType": "image/png"
             }
           ]
@@ -1011,8 +1011,8 @@ Location: https://dustycloud.org/likes/345
         </p>
         <pre class="example">
           {
-            "@context": "http://www.w3.org/ns/activitystreams",
-            "id": "http://activityschema.org/collection/public",
+            "@context": "https://www.w3.org/ns/activitystreams",
+            "id": "https://activityschema.org/collection/public",
             "type": "Collection"
           }
         </pre>
