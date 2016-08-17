@@ -431,12 +431,13 @@
       </section>
     </section>
 
-    <section id="activities">
-      <h2>Activities</h2>
+    <section id="client-to-server-interactions">
+      <h2>Client to Server Interactions</h2>
       <p>
         Activities as defined by [[!ActivityStreams]] are the core mechanism
         for creating, modifying and sharing content within the social graph.
-        This section describes client to server interactions.
+        Client to server interaction takes place through clients posting
+        activities to a user's <a href="#outbox">outbox</a>.
       </p>
       <p>
         To submit new Activities to a user's server, clients MUST discover
@@ -520,12 +521,13 @@ Location: https://dustycloud.org/likes/345
 }
       </pre>
 
+
       <section id="create-activity">
         <h3>Create Activity</h3>
         <p>
-          The <code>Create</code> activity is used to when posting a new
-          object. This has the side effect that the object embedded within the 
-          Activity (in the <code>object</code> property) is created.
+          The <code>Create</code> activity is used to when posting a new object.
+          This has the side effect that the object embedded within the Activity
+          (in the <code>object</code> property) is created.
         </p>
         <p>
           When a <code>Create</code> activity is posted, the <code>actor</code>
@@ -721,7 +723,15 @@ Location: https://dustycloud.org/likes/345
       </section>
     </section>
 
-        <section id="collections">
+    <section id="server-to-server-interactions">
+      <h2>Server to Server Interactions</h2>
+      <p>
+        Servers communicate with other servers and propagate information across
+        the social graph by posting activities to actors' inbox endpoints.
+      </p>
+    </section>
+    
+    <section id="collections">
       <h2>Collections</h2>
       <p>
         [[!ActivityStreams]] defines the collection concept; ActivityPub
@@ -793,8 +803,9 @@ Location: https://dustycloud.org/likes/345
             descretion of those implementing and deploying the server.
           </p>
           <p>
-            The outbox accepts HTTP POST requests, with behaviour described
-            in <a href="#activities">Activities</a>.
+            The outbox accepts HTTP POST requests, with behaviour described in
+            <a href="#client-to-server-interactions">Client to Server
+              Interactions</a>.
           </p>
         </section>
 
