@@ -431,6 +431,160 @@
       </section>
     </section>
 
+    <section id="collections">
+      <h2>Collections</h2>
+      <p>
+        [[!ActivityStreams]] defines the collection concept; ActivityPub
+        defines several collections with special behavior.
+        Additionally, it defines a subset of collections termed
+        <a href="#streams">streams</a>.
+      </p>
+
+      <section id="followers">
+        <h2>Followers Collection</h2>
+        <p>
+          Every <a href="#actors">actor</a> SHOULD have a followers collection.
+          This is a list of everyone who has sent a
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-follow">Follow</a>
+          activity for the user, added as a <a href="#follow-activity">side effect</a>.
+          This is where one would find a list of all the users that are
+          following the actor.
+        </p>
+
+        <p class="note" title="Default for notification targeting">
+          The follow activity generally is a request to see the objects a user
+          creates. This makes the Followers collection an appropriate default
+          target for <a href="#delivery">delivery</a> of notifications.
+        </p>
+      </section>
+
+      <section id="following">
+        <h2>Following Collection</h2>
+        <p>
+          Every actor MAY have a Following collection.
+          This is a list of everybody that the actor has followed, added as a
+          <a href="#follow-activity">side effect</a>.
+        </p>
+      </section>
+
+      <section id="likes">
+        <h2>Likes Collection</h2>
+        <p>
+          Every actor MAY have a Likes collection.
+          This is a list of every object from all of the actor's <code>Like</code> 
+          activities, added as a <a href="#like-activity">side effect</a>.
+        </p>
+      </section>
+
+      <section id="streams">
+        <h2>Streams</h2>
+        <p>
+          Streams are collections of ActivityStreams objects, generally
+          <a href="https://www.w3.org/ns/activitystreams#Activity">Activities</a>,
+          which are always presented in reverse chronological order.
+        </p>
+        <section id="outbox">
+          <h2>Outbox</h2>
+          <p>
+            The outbox is discovered through the <code>outbox</code>
+            property of an <a href="#actors">actor's</a> profile.
+          </p>
+          <p>
+            The outbox stream contains objects the user has
+            published, subject to the ability of the requestor to retrieve the
+            object (that is, the contents of the outbox are filtered by the
+            permissions of the person reading it).
+            If a user submits a request without
+            <a href="#authorization">Authorization</a> the server should
+            respond with all of the <a href="#public-addressing">Public</a>
+            posts.
+            This could potentially be all relevant objects published by the
+            user, though the number of available items is left to the
+            descretion of those implementing and deploying the server.
+          </p>
+          <p>
+            The outbox accepts HTTP POST requests, with behaviour described in
+            <a href="#client-to-server-interactions">Client to Server
+              Interactions</a>.
+          </p>
+        </section>
+
+        <section id="inbox">
+          <h2>Inbox</h2>
+
+          <p>
+            The inbox is discovered through the <code>inbox</code>
+            property of an <a href="#actors">actor's</a> profile.
+          </p>
+
+          <p>
+            The inbox stream contains all objects received by the
+            user.
+            The server SHOULD filter content according to the requester's
+            permission.
+            In general, the owner of an inbox is likely to be able to access
+            all of their inbox contents. Depending on access control, some
+            other content may be public, whereas other content may require
+            authentication for non-owner users, if they can access the inbox
+            at all.
+          </p>
+
+          <p>
+            The server MUST perform de-duplication of activities returned by
+            the inbox. Duplication can occur if an activity is addressed both 
+            to a user's followers, and a specific
+            user who also follows the recipient user, and the server has failed
+            to de-duplicate the recipients list.
+            Such deduplication MUST be performed by comparing the
+            <code>id</code> of the activities and dropping any activities
+            already seen.
+          </p>
+
+          <p>
+            The inbox accepts HTTP POST requests, with behaviour described
+            in <a href="#delivery">Delivery</a>.
+          </p>
+        </section>
+      </section>
+    </section>
+
+    <section id="binary-data">
+      <h2>Binary Data</h2>
+      <p>
+        There is the ability to submit binary data such as images, video or
+        other binary data you wish to use in ActivityPub.
+        This is done by means of submitting the binary data to the user's
+        <a href="#mediaEndpoint"><code>mediaEndpoint</code></a> on their
+        ActivityStreams profile object.
+        The request MUST contain the HTTP headers <code>Content-Type</code> and
+        <code>Content-Length</code>.
+        A client should expect that it must be
+        <a href="authorization-user-bearer">properly authenticated</a> in order
+        to be able to upload media.
+        Upon successful submission a response containing the object with an ID
+        is returned that can be posted to the users outbox.
+      </p>
+
+      <p>An example response for an image I might upload is:</p>
+      <pre class="example">
+        {
+          "@context": "",
+          "id": "https://example.com/~erik/photos/1",
+          "type": "Image",
+          "to": ["https://example.com/~erik/public",
+                 "https://example.org/~sarah/"],
+          "cc": ["https://example.com/~erik/followers"],
+          "url": [
+            {
+              "type": "Link",
+              "href": "https://example.com/~erik/photos/1.png",
+              "mediaType": "image/png"
+            }
+          ]
+        }
+      </pre>
+    </section>
+
     <section id="client-to-server-interactions">
       <h2>Client to Server Interactions</h2>
       <p>
@@ -731,160 +885,6 @@ Location: https://dustycloud.org/likes/345
       </p>
     </section>
     
-    <section id="collections">
-      <h2>Collections</h2>
-      <p>
-        [[!ActivityStreams]] defines the collection concept; ActivityPub
-        defines several collections with special behavior.
-        Additionally, it defines a subset of collections termed
-        <a href="#streams">streams</a>.
-      </p>
-
-      <section id="followers">
-        <h2>Followers Collection</h2>
-        <p>
-          Every <a href="#actors">actor</a> SHOULD have a followers collection.
-          This is a list of everyone who has sent a
-          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-follow">Follow</a>
-          activity for the user, added as a <a href="#follow-activity">side effect</a>.
-          This is where one would find a list of all the users that are
-          following the actor.
-        </p>
-
-        <p class="note" title="Default for notification targeting">
-          The follow activity generally is a request to see the objects a user
-          creates. This makes the Followers collection an appropriate default
-          target for <a href="#delivery">delivery</a> of notifications.
-        </p>
-      </section>
-
-      <section id="following">
-        <h2>Following Collection</h2>
-        <p>
-          Every actor MAY have a Following collection.
-          This is a list of everybody that the actor has followed, added as a
-          <a href="#follow-activity">side effect</a>.
-        </p>
-      </section>
-
-      <section id="likes">
-        <h2>Likes Collection</h2>
-        <p>
-          Every actor MAY have a Likes collection.
-          This is a list of every object from all of the actor's <code>Like</code> 
-          activities, added as a <a href="#like-activity">side effect</a>.
-        </p>
-      </section>
-
-      <section id="streams">
-        <h2>Streams</h2>
-        <p>
-          Streams are collections of ActivityStreams objects, generally
-          <a href="https://www.w3.org/ns/activitystreams#Activity">Activities</a>,
-          which are always presented in reverse chronological order.
-        </p>
-        <section id="outbox">
-          <h2>Outbox</h2>
-          <p>
-            The outbox is discovered through the <code>outbox</code>
-            property of an <a href="#actors">actor's</a> profile.
-          </p>
-          <p>
-            The outbox stream contains objects the user has
-            published, subject to the ability of the requestor to retrieve the
-            object (that is, the contents of the outbox are filtered by the
-            permissions of the person reading it).
-            If a user submits a request without
-            <a href="#authorization">Authorization</a> the server should
-            respond with all of the <a href="#public-addressing">Public</a>
-            posts.
-            This could potentially be all relevant objects published by the
-            user, though the number of available items is left to the
-            descretion of those implementing and deploying the server.
-          </p>
-          <p>
-            The outbox accepts HTTP POST requests, with behaviour described in
-            <a href="#client-to-server-interactions">Client to Server
-              Interactions</a>.
-          </p>
-        </section>
-
-        <section id="inbox">
-          <h2>Inbox</h2>
-
-          <p>
-            The inbox is discovered through the <code>inbox</code>
-            property of an <a href="#actors">actor's</a> profile.
-          </p>
-
-          <p>
-            The inbox stream contains all objects received by the
-            user.
-            The server SHOULD filter content according to the requester's
-            permission.
-            In general, the owner of an inbox is likely to be able to access
-            all of their inbox contents. Depending on access control, some
-            other content may be public, whereas other content may require
-            authentication for non-owner users, if they can access the inbox
-            at all.
-          </p>
-
-          <p>
-            The server MUST perform de-duplication of activities returned by
-            the inbox. Duplication can occur if an activity is addressed both 
-            to a user's followers, and a specific
-            user who also follows the recipient user, and the server has failed
-            to de-duplicate the recipients list.
-            Such deduplication MUST be performed by comparing the
-            <code>id</code> of the activities and dropping any activities
-            already seen.
-          </p>
-
-          <p>
-            The inbox accepts HTTP POST requests, with behaviour described
-            in <a href="#delivery">Delivery</a>.
-          </p>
-        </section>
-      </section>
-    </section>
-
-    <section id="binary-data">
-      <h2>Binary Data</h2>
-      <p>
-        There is the ability to submit binary data such as images, video or
-        other binary data you wish to use in ActivityPub.
-        This is done by means of submitting the binary data to the user's
-        <a href="#mediaEndpoint"><code>mediaEndpoint</code></a> on their
-        ActivityStreams profile object.
-        The request MUST contain the HTTP headers <code>Content-Type</code> and
-        <code>Content-Length</code>.
-        A client should expect that it must be
-        <a href="authorization-user-bearer">properly authenticated</a> in order
-        to be able to upload media.
-        Upon successful submission a response containing the object with an ID
-        is returned that can be posted to the users outbox.
-      </p>
-
-      <p>An example response for an image I might upload is:</p>
-      <pre class="example">
-        {
-          "@context": "",
-          "id": "https://example.com/~erik/photos/1",
-          "type": "Image",
-          "to": ["https://example.com/~erik/public",
-                 "https://example.org/~sarah/"],
-          "cc": ["https://example.com/~erik/followers"],
-          "url": [
-            {
-              "type": "Link",
-              "href": "https://example.com/~erik/photos/1.png",
-              "mediaType": "image/png"
-            }
-          ]
-        }
-      </pre>
-    </section>
-
     <section id="targeting-and-delivery">
       <h2>Targeting and Delivery of notifications</h2>
       <p>
