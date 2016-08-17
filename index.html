@@ -199,8 +199,8 @@
         Objects are often wrapped in Activities and are contained in streams of
         Collections, which are themselves subclasses of Objects.
         See the
-        <a href="https://www.w3.org/TR/activitystreams-vocabulary/">ActivityStreams Vocabulary</a>
-        document, particularly the
+        <a href="https://www.w3.org/TR/activitystreams-vocabulary/">ActivityStreams 
+        Vocabulary</a> document, particularly the 
         <a href="https://www.w3.org/TR/activitystreams-vocabulary/#types">Core Classes</a>,
         to get a sense of how this lays out; ActivityPub follows the mapping of
         this vocabulary very closely.
@@ -434,14 +434,50 @@
     <section id="activities">
       <h2>Activities</h2>
       <p>
-        The core of any [[!ActivityStreams]] based protocol is activities
-        within.
-        Users post activities to their <a href="#outbox">outbox</a>, from which
-        they are distributed to recipients' <a href="#inbox">inboxes</a>.
-        ActivityPub places no restrictions on the activities which may be
-        distributed; however, it defines certain activities with special
-        behaviors
+        Activities as defined by [[!ActivityStreams]] are the core mechanism
+        for creating, modifying and sharing content within the social graph.
       </p>
+      <p>
+        To submit new Activities to a user's server, clients MUST discover
+        the URL of the user's <strong><a href="#outbox">outbox</a></strong> 
+        from their <a href="#actor-objects">profile</a> and then MUST make an 
+        HTTP <code>POST</code> request to to this URL with the Content-Type of
+        <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams#"</code>.
+        The request MUST be authenticated with the credentials of the user to 
+        whom the outbox belongs. The body of the <code>POST</code> request
+        MUST contain a single Activity (which MAY contain embedded objects).
+      </p>
+      <pre class="example" title="Submitting an Activity to the Outbox">
+POST /outbox/ HTTP/1.1
+Host: dustycloud.org
+Authorization: Bearer XXXXXXXXXXX
+Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystreams#"
+
+{
+  "@context": "https://www.w3.org/ns/activitystreams#",
+  "type": "Like",
+  "name": "Chris liked 'My First Post'",
+  "object": "https://myblogposts.example/post-1"
+}
+      </pre>
+      <p>
+        If an Activity is submitted with a value in the <code>id</code> 
+        property, servers MUST ignore this and generate a new <code>id</code>
+        for the Activity. Servers MUST return a <code>201 Created</code> 
+        HTTP code with the new URL in the <code>Location</code> header.
+      </p>
+      <pre class="example" title="Outbox response to submitted Activity">
+HTTP/1.1 201 Created
+Location: https://dustycloud.org/likes/345
+      </pre>
+      <p>
+        The server adds this new Activity to the <a href="#outbox">outbox</a>
+        collection. 
+        Depending on the type of Activity, servers may then be required to 
+        carry out further side-effects. These are described per individual
+        Activity below.
+      </p>
+
       <section id="post-activity">
         <h3>Create Activity</h3>
         <p>
@@ -656,7 +692,7 @@
     </section>
 
     <section id="collections">
-      <h2>Collections and Streams</h2>
+      <h2>Collections</h2>
       <p>
         [[!ActivityStreams]] defines the collection concept; ActivityPub
         defines several collections with special behavior.
