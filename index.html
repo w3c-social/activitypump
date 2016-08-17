@@ -902,6 +902,65 @@ Location: https://dustycloud.org/likes/345
           original activity submission request, and SHOULD additionally retry
           delivery to recipients if it fails due to network error.</p>
 
+        <section id="delivery-side-effects">
+          <h3>Delivery side-effects</h3>
+          <p>
+            In order to propagate changes around the social graph, we define
+            side-effects of delivery of Activities with certain properties.
+          </p>
+          <p class="todo">TODO.. forwarding to addressees</p>
+      <!--    <section id="content-objects">
+      <h2>Content Objects</h2>
+      <p>
+        There are objects which have a <code>content</code> property, the value
+        of which is provided by the user.
+        These can be for example note, blog, image, etc.
+      </p>
+
+      <section id="reply-objects">
+        <h3>Reply Objects</h3>
+        <p>
+          A response can be any content object.
+          The object MUST have an additional <code>inReplyTo</code> property.
+          This property MUST have the object that your reply is in response to
+          or the <code>id</code> url of the response object as a string.
+        </p>
+        <pre class="example" title="Reply example containing the object">
+          {
+            "@context": "http://www.w3.org/ns/activitystreams",
+            "id": "https://example.com/~alice/note/72",
+            "type": "Note",
+            "content": "This is a reply to a note posted by John Smith!",
+            "to": ["https://example.org/~john/"],
+            "cc": ["http://example.com/~erik/followers"],
+            "inReplyTo": {
+              "id": "https://example.org/~john/note/5",
+              "type": "Note",
+              "content": "Hey! This is a note in ActivityPub ^_^",
+            }
+          }
+        </pre>
+        <pre class="example" title="Reply example containing just a string ID">
+          {
+            "@context": "http://www.w3.org/ns/activitystreams",
+            "id": "https://example.com/~alice/note/72",
+            "type": "Note",
+            "content": "This is a reply to a note posted by John Smith!",
+            "inReplyTo": "https://example.org/~john/note/5"
+          }
+        </pre>
+        <p>
+          <b>This is only applicable to federated implementations:</b>
+          When a response is sent to the outbox of a user, it should be
+          propagated to the original server that authored the object that the
+          response is in reply to.
+          That server should then send that response to all recipiants that the
+          original object was sent to.
+        </p>
+      </section>
+    </section>-->
+        </section>
+
       </section>
 
       <section id="public-addressing">
@@ -988,57 +1047,6 @@ Location: https://dustycloud.org/likes/345
             Servers MUST support use of OAuth 2.0 with JSON Web Signatures.
           </p>
         </section>
-      </section>
-    </section>
-
-    <section id="content-objects">
-      <h2>Content Objects</h2>
-      <p>
-        There are objects which have a <code>content</code> property, the value
-        of which is provided by the user.
-        These can be for example note, blog, image, etc.
-      </p>
-
-      <section id="reply-objects">
-        <h3>Reply Objects</h3>
-        <p>
-          A response can be any content object.
-          The object MUST have an additional <code>inReplyTo</code> property.
-          This property MUST have the object that your reply is in response to
-          or the <code>id</code> url of the response object as a string.
-        </p>
-        <pre class="example" title="Reply example containing the object">
-          {
-            "@context": "http://www.w3.org/ns/activitystreams",
-            "id": "https://example.com/~alice/note/72",
-            "type": "Note",
-            "content": "This is a reply to a note posted by John Smith!",
-            "to": ["https://example.org/~john/"],
-            "cc": ["http://example.com/~erik/followers"],
-            "inReplyTo": {
-              "id": "https://example.org/~john/note/5",
-              "type": "Note",
-              "content": "Hey! This is a note in ActivityPub ^_^",
-            }
-          }
-        </pre>
-        <pre class="example" title="Reply example containing just a string ID">
-          {
-            "@context": "http://www.w3.org/ns/activitystreams",
-            "id": "https://example.com/~alice/note/72",
-            "type": "Note",
-            "content": "This is a reply to a note posted by John Smith!",
-            "inReplyTo": "https://example.org/~john/note/5"
-          }
-        </pre>
-        <p>
-          <b>This is only applicable to federated implementations:</b>
-          When a response is sent to the outbox of a user, it should be
-          propagated to the original server that authored the object that the
-          response is in reply to.
-          That server should then send that response to all recipiants that the
-          original object was sent to.
-        </p>
       </section>
     </section>
 
