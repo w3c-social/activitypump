@@ -794,11 +794,6 @@ Location: https://dustycloud.org/likes/345
           is that the server SHOULD add the <code>object</code> to the 
           <code>actor</code>'s <a href="#following">Following Collection</a>.
         </p>
-        <p>
-          The side effect of receving this in an <strong>inbox</strong> is
-          that the server SHOULD add the <code>actor</code> to the <code>object</code>
-          user's <a href="#followers">Followers Collection</a>.
-        </p>
       </section>
       <section id="add-activity-outbox">
         <h3>Add Activity</h3>
@@ -839,11 +834,6 @@ Location: https://dustycloud.org/likes/345
           The side effect of receiving this in an <strong>outbox</strong>
           is that the server MAY add the <code>object</code> to the 
           <code>actor</code>'s <a href="#likes">Likes Collection</a>.
-        </p>
-        <p>
-          The side effect of receving this in an <strong>inbox</strong> is
-          that the server MAY increment the <code>object</code>'s count of 
-          likes.
         </p>
       </section>
       <section id="block-activity-outbox">
@@ -1037,6 +1027,23 @@ Location: https://dustycloud.org/likes/345
           <a href="#followers">followers collection</a>.
         </p>
         <p>TODO: New URI? Can we get as:public in the schema or such?</p>
+      </section>
+
+      <section id="follow-activity-inbox">
+        <h3>Follow Activity</h3>
+        <p>
+          The side effect of receving this in an <strong>inbox</strong> is
+          that the server SHOULD add the <code>actor</code> to the <code>object</code>
+          user's <a href="#followers">Followers Collection</a>.
+        </p>
+      </section>
+      <section id="like-activity-inbox">
+        <h3>Like Activity</h3>
+        <p>
+          The side effect of receving this in an <strong>inbox</strong> is
+          that the server MAY increment the <code>object</code>'s count of 
+          likes.
+        </p>
       </section>
     </section>
 
