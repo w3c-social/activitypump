@@ -626,9 +626,16 @@ Location: https://dustycloud.org/likes/345
         <p>
           The <code>Follow</code> activity is used to subscribe to the
           activities of another user.
-          The side-effect of receiving this is that the server SHOULD add
-          the <code>actor</code> to the <code>object</code> user's 
-          <a href="#followers">Followers Collection</a>.
+        </p>
+        <p>
+          The side-effect of receiving this in an <strong>outbox</strong>
+          is that the server SHOULD add the <code>object</code> to the 
+          <code>actor</code>'s <a href="#following">Following Collection</a>.
+        </p>
+        <p>
+          The side-effect of receving this in an <strong>inbox</strong> is
+          that the server SHOULD add the <code>actor</code> to the <code>object</code>
+          user's <a href="#followers">Followers Collection</a>.
         </p>
       </section>
       <section id="add-activity">
@@ -714,9 +721,8 @@ Location: https://dustycloud.org/likes/345
 
         <p class="note" title="Suggested default">
           The follow activity generally is a request to see the objects a user
-          creates, this would make the "followers" collection a good default
-          collection to provide to the user when selecting the audience
-          targeting.
+          creates. This makes the Followers collection an appropriate default
+          target for <a href="#delivery">delivery</a> of notifications.
         </p>
       </section>
 
