@@ -445,7 +445,10 @@
         <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams#"</code>.
         The request MUST be authenticated with the credentials of the user to 
         whom the outbox belongs. The body of the <code>POST</code> request
-        MUST contain a single Activity (which MAY contain embedded objects).
+        MUST contain a single Activity (which MAY contain embedded objects),
+        or a single non-Activity object which
+        <a href="#object-without-post">will be wrapped in a Create activity
+          by the server</a>.
       </p>
       <pre class="example" title="Submitting an Activity to the Outbox">
 POST /outbox/ HTTP/1.1
