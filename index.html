@@ -631,67 +631,7 @@ Location: https://dustycloud.org/likes/345
       </section>
     </section>
 
-    <section id="authorization">
-      <h2>Authorization</h2>
-      <p><b>
-        This is a stub, to be expanded. OAuth 2.0 is an open question.
-      </b></p>
-      <p>
-        ActivityPub uses authorization for two purposes; first, to authenticate
-        clients to servers, and secondly in federated implementations
-        to authenticate servers to each other.
-        These methods are based upon the OAuth 2.0 authorization framework as
-        specified in [[!RFC6749]].
-      </p>
-      <section id="authorization-user">
-        <h2>User Authentication</h2>
-        <p>
-          User authentication is used in order to identify clients acting on
-          behalf of an <a href="#actors">actor</a> their origin server, and for
-          federated implementations to other servers.
-          There are two types of authentication permitted for this:
-        </p>
-        <section id="authorization-user-bearer">
-          <h2>Bearer Authorization</h2>
-          <p>
-            For clients which only need to interact with the user's origin
-            server, or communicating with a non-federated server, clients may
-            use OAuth 2.0 bearer tokens.
-          </p>
-        </section>
-        <section id="authorization-user-jws">
-          <h2>JSON Web Signature authorization</h2>
-          <p><b>
-            This method is only mandatory for federated implementations
-          </b></p>
-          <p>
-            For clients which need to interact with servers beyond the user's
-            origin server, clients MUST support use of OAuth 2.0 with JSON Web
-            Signatures.
-          </p>
-        </section>
-      </section>
-      <section id="authorization-origin">
-        <h2>Origin Authorization</h2>
-        <p><b>
-          This method is only applicable to federated implementations
-        </b></p>
-        <p>
-          A server performing an operation on behalf of an actor (e.g. delivery
-          to a recipient) must authenticate itself with the 3rd party server as
-          such.
-          One method for doing so is defined in this specification.
-        </p>
-        <section id="authorization-origin-jws">
-          <h2>JSON Web Signature authorization</h2>
-          <p>
-            Servers MUST support use of OAuth 2.0 with JSON Web Signatures.
-          </p>
-        </section>
-      </section>
-    </section>
-
-    <section id="collections">
+        <section id="collections">
       <h2>Collections</h2>
       <p>
         [[!ActivityStreams]] defines the collection concept; ActivityPub
@@ -813,6 +753,66 @@ Location: https://dustycloud.org/likes/345
             Such deduplication MUST be performed by comparing the
             <code>id</code> of the activities and dropping any activities
             already seen.
+          </p>
+        </section>
+      </section>
+    </section>
+
+    <section id="authorization">
+      <h2>Authorization</h2>
+      <p><b>
+        This is a stub, to be expanded. OAuth 2.0 is an open question.
+      </b></p>
+      <p>
+        ActivityPub uses authorization for two purposes; first, to authenticate
+        clients to servers, and secondly in federated implementations
+        to authenticate servers to each other.
+        These methods are based upon the OAuth 2.0 authorization framework as
+        specified in [[!RFC6749]].
+      </p>
+      <section id="authorization-user">
+        <h2>User Authentication</h2>
+        <p>
+          User authentication is used in order to identify clients acting on
+          behalf of an <a href="#actors">actor</a> their origin server, and for
+          federated implementations to other servers.
+          There are two types of authentication permitted for this:
+        </p>
+        <section id="authorization-user-bearer">
+          <h2>Bearer Authorization</h2>
+          <p>
+            For clients which only need to interact with the user's origin
+            server, or communicating with a non-federated server, clients may
+            use OAuth 2.0 bearer tokens.
+          </p>
+        </section>
+        <section id="authorization-user-jws">
+          <h2>JSON Web Signature authorization</h2>
+          <p><b>
+            This method is only mandatory for federated implementations
+          </b></p>
+          <p>
+            For clients which need to interact with servers beyond the user's
+            origin server, clients MUST support use of OAuth 2.0 with JSON Web
+            Signatures.
+          </p>
+        </section>
+      </section>
+      <section id="authorization-origin">
+        <h2>Origin Authorization</h2>
+        <p><b>
+          This method is only applicable to federated implementations
+        </b></p>
+        <p>
+          A server performing an operation on behalf of an actor (e.g. delivery
+          to a recipient) must authenticate itself with the 3rd party server as
+          such.
+          One method for doing so is defined in this specification.
+        </p>
+        <section id="authorization-origin-jws">
+          <h2>JSON Web Signature authorization</h2>
+          <p>
+            Servers MUST support use of OAuth 2.0 with JSON Web Signatures.
           </p>
         </section>
       </section>
