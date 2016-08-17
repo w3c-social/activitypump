@@ -449,7 +449,7 @@
         The body of the <code>POST</code> request MUST contain a single
         Activity (which MAY contain embedded objects), or a single non-Activity
         object which
-        <a href="#object-without-post">will be wrapped in a Create activity
+        <a href="#object-without-create">will be wrapped in a Create activity
           by the server</a>.
       </p>
       <pre class="example" title="Submitting an Activity to the Outbox">
@@ -520,7 +520,7 @@ Location: https://dustycloud.org/likes/345
 }
       </pre>
 
-      <section id="post-activity">
+      <section id="create-activity">
         <h3>Create Activity</h3>
         <p>
           The <code>Create</code> activity is used to when posting a new
@@ -533,7 +533,7 @@ Location: https://dustycloud.org/likes/345
           <code>attributedTo</code> field.
         </p>
 
-        <section id="object-without-post">
+        <section id="object-without-create">
         <h4>Object creation without a Create Activity</h4>
         <p>
           For client to server posting, it is possible to create a new object
@@ -541,7 +541,7 @@ Location: https://dustycloud.org/likes/345
           The server MUST accept a valid [[!ActivityStreams]] object that
           isn't a subtype of <code>Activity</code> in the POST request to the 
           outbox. The server then MUST attach this object as the <code>object</code>
-          of a <a href="post-activity">Create Activity</a>.
+          of a <a href="create-activity">Create Activity</a>.
         </p>
 
         <p class="note">
