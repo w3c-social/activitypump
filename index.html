@@ -590,8 +590,9 @@ Location: https://dustycloud.org/likes/345
         <p>
           The <code>Update</code> activity is used when updating an already
           existing object.
-          The object should be modified to reflect the new structure in defined
-          in the update activity.
+          The side-effect of this is that the <code>object</code> MUST be 
+          modified to reflect the new structure in defined in the update 
+          activity.
         </p>
       </section>
       <section id="delete-activity">
@@ -599,8 +600,9 @@ Location: https://dustycloud.org/likes/345
         <p>
           The <code>Delete</code> activity is used to delete an already
           existing object.
-          This MUST leave a shell of the object that will be displayed in
-          activities which reference the deleted object.
+          The side-effect of this is that the server MUST replace the
+          <code>object</code> with a <code>Tombstone</code> of the object 
+          that will be displayed in activities which reference the deleted object.
           If the deleted object is requested the server should respond with the
           HTTP 410 Gone status code.
         </p>
@@ -609,9 +611,9 @@ Location: https://dustycloud.org/likes/345
           A deleted object:
           <pre class="example">
             {
-              "@context": "http://www.w3.org/ns/activitystreams",
+              "@context": "https://www.w3.org/ns/activitystreams",
               "id": "https://example.com/~alice/note/72",
-              "type": "Note",
+              "type": "Tombstone",
               "published": "2015-02-10T15:04:55Z",
               "updated": "2015-02-10T15:04:55Z",
               "deleted": "2015-02-10T15:04:55Z",
