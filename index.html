@@ -667,6 +667,23 @@ Location: https://dustycloud.org/likes/345
           receiver's discretion.</li>
         </ul>
       </section>
+      <section id="like-activity">
+        <h3>Like Activity</h3>
+        <p>
+          The <code>Like</code> activity indicates the <code>actor</code> likes
+          the <code>object</code>.
+        </p>
+        <p>
+          The side-effect of receiving this in an <strong>outbox</strong>
+          is that the server MAY add the <code>object</code> to the 
+          <code>actor</code>'s <a href="#likes">Likes Collection</a>.
+        </p>
+        <p>
+          The side-effect of receving this in an <strong>inbox</strong> is
+          that the server MAY increment the <code>object</code>'s count of 
+          likes.
+        </p>
+      </section>
       <section id="block-activity">
         <h3>Block Activity</h3>
         <p>
@@ -711,15 +728,15 @@ Location: https://dustycloud.org/likes/345
       <section id="followers">
         <h2>Followers Collection</h2>
         <p>
-          Every <a href="#actors">actor</a> MUST have a followers collection.
+          Every <a href="#actors">actor</a> SHOULD have a followers collection.
           This is a list of everyone who has sent a
           <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-follow">Follow</a>
-          activity for the user.
+          activity for the user, added as a <a href="#follow-activity">side-effect</a>.
           This is where one would find a list of all the users that are
           following the actor.
         </p>
 
-        <p class="note" title="Suggested default">
+        <p class="note" title="Default for notification targeting">
           The follow activity generally is a request to see the objects a user
           creates. This makes the Followers collection an appropriate default
           target for <a href="#delivery">delivery</a> of notifications.
@@ -729,20 +746,18 @@ Location: https://dustycloud.org/likes/345
       <section id="following">
         <h2>Following Collection</h2>
         <p>
-          Every actor MAY have a <code>following</code> collection.
-          This is a list of everybody that the actor has followed.
+          Every actor MAY have a Following collection.
+          This is a list of everybody that the actor has followed, added as a
+          <a href="#follow-activity">side-effect</a>.
         </p>
       </section>
 
       <section id="likes">
         <h2>Likes Collection</h2>
         <p>
-          Every actor MAY have a likes collection.
-          This is a list of every object that the actor has marked as having
-          liked.
-          (See the
-          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-like">Like</a>
-          activity.)
+          Every actor MAY have a Likes collection.
+          This is a list of every object from all of the actor's <code>Like</code> 
+          activities, added as a <a href="#like-activity">side-effect</a>.
         </p>
       </section>
 
