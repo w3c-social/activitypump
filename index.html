@@ -655,34 +655,6 @@
       </section>
     </section>
 
-    <section id="endpoint-discovery">
-      <h2>Endpoint Discovery</h2>
-      <p>
-        When a user dereferences an actor's ID the page MUST contain HTML
-        script element with the <code>type</code> attribute set to
-        <code>application/ld+json</code>.
-      </p>
-      <pre class="example">
-        <script type="application/ld+json">
-          {
-            "@context": [
-              "http://www.w3.org/ns/activitystreams",
-              "http://www.w3.org/ns/activitypub"
-            ],
-            "id": "https://example.com/~alice/my-stream",
-            "type": "Person",
-            "name": "Alice",
-            "summary": "Hai, I'm Alice!",
-            "inbox": "https://example.com/~alice/inbox",
-            "outbox": "https://example.com/~alice/feed",
-            "followers": "https://example.com/~alice/collections/followers",
-            "following": "https://example.com/~alice/collections/following"
-          }
-        </script>
-      </pre>
-
-    </section>
-
     <section id="collections">
       <h2>Collections and Streams</h2>
       <p>
