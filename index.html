@@ -456,8 +456,8 @@ Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystream
 {
   "@context": "https://www.w3.org/ns/activitystreams#",
   "type": "Like",
-  "name": "Chris liked 'My First Post'",
-  "object": "https://myblogposts.example/post-1"
+  "name": "Chris liked 'Minimal ActivityPub update client'",
+  "object": "http://rhiaro.co.uk/2016/05/minimal-activitypub"
 }
       </pre>
       <p>
@@ -477,14 +477,48 @@ Location: https://dustycloud.org/likes/345
         carry out further side-effects. These are described per individual
         Activity below.
       </p>
+      <p>
+        <!-- TODO: right..?? -->
+        For all Activities with embedded objects (in the <code>object</code> 
+        and/or <code>target</code> fields), any audience targeting properties
+        MUST be copied from these objects onto the Activity, so that it may
+        be correctly propagated by the receiving server. For example, a like
+        of the following article:
+      </p>
+
+      <pre class="example">
+{
+  "id": "http://rhiaro.co.uk/2016/05/minimal-activitypub",
+  "type": "Article",
+  "name": "Minimal ActivityPub update client",
+  "contnet": "Today I finished morph, a client for posting ActivityStreams2...",
+  "to": "https://rhiaro.co.uk/followers/", 
+  "cc": "https://e14n.com/evan"
+}
+      </pre>
+
+      <p>would look like:</p>
+
+      <pre class="example">
+{
+  "@context": "https://www.w3.org/ns/activitystreams#",
+  "type": "Like",
+  "actor": "https://dustycloud.org/chris/"
+  "name": "Chris liked 'Minimal ActivityPub update client'",
+  "object": "http://rhiaro.co.uk/2016/05/minimal-activitypub",
+  "to": ["https://dustycloud.org/followers", "https://rhiaro.co.uk/followers/"],
+  "cc": "https://e14n.com/evan"
+}
+      </pre>
 
       <section id="post-activity">
         <h3>Create Activity</h3>
         <p>
           The <code>Create</code> activity is used to when posting a new
-          object.
-          This has the side effect that of the object that they are posting is
-          being created.
+          object. This has the side-effect that the object embedded within the 
+          Activity (in the <code>object</code> property) is created.
+        </p>
+        <p>
           When a <code>Create</code> activity is posted, the <code>actor</code>
           of the activity SHOULD be copied onto the <code>object</code>'s
           <code>attributedTo</code> field.
