@@ -771,7 +771,11 @@ Location: https://dustycloud.org/likes/345
         <section id="outbox">
           <h2>Outbox</h2>
           <p>
-            The <code>outbox</code> stream contains objects the user has
+            The outbox is discovered through the <code>outbox</code>
+            property of an <a href="#actors">actor's</a> profile.
+          </p>
+          <p>
+            The outbox stream contains objects the user has
             published, subject to the ability of the requestor to retrieve the
             object (that is, the contents of the outbox are filtered by the
             permissions of the person reading it).
@@ -783,17 +787,9 @@ Location: https://dustycloud.org/likes/345
             user, though the number of available items is left to the
             descretion of those implementing and deploying the server.
           </p>
-
           <p>
-            A client may submit an [[!ActivityStreams]] activity to the server
-            using a HTTP POST request to the dereferencable URI of the outbox
-            collection.
-            In this case, the request's Content-Type MUST be
-            <code>application/activity+json</code>, and the request MUST be
-            authenticated with credentials authorized to act on behalf of the
-            user to whom the outbox belongs.
-            Such submitted activities will be added to the front of the feed
-            retrieved by GET requests to the same endpoint.
+            The outbox accepts HTTP POST requests, with behaviour described
+            in <a href="#activities">Activities</a>.
           </p>
         </section>
 
@@ -801,40 +797,36 @@ Location: https://dustycloud.org/likes/345
           <h2>Inbox</h2>
 
           <p>
-            The <code>inbox</code> stream contains all objects received by the
+            The inbox is discovered through the <code>inbox</code>
+            property of an <a href="#actors">actor's</a> profile.
+          </p>
+
+          <p>
+            The inbox stream contains all objects received by the
             user.
             The server SHOULD filter content according to the requester's
             permission.
             In general, the owner of an inbox is likely to be able to access
-            all of their inbox whereas depending on access control, some
+            all of their inbox contents. Depending on access control, some
             other content may be public, whereas other content may require
             authentication for non-owner users, if they can access the inbox
             at all.
           </p>
 
           <p>
-            A server may submit a HTTP POST to the dereferencable URI of the
-            <code>inbox</code> endpoint.
-            This request MUST be authenticated with the credentials of the user
-            identified by the <code>actor</code> stanza of the activity being
-            delivered.
-            The request MUST be of the [[!ActivityStreams]] content type; it
-            MUST be a single activity.
-            The incoming activity MUST have a valid URI as its id.
-            The server MUST ensure the validity of the posted and any enclosed
-            objects (generally by dereferencing the object on the originating
-            server.)
-          </p>
-
-          <p>
-            The server MUST perform de-duplication of activities, whereby it
-            discards repeats of already delivered activities (this can occur if
-            an activity is addressed both to a user's followers, and a specific
-            user which happens to follow said user, and the server has failed
-            to de-duplicate the recipients list, for example).
+            The server MUST perform de-duplication of activities returned by
+            the inbox. Duplication can occur if an activity is addressed both 
+            to a user's followers, and a specific
+            user who also follows the recipient user, and the server has failed
+            to de-duplicate the recipients list.
             Such deduplication MUST be performed by comparing the
             <code>id</code> of the activities and dropping any activities
             already seen.
+          </p>
+
+          <p>
+            The inbox accepts HTTP POST requests, with behaviour described
+            in <a href="#delivery">Delivery</a>.
           </p>
         </section>
       </section>
