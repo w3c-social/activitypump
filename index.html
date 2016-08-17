@@ -758,6 +758,43 @@ Location: https://dustycloud.org/likes/345
       </section>
     </section>
 
+    <section id="binary-data">
+      <h2>Binary Data</h2>
+      <p>
+        There is the ability to submit binary data such as images, video or
+        other binary data you wish to use in ActivityPub.
+        This is done by means of submitting the binary data to the user's
+        <a href="#mediaEndpoint"><code>mediaEndpoint</code></a> on their
+        ActivityStreams profile object.
+        The request MUST contain the HTTP headers <code>Content-Type</code> and
+        <code>Content-Length</code>.
+        A client should expect that it must be
+        <a href="authorization-user-bearer">properly authenticated</a> in order
+        to be able to upload media.
+        Upon successful submission a response containing the object with an ID
+        is returned that can be posted to the users outbox.
+      </p>
+
+      <p>An example response for an image I might upload is:</p>
+      <pre class="example">
+        {
+          "@context": "",
+          "id": "http://example.com/~erik/photos/1",
+          "type": "Image",
+          "to": ["http://example.com/~erik/public",
+                 "http://example.org/~sarah/"],
+          "cc": ["http://example.com/~erik/followers"],
+          "url": [
+            {
+              "type": "Link",
+              "href": "http://example.com/~erik/photos/1.png",
+              "mediaType": "image/png"
+            }
+          ]
+        }
+      </pre>
+    </section>
+
     <section id="authorization">
       <h2>Authorization</h2>
       <p><b>
@@ -954,42 +991,6 @@ Location: https://dustycloud.org/likes/345
       </section>
     </section>
 
-    <section id="binary-data">
-      <h2>Binary Data</h2>
-      <p>
-        There is the ability to submit binary data such as images, video or
-        other binary data you wish to use in ActivityPub.
-        This is done by means of submitting the binary data to the user's
-        <a href="#mediaEndpoint"><code>mediaEndpoint</code></a> on their
-        ActivityStreams profile object.
-        The request MUST contain the HTTP headers <code>Content-Type</code> and
-        <code>Content-Length</code>.
-        A client should expect that it must be
-        <a href="authorization-user-bearer">properly authenticated</a> in order
-        to be able to upload media.
-        Upon successful submission a response containing the object with an ID
-        is returned that can be posted to the users outbox.
-      </p>
-
-      <p>An example response for an image I might upload is:</p>
-      <pre class="example">
-        {
-          "@context": "",
-          "id": "http://example.com/~erik/photos/1",
-          "type": "Image",
-          "to": ["http://example.com/~erik/public",
-                 "http://example.org/~sarah/"],
-          "cc": ["http://example.com/~erik/followers"],
-          "url": [
-            {
-              "type": "Link",
-              "href": "http://example.com/~erik/photos/1.png",
-              "mediaType": "image/png"
-            }
-          ]
-        }
-      </pre>
-    </section>
     <section id="content-objects">
       <h2>Content Objects</h2>
       <p>
