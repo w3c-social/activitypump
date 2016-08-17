@@ -626,25 +626,39 @@ Location: https://dustycloud.org/likes/345
         <p>
           The <code>Follow</code> activity is used to subscribe to the
           activities of another user.
-          Once the user has followed a user, activities shared with the Follows
-          of that user SHOULD be added to the actors's inbox.
+          The side-effect of receiving this is that the server SHOULD add
+          the <code>actor</code> to the <code>object</code> user's 
+          <a href="#followers">Followers Collection</a>.
         </p>
       </section>
       <section id="add-activity">
         <h3>Add Activity</h3>
         <p>
-          The <code>Add</code> activity is used to add the object to the
-          collection specified in the <code>target</code> property of the
-          activity.
+          Upon receipt of an <code>Add</code> activity, the server SHOULD
+          add the <code>object</code> to the collection specified in the 
+          <code>target</code> property, unless:
         </p>
+        <ul>
+          <li>the <code>target</code> is not owned by the receiving 
+          server, and thus they can't update it.</li>
+          <li>the <code>object</code> is not allowed to be added to the
+          <code>target</code> collection for some other reason, at the 
+          receiver's discretion.</li>
+        </ul>
       </section>
       <section id="remove-activity">
         <h3>Remove Activity</h3>
         <p>
-          The <code>Remove</code> activity is used to remove the object from
-          the collection specified in the <code>target</code> property of the
-          activity.
-        </p>
+          Upon receipt of a <code>Remove</code> activity, the server SHOULD
+          remove the <code>object</code> from the collection specified in the 
+          <code>target</code> property, unless:
+        <ul>
+          <li>the <code>target</code> is not owned by the receiving 
+          server, and thus they can't update it.</li>
+          <li>the <code>object</code> is not allowed to be added to the
+          <code>target</code> collection for some other reason, at the 
+          receiver's discretion.</li>
+        </ul>
       </section>
       <section id="block-activity">
         <h3>Block Activity</h3>
