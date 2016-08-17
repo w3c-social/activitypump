@@ -933,15 +933,16 @@ Location: https://dustycloud.org/likes/345
         </ul>
 
         <p>
-          Excluding any actors which are the same as the <code>actor</code>
-          of the Activity being notified about.
-        </p>
-        <p>
           If the entry is a collection, then the server MUST dereference the
           collection (with the user's credentials) and discover inboxes for
           each item in the collection.
           Servers MUST limit the number of layers of indirections through
           collections which will be performed, which MAY be one.
+        </p>
+        <p>
+          Servers MUST de-duplicate the final recipient list. Servers MUST also
+          exclude actors from the list which are the same as the <code>actor</code>
+          of the Activity being notified about.
         </p>
 
         <p class="note" title="Silent and private activities">
