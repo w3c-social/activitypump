@@ -1107,6 +1107,37 @@ Location: https://dustycloud.org/likes/345
           likes.
         </p>
       </section>
+      <section id="add-activity-outbox">
+        <h3>Add Activity</h3>
+        <p>
+          Upon receipt of an <code>Add</code> activity into the 
+          <strong>inbox</strong>, the server SHOULD
+          add the <code>object</code> to the collection specified in the 
+          <code>target</code> property, unless:
+        </p>
+        <ul>
+          <li>the <code>target</code> is not owned by the receiving 
+          server, and thus they can't update it.</li>
+          <li>the <code>object</code> is not allowed to be added to the
+          <code>target</code> collection for some other reason, at the 
+          receiver's discretion.</li>
+        </ul>
+      </section>
+      <section id="remove-activity-outbox">
+        <h3>Remove Activity</h3>
+        <p>
+          Upon receipt of a <code>Remove</code> activity into the 
+          <strong>inbox</strong>, the server SHOULD
+          remove the <code>object</code> from the collection specified in the 
+          <code>target</code> property, unless:
+        <ul>
+          <li>the <code>target</code> is not owned by the receiving 
+          server, and thus they can't update it.</li>
+          <li>the <code>object</code> is not allowed to be added to the
+          <code>target</code> collection for some other reason, at the 
+          receiver's discretion.</li>
+        </ul>
+      </section>
     </section>
 
     <section id="authorization">
