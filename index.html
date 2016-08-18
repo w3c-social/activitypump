@@ -848,7 +848,8 @@ Location: https://dustycloud.org/likes/345
       <section id="add-activity-outbox">
         <h3>Add Activity</h3>
         <p>
-          Upon receipt of an <code>Add</code> activity, the server SHOULD
+          Upon receipt of an <code>Add</code> activity into the 
+          <strong>outbox</strong>, the server SHOULD
           add the <code>object</code> to the collection specified in the 
           <code>target</code> property, unless:
         </p>
@@ -863,7 +864,8 @@ Location: https://dustycloud.org/likes/345
       <section id="remove-activity-outbox">
         <h3>Remove Activity</h3>
         <p>
-          Upon receipt of a <code>Remove</code> activity, the server SHOULD
+          Upon receipt of a <code>Remove</code> activity into the 
+          <strong>outbox</strong>, the server SHOULD
           remove the <code>object</code> from the collection specified in the 
           <code>target</code> property, unless:
         <ul>
@@ -920,7 +922,7 @@ Location: https://dustycloud.org/likes/345
       <section id="client-to-server-outbox-delivery">
         <h3>Delivery</h3>
         <p>
-          The server MUST perform delivery on all Activities posted to the
+          Federated servers MUST perform delivery on all Activities posted to the
           <strong>outbox</strong> according to <a href="#outbox-delivery">
           outbox delivery</a>.
         </p>
