@@ -429,6 +429,7 @@
           </dd>
         </dl>
       </section>
+
     </section>
 
     <section id="collections">
@@ -546,6 +547,29 @@
             in <a href="#delivery">Delivery</a>.
           </p>
         </section>
+      </section>
+
+      <section id="public-addressing">
+        <h2>Public Addressing</h2>
+        <p>
+          In addition to [[!ActivityStreams]] collections and objects,
+          Activities may additionally be addressed to the special "public"
+          collection denoted by:
+        </p>
+        <pre class="example">
+          {
+            "@context": "https://www.w3.org/ns/activitystreams",
+            "id": "https://www.w3.org/ns/activitypub/Public",
+            "type": "Collection"
+          }
+        </pre>
+        <p>
+          Activities addressed to this special URI shall be accessible to all
+          users, without authentication.
+        </p>
+        <p class="note" title="TODO: namespace">
+          New URI for AP? Or can we get as:public?
+        </p>
       </section>
     </section>
 
@@ -1027,32 +1051,6 @@ Location: https://dustycloud.org/likes/345
             on the activity.
           </p>
         </section>
-      </section>
-
-      <section id="public-addressing">
-        <h2>Public Addressing</h2>
-        <p>
-          In addition to [[!ActivityStreams]] collections and objects,
-          Activities may additionally be addressed to the special "public"
-          audience denoted by the object.
-        </p>
-        <pre class="example">
-          {
-            "@context": "https://www.w3.org/ns/activitystreams",
-            "id": "https://activityschema.org/collection/public",
-            "type": "Collection"
-          }
-        </pre>
-        <p>
-          Activities addressed to this special URI shall be accessible to all
-          users, without authentication.
-        </p>
-        <p>
-          For the purposes of delivery, the server shall treat the public
-          collection as if it contains the same entries as the user's
-          <a href="#followers">followers collection</a>.
-        </p>
-        <p>TODO: New URI? Can we get as:public in the schema or such?</p>
       </section>
 
       <section id="follow-activity-inbox">
