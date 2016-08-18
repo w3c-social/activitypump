@@ -897,6 +897,9 @@ Location: https://dustycloud.org/likes/345
           The server SHOULD prevent the user from interacting with any object
           posted by the actor.
         </p>
+        <p>
+          Servers SHOULD NOT deliver Block Activities to their <code>object</code>.
+        </p>
       </section>
       <section id="undo-activity-outbox">
         <h3>Undo Activity</h3>
@@ -1107,7 +1110,7 @@ Location: https://dustycloud.org/likes/345
           likes.
         </p>
       </section>
-      <section id="add-activity-outbox">
+      <section id="add-activity-inbox">
         <h3>Add Activity</h3>
         <p>
           Upon receipt of an <code>Add</code> activity into the 
@@ -1123,7 +1126,7 @@ Location: https://dustycloud.org/likes/345
           receiver's discretion.</li>
         </ul>
       </section>
-      <section id="remove-activity-outbox">
+      <section id="remove-activity-inbox">
         <h3>Remove Activity</h3>
         <p>
           Upon receipt of a <code>Remove</code> activity into the 
