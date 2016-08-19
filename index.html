@@ -622,9 +622,10 @@
       <p>
         <!-- TODO: right..?? -->
         <strong>Clients</strong> are responsible for addressing new Activites
-        appropriately. To some extent, this is dependent upon the particular
-        client implementation, but clients must be aware that the server will
-        only forward new Activities to addressees in the <code>to</code>, 
+        appropriately.
+        To some extent, this is dependent upon the particular client
+        implementation, but clients must be aware that the server will only
+        forward new Activities to addressees in the <code>to</code>,
         <code>cc</code> and <code>bcc</code> fields.
       </p>
       <p>
@@ -638,8 +639,9 @@
         <code>tag</code> fields, retrieve <em>their</em> <code>actor</code> or 
         <code>attributedTo</code> properties, and MAY also retrieve their addressing 
         properties, and add these to the <code>to</code> or <code>cc</code> 
-        fields of the new Activity being created. Clients MAY recurse through 
-        attached objects, but if doing so, SHOULD set a limit for this recursion.
+        fields of the new Activity being created.
+        Clients MAY recurse through attached objects, but if doing so, SHOULD
+        set a limit for this recursion.
       </p>
       <p>
         Clients MAY give the user the chance to amend this addressing in the 
@@ -714,8 +716,9 @@ Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystream
       <p>
         If an Activity is submitted with a value in the <code>id</code> 
         property, servers MUST ignore this and generate a new <code>id</code>
-        for the Activity. Servers MUST return a <code>201 Created</code> 
-        HTTP code with the new URL in the <code>Location</code> header.
+        for the Activity.
+        Servers MUST return a <code>201 Created</code> HTTP code with the new
+        URL in the <code>Location</code> header.
       </p>
       <pre class="example" title="Outbox response to submitted Activity">
 HTTP/1.1 201 Created
@@ -725,8 +728,8 @@ Location: https://dustycloud.org/likes/345
         The server adds this new Activity to the <a href="#outbox">outbox</a>
         collection. 
         Depending on the type of Activity, servers may then be required to 
-        carry out further side effects. These are described per individual
-        Activity below.
+        carry out further side effects.
+        These are described per individual Activity below.
       </p>
 
       <section id="create-activity-outbox">
@@ -749,7 +752,8 @@ Location: https://dustycloud.org/likes/345
           without a surrounding activity.
           The server MUST accept a valid [[!ActivityStreams]] object that
           isn't a subtype of <code>Activity</code> in the POST request to the 
-          outbox. The server then MUST attach this object as the <code>object</code>
+          outbox.
+          The server then MUST attach this object as the <code>object</code>
           of a <a href="create-activity-outbox">Create Activity</a>.
         </p>
 
@@ -856,11 +860,15 @@ Location: https://dustycloud.org/likes/345
           <code>target</code> property, unless:
         </p>
         <ul>
-          <li>the <code>target</code> is not owned by the receiving 
-          user, and thus they can't update it.</li>
-          <li>the <code>object</code> is not allowed to be added to the
-          <code>target</code> collection for some other reason, at the 
-          receiver's discretion.</li>
+          <li>
+            the <code>target</code> is not owned by the receiving 
+            user, and thus they can't update it.
+          </li>
+          <li>
+            the <code>object</code> is not allowed to be added to the
+            <code>target</code> collection for some other reason, at the 
+            receiver's discretion.
+          </li>
         </ul>
       </section>
       <section id="remove-activity-outbox">
@@ -871,11 +879,15 @@ Location: https://dustycloud.org/likes/345
           remove the <code>object</code> from the collection specified in the 
           <code>target</code> property, unless:
         <ul>
-          <li>the <code>target</code> is not owned by the receiving 
-          server, and thus they can't update it.</li>
-          <li>the <code>object</code> is not allowed to be added to the
-          <code>target</code> collection for some other reason, at the 
-          receiver's discretion.</li>
+          <li>
+            the <code>target</code> is not owned by the receiving server, and
+            thus they can't update it.
+          </li>
+          <li>
+            the <code>object</code> is not allowed to be added to the
+            <code>target</code> collection for some other reason, at the
+            receiver's discretion.
+          </li>
         </ul>
       </section>
       <section id="like-activity-outbox">
@@ -1128,11 +1140,15 @@ Location: https://dustycloud.org/likes/345
           <code>target</code> property, unless:
         </p>
         <ul>
-          <li>the <code>target</code> is not owned by the receiving 
-          server, and thus they can't update it.</li>
-          <li>the <code>object</code> is not allowed to be added to the
-          <code>target</code> collection for some other reason, at the 
-          receiver's discretion.</li>
+          <li>
+            the <code>target</code> is not owned by the receiving server, and
+            thus they can't update it.
+          </li>
+          <li>
+            the <code>object</code> is not allowed to be added to the
+            <code>target</code> collection for some other reason, at the
+            receiver's discretion.
+          </li>
         </ul>
       </section>
       <section id="remove-activity-inbox">
@@ -1143,11 +1159,15 @@ Location: https://dustycloud.org/likes/345
           remove the <code>object</code> from the collection specified in the 
           <code>target</code> property, unless:
         <ul>
-          <li>the <code>target</code> is not owned by the receiving 
-          server, and thus they can't update it.</li>
-          <li>the <code>object</code> is not allowed to be added to the
-          <code>target</code> collection for some other reason, at the 
-          receiver's discretion.</li>
+          <li>
+            the <code>target</code> is not owned by the receiving server, and
+            thus they can't update it.
+          </li>
+          <li>
+            the <code>object</code> is not allowed to be added to the
+            <code>target</code> collection for some other reason, at the
+            receiver's discretion.
+          </li>
         </ul>
       </section>
     </section>
