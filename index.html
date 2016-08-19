@@ -1085,8 +1085,11 @@ Location: https://dustycloud.org/likes/345
               The values of <code>inReplyTo</code>, <code>object</code>, 
               <code>target</code> and/or <code>tag</code> are objects owned by
               the server.
-              (The server MAY recurse through these values to look for linked objects
-              owned by the server, but if doing so, SHOULD set a maximum limit).
+              The server SHOULD recurse through these values to look for linked objects
+              owned by the server, and SHOULD set a maximum limit for recursion (ie. the
+              point at which the thread is so deep the recipients followers may not mind
+              if they are no longer getting updates that don't directly involve the 
+              recipient).
             </li>
           </ul>
           <p>The server MAY filter its delivery targets according to implementation-specific
