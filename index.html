@@ -1236,7 +1236,66 @@ Location: https://dustycloud.org/likes/345
       <h2>Change Log</h2>
 
       <section>
-        <h3>Changes from 28 January 2016 WD to this version</h3>
+        <h3>Changes from 13 June 2016 to present version</h3>
+
+        <ul>
+          <li>Various typo fixes.</li>
+          <li>Clarification on file endpoint / binary uploads.</li>
+          <li>Removed reference to HTTP PUT and DELETE verbs.</li>
+          <li>Copy an activity's "actor" field to the "attributedTo" field.</li>
+          <li>Restructuring and clarification around notification and delivery.</li>
+          <li>Added Evan Prodromou and Owen Shepherd as authors to spec.</li>
+          <li>
+            Restructuring of document sections:
+            <ul>
+              <li>
+                New, clearly delineated "Client to Server Interactions"
+                and "Server to Server Interactions" sections.
+              </li>
+              <li>
+                Server to server functionality now utilizes Linked Data
+                Notifications.
+              </li>
+              <li>
+                Moved activities section into the client to server / server to
+                server sections, described as side effects.
+              </li>
+              <li>
+                Collections moved earlier in document.
+                Binary data section moved to after Collections.
+              </li>
+              <li>
+                Notifications folded into targeting/delivery sections.
+              </li>
+            </ul>
+          </li>
+          <li>
+            Removed duplicated content (endpoint discovery, inbox and outbox sections).
+          </li>
+          <li>
+            When creating an object, return 201 created with Location header
+            pointing to the Create activity.
+          </li>
+          <li>
+            Moved some links from http to https.
+          </li>
+          <li>
+            Clarify that objects may be submitted without a wrapping activity,
+            and will be wrapped by Create on server.
+          </li>
+          <li>
+            Clarification around removing content, Tombstones, expected http
+            status on fetching removed objects.
+          </li>
+          <li>
+            Describe delivery to collections not owned by replying user,
+            forwarded by original poster.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Changes from 28 January 2016 WD to 13 June 2016</h3>
 
         <ul>
           <li>Various typo fixes.</li>
