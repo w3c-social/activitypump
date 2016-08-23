@@ -584,7 +584,7 @@
         The request MUST contain the HTTP headers <code>Content-Type</code> and
         <code>Content-Length</code>.
         A client should expect that it must be
-        <a href="authorization-user-bearer">properly authenticated</a> in order
+        <a href="#authorization-user-bearer">properly authenticated</a> in order
         to be able to upload media.
         Upon successful submission a response containing the object with an ID
         is returned that can be posted to the users outbox.
@@ -754,7 +754,7 @@ Location: https://dustycloud.org/likes/345
           isn't a subtype of <code>Activity</code> in the POST request to the 
           outbox.
           The server then MUST attach this object as the <code>object</code>
-          of a <a href="create-activity-outbox">Create Activity</a>.
+          of a <a href="#create-activity-outbox">Create Activity</a>.
         </p>
 
         <p class="note">
