@@ -139,57 +139,74 @@
           to everyone it distributed the original object to.
         </li>
       </ol>
+
+      <section id="social-web-working-group" inlist="" rel="schema:hasPart"
+               resource="#social-web-working-group">
+        <h3 property="schema:name">Social Web Working Group</h3>
+        <div datatype="rdf:HTML" property="schema:description">
+          <p>
+            <a href="#Overview">ActivityPub</a> is one of several related
+            specifications being produced by the Social Web Working Group.
+            Implementers interested in alternative approaches and complimentary
+            protocols should start by reading the overview document
+            <a href="#bib-social-web-protocols"
+               class="bibref">Social Web Protocols</a>.
+          </p>
+        </div>
+      </section>
+  
+      <section id="specification-profiles">
+        <h2>Specification Profiles</h2>
+        <p>
+          This specification defines two closely related and interacting
+          protocols:
+        </p>
+        <dl>
+          <dt>A client to server protocol, or "Social API"</dt>
+          <dd>
+            This protocol permits a client to act <i>on behalf</i> of a user.
+            For example, this protocol is used by a mobile phone application to
+            interact with the user's social stream.
+          </dd>
+          <dt>A server to server protocol, or "Federation Protocol"</dt>
+          <dd>
+            This protocol is used to distribute activities between users on
+            different servers, tying them into one social graph.
+          </dd>
+        </dl>
+        <p>
+          All servers claiming conformance to this specification are required to
+          implement the former protocol, and may optionally implement the latter.
+          This gives three conformance classes:
+        </p>
+        <dl>
+          <dt>ActivityPub conformant Client</dt>
+          <dd>
+            This designation applies to any implementation of the entirety of the
+            client portion of the client to server protocol.
+          </dd>
+          <dt>ActivityPub conformant Server</dt>
+          <dd>
+            This designation applies to any implementation of the entirety of the
+            server portion of the client to server protocol.
+          </dd>
+          <dt>ActivityPub conformant Federated Server</dt>
+          <dd>
+            This designation applies to any implementation of the entirety of the
+            server portion of both the client to server and federation protocols.
+          </dd>
+        </dl>
+        <p>
+          It is called out whenever a portion of the specification only applies
+          to implementation of the federation protocol.
+          In addition, whenever requirements are specified, it is called out
+          whether they apply to the client or server (for the client-to-server
+          protocol) or which of a pair of servers in the server-to-server
+          protocol.
+        </p>
+      </section>
     </section>
-    <section id="specification-profiles">
-      <h2>Specification Profiles</h2>
-      <p>
-        This specification defines two closely related and interacting
-        protocols:
-      </p>
-      <dl>
-        <dt>A client to server protocol, or "Social API"</dt>
-        <dd>
-          This protocol permits a client to act <i>on behalf</i> of a user.
-          For example, this protocol is used by a mobile phone application to
-          interact with the user's social stream.
-        </dd>
-        <dt>A server to server protocol, or "Federation Protocol"</dt>
-        <dd>
-          This protocol is used to distribute activities between users on
-          different servers, tying them into one social graph.
-        </dd>
-      </dl>
-      <p>
-        All servers claiming conformance to this specification are required to
-        implement the former protocol, and may optionally implement the latter.
-        This gives three conformance classes:
-      </p>
-      <dl>
-        <dt>ActivityPub conformant Client</dt>
-        <dd>
-          This designation applies to any implementation of the entirety of the
-          client portion of the client to server protocol.
-        </dd>
-        <dt>ActivityPub conformant Server</dt>
-        <dd>
-          This designation applies to any implementation of the entirety of the
-          server portion of the client to server protocol.
-        </dd>
-        <dt>ActivityPub conformant Federated Server</dt>
-        <dd>
-          This designation applies to any implementation of the entirety of the
-          server portion of both the client to server and federation protocols.
-        </dd>
-      </dl>
-      <p>
-        It is called out whenever a portion of the specification only applies
-        to implementation of the federation protocol.
-        In addition, whenever requirements are specified, it is called out
-        whether they apply to the client or server (for the client-to-server
-        protocol) or which of a pair of servers in the server-to-server
-        protocol.
-      </p>
-    </section>
+
 
     <section id="obj">
       <h2>Objects</h2>
