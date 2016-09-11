@@ -763,6 +763,17 @@ Location: https://dustycloud.org/likes/345
           of the activity SHOULD be copied onto the <code>object</code>'s
           <code>attributedTo</code> field.
         </p>
+        <p>
+          A mismatch between addressing of the Create activity and its
+          <code>object</code> is likely to lead to confusion.
+          As such, a server SHOULD copy any recipients of the Create activity
+          to its <code>object</code> upon initial distribution, and likewise
+          with copying recipients from the <code>object</code> to the wrapping
+          Create activity.
+          Note that it is acceptable for the <code>object</code>'s addressing
+          may be changed later without changing the <code>Create</code>'s
+          addressing (for example via an <code>Update</code> activity).
+        </p>
 
         <section id="object-without-create">
         <h4>Object creation without a Create Activity</h4>
