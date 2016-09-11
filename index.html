@@ -301,10 +301,15 @@
           The HTTP GET method may be dereferenced against an object's
           <code>id</code> property to retrieve the activity.
           Servers MAY use HTTP content negotiation as defined in [[!RFC7231]] to
-          select the type of data to return in response to a request.
-          The client MUST specify an <code>Accept</code> header, this
-          specification only applies in the selection of the
-          <code>application/activity+json</code> media type.
+          select the type of data to return in response to a request,
+          but MUST present the ActivityStreams object representation
+          in response to
+          <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams#"</code>,
+          and SHOULD also present the ActivityStreams representation in
+          response to <code>application/activity+json</code> as well.
+          The client MUST specify an <code>Accept</code> header with the
+          <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams#"</code>
+          media type in order to retrieve the activity.
         </p>
         <p>
           Servers MAY implement other behavior for requests which do not comply
