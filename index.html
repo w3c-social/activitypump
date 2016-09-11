@@ -456,24 +456,45 @@
       <p>
         [[!ActivityStreams]] defines the collection concept; ActivityPub
         defines several collections with special behavior.
-        Additionally, it defines a subset of collections termed
-        <a href="#streams">streams</a>.
         Note that ActivityPub makes use of
         <a href="https://www.w3.org/TR/activitystreams-core/#paging">
           ActivityStreams paging</a>
         to traverse large sets of objects.
       </p>
 
+      <p>
+        Note that some of these collections are specified to be of type
+        <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+          <code>OrderedCollection</code></a>
+        specifically, while others are permitted to be either a
+        <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+          <code>Collection</code></a>
+        or an
+        <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+          <code>OrderedCollection</code></a>.
+        An
+        <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+          <code>OrderedCollection</code></a>
+        MUST be presented consistently in reverse chronological order.
+      </p>
+
       <section id="followers">
         <h2>Followers Collection</h2>
         <p>
-          Every <a href="#actors">actor</a> SHOULD have a followers collection.
+          Every <a href="#actors">actor</a> SHOULD have a <code>followers</code>
+          collection.
           This is a list of everyone who has sent a
           <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-follow">Follow</a>
           activity for the user, added as a
           <a href="#follow-activity-outbox">side effect</a>.
           This is where one would find a list of all the users that are
           following the actor.
+          The <code>followers</code> collection MUST be either an
+          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+            <code>OrderedCollection</code></a>
+          or a
+          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+            <code>Collection</code></a>.
         </p>
 
         <p class="note" title="Default for notification targeting">
@@ -489,6 +510,12 @@
           Every actor MAY have a Following collection.
           This is a list of everybody that the actor has followed, added as a
           <a href="#follow-activity-outbox">side effect</a>.
+          The <code>following</code> collection MUST be either an
+          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+            <code>OrderedCollection</code></a>
+          or a
+          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+            <code>Collection</code></a>.
         </p>
       </section>
 
@@ -498,81 +525,82 @@
           Every actor MAY have a Likes collection.
           This is a list of every object from all of the actor's <code>Like</code> 
           activities, added as a <a href="#like-activity-outbox">side effect</a>.
+          The <code>following</code> collection MUST be either an
+          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+            <code>OrderedCollection</code></a>
+          or a
+          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+            <code>Collection</code></a>.
         </p>
       </section>
 
-      <section id="streams">
-        <h2>Streams</h2>
+      <section id="outbox">
+        <h2>Outbox</h2>
         <p>
-          Streams are
+          The outbox is discovered through the <code>outbox</code>
+          property of an <a href="#actors">actor's</a> profile.
+          The <code>outbox</code> MUST be an
           <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
-            <code>OrderedCollection</code></a>
-          objects containing other ActivityStreams objects, generally
-          <a href="https://www.w3.org/ns/activitystreams#Activity">Activities</a>.
-          Streams always presented consistently in reverse chronological order.
+            <code>OrderedCollection</code></a>.
         </p>
-        <section id="outbox">
-          <h2>Outbox</h2>
-          <p>
-            The outbox is discovered through the <code>outbox</code>
-            property of an <a href="#actors">actor's</a> profile.
-          </p>
-          <p>
-            The outbox stream contains objects the user has
-            published, subject to the ability of the requestor to retrieve the
-            object (that is, the contents of the outbox are filtered by the
-            permissions of the person reading it).
-            If a user submits a request without
-            <a href="#authorization">Authorization</a> the server should
-            respond with all of the <a href="#public-addressing">Public</a>
-            posts.
-            This could potentially be all relevant objects published by the
-            user, though the number of available items is left to the
-            discretion of those implementing and deploying the server.
-          </p>
-          <p>
-            The outbox accepts HTTP POST requests, with behaviour described in
-            <a href="#client-to-server-interactions">Client to Server
-              Interactions</a>.
-          </p>
-        </section>
+        <p>
+          The outbox stream contains objects the user has
+          published, subject to the ability of the requestor to retrieve the
+          object (that is, the contents of the outbox are filtered by the
+          permissions of the person reading it).
+          If a user submits a request without
+          <a href="#authorization">Authorization</a> the server should
+          respond with all of the <a href="#public-addressing">Public</a>
+          posts.
+          This could potentially be all relevant objects published by the
+          user, though the number of available items is left to the
+          discretion of those implementing and deploying the server.
+        </p>
+        <p>
+          The outbox accepts HTTP POST requests, with behaviour described in
+          <a href="#client-to-server-interactions">Client to Server
+            Interactions</a>.
+        </p>
+      </section>
 
-        <section id="inbox">
-          <h2>Inbox</h2>
+      <section id="inbox">
+        <h2>Inbox</h2>
 
-          <p>
-            The inbox is discovered through the <code>inbox</code>
-            property of an <a href="#actors">actor's</a> profile.
-          </p>
+        <p>
+          The inbox is discovered through the <code>inbox</code>
+          property of an <a href="#actors">actor's</a> profile.
+          The <code>inbox</code> MUST be an
+          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+            <code>OrderedCollection</code></a>.
+        </p>
 
-          <p>
-            The inbox stream contains all objects received by the
-            user.
-            The server SHOULD filter content according to the requester's
-            permission.
-            In general, the owner of an inbox is likely to be able to access
-            all of their inbox contents. Depending on access control, some
-            other content may be public, whereas other content may require
-            authentication for non-owner users, if they can access the inbox
-            at all.
-          </p>
+        <p>
+          The inbox stream contains all objects received by the
+          user.
+          The server SHOULD filter content according to the requester's
+          permission.
+          In general, the owner of an inbox is likely to be able to access
+          all of their inbox contents. Depending on access control, some
+          other content may be public, whereas other content may require
+          authentication for non-owner users, if they can access the inbox
+          at all.
+        </p>
 
-          <p>
-            The server MUST perform de-duplication of activities returned by
-            the inbox. Duplication can occur if an activity is addressed both 
-            to a user's followers, and a specific
-            user who also follows the recipient user, and the server has failed
-            to de-duplicate the recipients list.
-            Such deduplication MUST be performed by comparing the
-            <code>id</code> of the activities and dropping any activities
-            already seen.
-          </p>
+        <p>
+          The server MUST perform de-duplication of activities returned by
+          the inbox. Duplication can occur if an activity is addressed both 
+          to a user's followers, and a specific
+          user who also follows the recipient user, and the server has failed
+          to de-duplicate the recipients list.
+          Such deduplication MUST be performed by comparing the
+          <code>id</code> of the activities and dropping any activities
+          already seen.
+        </p>
 
-          <p>
-            The inbox accepts HTTP POST requests, with behaviour described
-            in <a href="#delivery">Delivery</a>.
-          </p>
-        </section>
+        <p>
+          The inbox accepts HTTP POST requests, with behaviour described
+          in <a href="#delivery">Delivery</a>.
+        </p>
       </section>
 
       <section id="public-addressing">
