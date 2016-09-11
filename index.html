@@ -500,9 +500,12 @@
       <section id="streams">
         <h2>Streams</h2>
         <p>
-          Streams are collections of ActivityStreams objects, generally
-          <a href="https://www.w3.org/ns/activitystreams#Activity">Activities</a>,
-          which are always presented in reverse chronological order.
+          Streams are
+          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+            <code>OrderedCollection</code></a>
+          of ActivityStreams objects, generally
+          <a href="https://www.w3.org/ns/activitystreams#Activity">Activities</a>.
+          Streams always presented consistently in reverse chronological order.
         </p>
         <section id="outbox">
           <h2>Outbox</h2>
