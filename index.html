@@ -1480,7 +1480,7 @@ Location: https://dustycloud.org/likes/345
       </section>
 
       <section id="security-localhost">
-        <h2>Localhost considerations</h2>
+        <h2>Accessing localhost URIs</h2>
         <p>
           It is often convenient while developing to test against a process
           running on localhost.
@@ -1494,6 +1494,18 @@ Location: https://dustycloud.org/likes/345
           If your ActivityPub server or client does permit accessing localhost
           URIs for development purposes, consider making it a configuration
           option which defaults to off.
+        </p>
+      </section>
+
+      <section id="security-spam">
+        <h2>Spam</h2>
+        <p>
+          Spam is a problem in any network, perhaps especially so in federated
+          networks.
+          While no specific mechanism for combating spam is provided in
+          ActivityPub, it is recommended that servers filter incoming content
+          both by local untrusted users and any remote users through some
+          sort of spam filter.
         </p>
       </section>
     </section>
