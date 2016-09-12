@@ -1507,6 +1507,20 @@ Location: https://dustycloud.org/likes/345
         </p>
       </section>
 
+      <section id="security-uri-schemes">
+        <h2>URI Schemes</h2>
+        <p>
+          There are many types of URIs aside from just <code>http</code> and
+          <code>https</code>.
+          Some libraries which handle fetching requests at various URI schemes
+          may try to be smart and reference schemes which may be undesirable,
+          such as <code>file</code>.
+          Client and server authors should carefully check how their libraries
+          handle requests, and potentially whitelist only certain safe URI
+          types, such as <code>http</code> and <code>https</code>.
+        </p>
+      </section>
+
       <section id="security-spam">
         <h2>Spam</h2>
         <p>
