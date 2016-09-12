@@ -1,0 +1,51 @@
+{"@context":
+ ["http://www.w3.org/ns/activitystreams",
+  {"ap": "http://www.w3.org/ns/activitypub#",
+   "inbox": {
+       "@id": "http://www.w3.org/ns/ldp#inbox",
+       "@type": "@id"
+   },
+   "outbox": {
+       "@id": "ap:outbox",
+       "@type": "@id"
+   },
+   "following": {
+       "@id": "ap:following",
+       "@type": "@id"
+   },
+   "followers": {
+       "@id": "ap:followers",
+       "@type": "@id"
+   },
+   "streams": {
+       "@id": "ap:streams",
+       "@type": "@set"
+   },
+   "preferredUsername": "ap:preferredUsername",
+   "endpoints": {
+       "@id": "ap:endpoints",
+       "@type": "@id"
+   },
+   "uploadMedia": {
+       "@id": "ap:uploadMedia",
+       "@type": "@id"
+   },
+   "proxyUrl": {
+       "@id": "ap:proxyUrl",
+       "@type": "@id"
+   },
+   "oauthClientAuthorize": {
+       "@id": "ap:oauthClientAuthorize",
+       "@type": "@id"
+   },
+   "provideClientKey": {
+       "@id": "ap:provideClientKey",
+       "@type": "@id"
+   },
+   "authorizeClientKey": {
+       "@id": "ap:authorizeClientKey",
+       "@type": "@id"
+   }
+  }
+ ]
+}
