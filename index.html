@@ -1466,6 +1466,38 @@ Location: https://dustycloud.org/likes/345
       </section>
     </section>
 
+    <section id="security-considerations">
+      <h2>Security Considerations</h2>
+      <section id="security-verification">
+        <h2>Verification and authorization</h2>
+        <p>
+          Servers should be careful to verify that new content is really posted
+          by the author that claims to be posting it, and that the author has
+          permission to update the resources it claims to.
+          Discussion of how to accomplish this is laid out in the
+          <a href="#obj"></a> and <a href="#authorization"></a> sections.
+        </p>
+      </section>
+
+      <section id="security-localhost">
+        <h2>Localhost considerations</h2>
+        <p>
+          It is often convenient while developing to test against a process
+          running on localhost.
+          However, permitting accessing localhost in a production client or
+          server instance can be dangerous.
+          Accessing URIs on localhost which do not require authentication may
+          unintentionally access or modify resources assumed to be protected to
+          be usable by localhost-only.
+        </p>
+        <p>
+          If your ActivityPub server or client does permit accessing localhost
+          URIs for development purposes, consider making it a configuration
+          option which defaults to off.
+        </p>
+      </section>
+    </section>
+
     <section class="appendix informative">
       <h2>Change Log</h2>
 
