@@ -467,11 +467,26 @@
           </dd>
           <dt id="oauthClientAuthorize">oauthClientAuthorize</dt>
           <dd>
-            If OAuth 2.0 bearer tokens are being used for authentication
+            If OAuth 2.0 bearer tokens are being used for authenticating
             <a href="#client-to-server-interactions">client to server
               interactions</a>,
             this endpoint specifies a URI at which a browser-authenticated user
             may obtain a new access token.
+          </dd>
+          <dt id="provideClientKey">provideClientKey</dt>
+          <dd>
+            If Linked Data Signatures and HTTP Signatures are being used for
+            authentication, this endpoint specifies a URI at which
+            browser-authenticated users may authorize a client's public key for
+            <a href="#client-to-server-interactions">client to server
+              interactions</a>.
+          </dd>
+          <dt id="authorizeClientKey">authorizeClientKey</dt>
+          <dd>
+            If Linked Data Signatures and HTTP Signatures are being used for
+            authentication, this endpoint specifies a URI at which a client key
+            may be signed by the actor's key for a time window to act on behalf
+            of the actor in interacting with foreign servers.
           </dd>
         </dl>
       </section>
@@ -1308,57 +1323,145 @@ Location: https://dustycloud.org/likes/345
     </section>
 
     <section id="authorization">
-      <h2>Authorization</h2>
+      <h2>Authentication and Authorization</h2>
       <p>
-        ActivityPub uses authorization for two purposes; first, to authenticate
-        clients to servers, and secondly in federated implementations
-        to authenticate servers to each other.
-        Unfortunately at the time of standardization, there are no strongly
-        agreed upon mechanisms for authorization.
+        ActivityPub uses authentication for two purposes; first, to
+        authenticate clients to servers, and secondly in federated
+        implementations to authenticate servers to each other.
       </p>
-      <section id="authorization-user">
-        <h2>User Authentication</h2>
+
+      <p>
+        Unfortunately at the time of standardization, there are no strongly
+        agreed upon mechanisms for authentication.
+        Some possible directions for authentication are laid out as follows.
+      </p>
+
+      <section id="authorization-oauth">
+        <h2>OAuth 2.0 and JSON Web Signatures</h2>
         <p>
-          User authentication is used in order to identify clients acting on
-          behalf of an <a href="#actors">actor</a> their origin server, and for
-          federated implementations to other servers.
-          There are two types of authentication permitted for this:
+          ActivityPub implementations MAY use
+          <a href="https://oauth.net/2/">OAuth 2.0</a>
+          with
+          <a href="https://tools.ietf.org/html/rfc7515">JSON Web Signatures</a>
+          for authentication and authorization.
+          This has the advantage of wide deployment of OAuth 2.0 technologies.
+          However, OAuth 2.0 technologies are frequently incompatible, and
+          the agreed upon mechanisms for deploying via OAuth 2.0 are still in
+          flux, so it is not feasible to recommend a general pattern for
+          OAuth 2.0 based deployments at this time.
         </p>
-        <section id="authorization-user-bearer">
-          <h2>Bearer Authorization</h2>
+        
+        <section id="client-to-origin-oauth">
+          <h2>Client to Origin Server Authentication</h2>
           <p>
-            For clients which only need to interact with the user's origin
-            server, or communicating with a non-federated server, clients may
-            use OAuth 2.0 bearer tokens.
+            For client to server interactions where the client is interacting
+            directly to the actor's server, clients MAY use OAuth 2.0 bearer
+            tokens to authenticate.
           </p>
         </section>
-        <section id="authorization-user-jws">
-          <h2>JSON Web Signature authorization</h2>
-          <p><b>
-            This method is only mandatory for federated implementations
-          </b></p>
+
+        <section id="client-to-foreign-oauth">
+          <h2>Client to Foreign Server Authentication</h2>
           <p>
-            For clients which need to interact with servers beyond the user's
-            origin server, clients MAY support use of OAuth 2.0 with JSON Web
-            Signatures.
+            For client to server interactions where the client is interacting
+            with servers beyond the user's origin server, clients and servers MAY
+            support use of OAuth 2.0 with JSON Web Signatures.
+          </p>
+        </section>
+
+        <section id="server-on-behalf-of-user-oauth">
+          <h2>Servers Acting on Behalf of Users</h2>
+          <p>
+            Servers performing operations on behalf of a user (e.g. delivery
+            to a recipient) MAY use OAuth 2.0 with JSON Web Signatures to
+            authenticate with a 3rd party server.
           </p>
         </section>
       </section>
-      <section id="authorization-origin">
-        <h2>Origin Authorization</h2>
-        <p><b>
-          This method is only applicable to federated implementations
-        </b></p>
+
+      <section id="authorization-oauth-lds">
+        <h2>Linked Data Signatures with HTTP Signatures</h2>
         <p>
-          A server performing an operation on behalf of an actor (e.g. delivery
-          to a recipient) must authenticate itself with the 3rd party server as
-          such.
-          One method for doing so is defined in this specification.
+          ActivityPub implementations MAY use
+          <a href="https://web-payments.org/specs/source/ld-signatures/">
+            Linked Data Signatures</a>
+          and
+          <a href="https://tools.ietf.org/html/draft-cavage-http-signatures-05">
+            signed HTTP messages</a>
+          for authentication and authorization.
+          (Linked Data Signatures are best used for long lived for when
+          authentication is meant to be "long lived" and attached to an object,
+          such as verifying that an object truly was posted by this actor,
+          and signed HTTP messages should be used when authorization is
+          transient.)
+          This has the advantage of clean integration with existing json-ld
+          based technologies already used by ActivityPub.
+          However, at the time of specification, Linked Data Signatures and
+          HTTP signature adoption is very young.
         </p>
-        <section id="authorization-origin-jws">
-          <h2>JSON Web Signature authorization</h2>
+
+        <p>
+          When Linked Data Signatures in combined with ActivityPub, the server
+          should assign an <a href="actors">actor</a> a public and private key
+          pair, and attach the public key to the actor's profile object,
+          which may later be used with the
+          <a href="https://web-payments.org/specs/source/ld-signatures/#signature-verification-algorithm">
+            Linked Data Signatures verification algorithm</a>
+          to validate the authenticity of messages passed along the network.
+        </p>
+
+        <p>
+          Though it is out of scope for this document, this combination of
+          actor profiles with public keys could be used as a foundation to turn
+          ActivityPub federation networks into a web of trust, with a minimum
+          of the user experience challenges traditionally associated with
+          a web of trust system.
+        </p>
+
+        <section id="client-to-origin-lds">
+          <h2>Client to Origin Server Authentication</h2>
           <p>
-            Servers MAY support use of OAuth 2.0 with JSON Web Signatures.
+            For client to server interactions where the client is interacting
+            directly with the actor's server, a client MAY use HTTP signatures by
+            <a href="#provideClientKey">registering their client's pulbic key</a>
+            with the actor on the server, and then subsequently signing HTTP
+            requests made with this key.
+          </p>
+        </section>
+
+        <section id="client-to-foreign-lds">
+          <h2>Client to Foreign Server Authentication</h2>
+          <p>
+            For client to server interactions where the client is interacting
+            with servers beyond the user's origin server, clients MAY use a
+            combination of HTTP signatures and Linked Data Signatures.
+          </p>
+          <p>
+            In this scenario, a client would
+            <a href="#authorizeClientKey">have their client key authorized</a>
+            for a limited window of time by the key listed on their actor
+            profile.
+            The client key would then be used to sign HTTP requests made
+            to the foreign server while also providing the signature of the
+            client public key, signed by and linked to the key on their
+            actor profile.
+          </p>
+        </section>
+
+        <section id="server-on-behalf-of-user-lds">
+          <h2>Servers Acting on Behalf of Users</h2>
+          <p>
+            Servers performing operations on behalf of a user (e.g. delivery to
+            a recipient) MAY use Linked Data Signatures to authenticate with a
+            3rd party server.
+            This may be achieved by attaching the linked data signature to the
+            activity posted to the remote inbox, signed by the actor's public
+            key.
+          </p>
+          <p>
+            Servers receiving activities verified via Linked Data Signatures
+            SHOULD NOT process an object with an <code>id</code> they have seen
+            before, so as to prevent replay attacks.
           </p>
         </section>
       </section>
