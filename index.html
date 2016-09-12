@@ -899,8 +899,27 @@ Location: https://dustycloud.org/likes/345
           The <code>Update</code> activity is used when updating an already
           existing object.
           The side effect of this is that the <code>object</code> MUST be 
-          modified to reflect the new structure in defined in the update 
-          activity.
+          modified to reflect the new structure as defined in the update 
+          activity, assuming the actor has permission to update this
+          object.
+          For client to server interactions, updates are partial;
+          rather than updating the document all at once, any key value
+          pair supplied is used to replace the existing value with
+          the new value.
+          A special exception is for when the value is the json
+          <code>null</code> type; this means that this field should be
+          removed from the server's representation of the object.
+        </p>
+        <p>
+          Note that this behavior is for client to server interaction where
+          the client is posting to the server only.
+          Server to server interaction and updates from the server to the client
+          should contain the entire new representation of the object, after
+          the partial update application has been applied.
+          See the description of the
+          <a href="update-activity-inbox">Update activity for server to server
+            interactions</a>
+          for more details.
         </p>
       </section>
       <section id="delete-activity-outbox">
@@ -1267,19 +1286,35 @@ Location: https://dustycloud.org/likes/345
           </li>
         </ul>
       </section>
+      <section id="update-activity-inbox">
+        <h3>Update Activity</h3>
+        <p>
+          For server to server interactions, an <code>Update</code> activity
+          means that the receiving server SHOULD update its copy of the
+          <code>object</code> of the same <code>id</code> to the copy
+          supplied in the <code>Update</code> activity.
+          Unlike the
+          <a href="update-activity-outbox">
+            client to server handling of the Update activity</a>,
+          this is not a partial update but a complete replacement of the object.
+        </p>
+        <p>
+          The receiving server MUST take care to be sure that the
+          <code>Update</code> is authorized to modify its <code>object</code>.
+          At minimum, this may be done by ensuring that the <code>Update</code>
+          and its <code>object</code> are of same origin.
+        </p>
+      </section>
     </section>
 
     <section id="authorization">
       <h2>Authorization</h2>
-      <p><b>
-        This is a stub, to be expanded. OAuth 2.0 is an open question.
-      </b></p>
       <p>
         ActivityPub uses authorization for two purposes; first, to authenticate
         clients to servers, and secondly in federated implementations
         to authenticate servers to each other.
-        These methods are based upon the OAuth 2.0 authorization framework as
-        specified in [[!RFC6749]].
+        Unfortunately at the time of standardization, there are no strongly
+        agreed upon mechanisms for authorization.
       </p>
       <section id="authorization-user">
         <h2>User Authentication</h2>
@@ -1304,7 +1339,7 @@ Location: https://dustycloud.org/likes/345
           </b></p>
           <p>
             For clients which need to interact with servers beyond the user's
-            origin server, clients MUST support use of OAuth 2.0 with JSON Web
+            origin server, clients MAY support use of OAuth 2.0 with JSON Web
             Signatures.
           </p>
         </section>
@@ -1323,7 +1358,7 @@ Location: https://dustycloud.org/likes/345
         <section id="authorization-origin-jws">
           <h2>JSON Web Signature authorization</h2>
           <p>
-            Servers MUST support use of OAuth 2.0 with JSON Web Signatures.
+            Servers MAY support use of OAuth 2.0 with JSON Web Signatures.
           </p>
         </section>
       </section>
