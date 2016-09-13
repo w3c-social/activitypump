@@ -1548,6 +1548,68 @@ Location: https://dustycloud.org/likes/345
       <h2>Change Log</h2>
 
       <section>
+        <h3>Changes from 23 August 2016 to 6 September 2016</h3>
+        <ul>
+          <li>Various typo / grammar fixes.</li>
+          <li>
+            Clarify both transient identifiers and the requirements for "id"
+          </li>
+          <li>
+            Reference the Social Working Group, Social Web protocols,
+            and MicroPub.
+          </li>
+          <li>
+            Clarify that upon initial Create, both Create and object should
+            share addressing.
+          </li>
+          <li>
+            Clarify that what was previously called "streams" use
+            OrderedCollections; remove "streams" as an independent term.
+          </li>
+          <li>
+            Mention ActivityStreams paging.
+          </li>
+          <li>
+            Add "endpoints" property to actor, move mediaEndpoint here and
+            rename to "uploadMedia".
+          </li>
+          <li>
+            Add "oauthClientAuthorize", "provideClientKey", and
+            "authorizeClientKey" endpoints.
+          </li>
+          <li>
+            More clear specification of content negotiation on retrieving AS2
+            objects; make
+            <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams#"</code>
+            the default media type.
+            Servers MAY do content negotiation but MUST respond with AS2 to the
+            right content type.
+          </li>
+          <li>
+            "Update" when used for client to server interactions may provide
+            partial updates, but the complete activity is still sent from
+            server to server and server to client.
+          </li>
+          <li>
+            Support for Linked Data Signatures added as an auth mechanism.
+          </li>
+          <li>
+            Add security section, with sections on:
+            <ul>
+              <li>Verification and authorization</li>
+              <li>Accessing localhost URIs</li>
+              <li>URI Schemes</li>
+              <li>Spam</li>
+            </ul>
+          </li>
+          <li>
+            Add ActivityPub context to all examples.
+            Explain what the ActivityPub context is and how it should be used.
+          </li>
+        </ul>
+      </section>
+
+      <section>
         <h3>Changes from 13 June 2016 to 23 August 2016</h3>
 
         <ul>
