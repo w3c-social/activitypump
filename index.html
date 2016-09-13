@@ -217,6 +217,66 @@
           protocol.
         </p>
       </section>
+      <section id="cr-exit-criteria">
+        <h2>Candidate Recommendation Exit Criteria</h2>
+        <p>
+          For this specification to advance to Proposed Recommendation, there
+          must be at least two independent, interoperable implementations of
+          each feature. Each feature may be implemented by a different set of
+          products. There is no requirement that all features be implemented by
+          a single product.
+        </p>
+        <ul>
+          <li>
+            <strong>Independent</strong>
+            implementations are developed by different parties and cannot
+            share, reuse or derive form another qualifying implementation code
+            which is directly pertinent to the implementation of this
+            specification.
+          </li>
+          <li>
+            <strong>Interoperability</strong>
+            occurs between clients and servers, or between servers and other
+            servers, when the client/server makes a request to the targeted
+            server, and the targeted server sends the expected response, as
+            defined by this specification.
+          </li>
+          <li>
+            An <strong>implementation</strong> is an ActivityPub client,
+            server or federated server which implements the corresponding
+            conformance class of the specification.
+          </li>
+        </ul>
+        <p>
+          For the purposes of evaluating exit criteria, each of the following
+          is considered a feature:
+        </p>
+        <ul>
+          <li>
+            Discovering an actor's profile based on their URI.
+          </li>
+          <li>
+            A client receiving authorization and subsequently submitting an
+            activity to the authenticated actor's outbox.
+          </li>
+          <li>
+            A server handling an activity submitted by an authenticated actor
+            to their outbox and handling side client to server interaction
+            effects appropriately.
+          </li>
+          <li>
+            A federated server delivering an activity posted by a local actor
+            to the inbox endpoints of all recipients specified in the activity,
+            including those on other remote federated servers.
+          </li>
+          <li>
+            A federated server receiving an activity to its actor's inbox,
+            validating that the activity and any nested objects were created by
+            their respective actors, and handling server to server side effects
+            appropriately.
+          </li>
+        </ul>
+      </section>
     </section>
 
 
