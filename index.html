@@ -500,7 +500,7 @@
             <a href="#client-to-server-interactions">client to server
               interactions</a>.
           </dd>
-          <dt id="authorizeClientKey">authorizeClientKey</dt>
+          <dt id="signClientKey">signClientKey</dt>
           <dd>
             If Linked Data Signatures and HTTP Signatures are being used for
             authentication, this endpoint specifies a URI at which a client key
@@ -1457,7 +1457,7 @@ Location: https://dustycloud.org/likes/345
           </p>
           <p>
             In this scenario, a client would
-            <a href="#authorizeClientKey">have their client key authorized</a>
+            <a href="#signClientKey">have their client key authorized</a>
             for a limited window of time by the key listed on their actor
             profile.
             The client key would then be used to sign HTTP requests made
@@ -1575,7 +1575,7 @@ Location: https://dustycloud.org/likes/345
           </li>
           <li>
             Add "oauthClientAuthorize", "provideClientKey", and
-            "authorizeClientKey" endpoints.
+            "signClientKey" endpoints.
           </li>
           <li>
             More clear specification of content negotiation on retrieving AS2
