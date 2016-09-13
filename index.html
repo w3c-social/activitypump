@@ -235,6 +235,17 @@
         this vocabulary very closely.
       </p>
       <p>
+        ActivityPub defines some terms in addition to those provided by
+        ActivityStreams.
+        These terms are provided in the ActivityPub
+        <a href="http://www.w3.org/TR/json-ld/#the-context">JSON-LD context</a>
+        at
+        <code>https://www.w3.org/ns/activitypub</code>.
+        Implementers SHOULD include the ActivityPub context in their
+        object definitions.
+        Implementers MAY include additional context as appropriate.
+      </p>
+      <p>
         Servers SHOULD validate the content they receive to avoid content
         spoofing attacks.
         In particular, servers SHOULD NOT trust client submitted content, and
