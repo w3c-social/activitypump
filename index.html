@@ -1645,6 +1645,169 @@ Location: https://dustycloud.org/likes/345
       </p>
     </section>
 
+    <section id="security-and-privacy-review"
+             class="appendix informative">
+      <h2>Security and Privacy Review</h2>
+      <p>
+        These questions provide an overview of security and privacy
+        considerations for this specification as guided by
+        <cite><a class="bibref"
+                 href="#bib-security-privacy-questionnaire-20151210">Self-Review
+          Questionnaire: Security and Privacy</a></cite>.
+      </p>
+      <dl>
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#pii">
+          Does this specification deal with personally-identifiable
+          information?
+        </a></dt>
+        <dd>
+          ActivityPub's actors may contain information about the associated
+          user.
+          At minimum, the actor profile contains an identifier which also
+          provides a mechanism for contacting the actor, through the exposed
+          actor's inbox.
+          Aside from this, ActivityPub does not mandate that any personally
+          identifiable information to operate, though depending on the
+          implementation, any number of details may be exposed on the actor's
+          profile, particularly user names and real names.
+          Additionally, a notification payload could include personally
+          identifiable information, depending on the implementation and use,
+          but it is again not required for the core functionality to operate.
+        </dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#credentials">
+          Does this specification deal with high-value data?
+        </a></dt>
+        <dd>
+          Same implications as personally-identifiable information in
+          notification payload (as mentioned above).
+          The application supplies no normative mechanism for authentication
+          from clients to servers, but depending on what mechanism is used,
+          OAuth tokens may be exposed, particularly if HTTP is used without
+          TLS/SSL support.
+          Similarly, no normative mechanism for authentication between
+          servers is exposed, though similar issues with exposure of data such
+          as OAuth tokens could be exposed.
+        </dd>
+        
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#persistent-origin-specific-state">
+          Does this specification introduce new state for an origin that
+          persists across browsing sessions?
+        </a></dt>
+        <dd>
+          No.
+          Clients may choose to cache server state information supplied
+          through the application, though this is not mandated or specified.
+        </dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#persistent-identifiers">
+          Does this specification expose persistent, cross-origin state to the
+          web?
+        </a></dt>
+        <dd>
+          Yes.
+          Clients, if appropriately authorized, may read some inbox / outbox
+          information from other actors on the web.
+          Additionally, servers both read and submit activities to other servers
+          on the network.
+        </dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#other-data">
+          Does this specification expose any other data to an origin that it
+          doesn’t currently have access to?
+        </a></dt>
+        <dd>
+          No.
+          (Or at least, not as far as the person filling out this section can
+          tell.)
+        </dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#string-to-script">
+          Does this specification enable new script execution/loading
+          mechanisms?
+        </a></dt>
+        <dd>No.</dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#location">
+          Does this specification allow an origin access to a user’s location?
+        </a></dt>
+        <dd>No.</dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#sensors">
+          Does this specification allow an origin access to sensors on a
+          user’s device?
+        </a></dt>
+        <dd>No.</dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#local-device">
+          Does this specification allow an origin access to aspects of a
+          user’s local computing environment?
+        </a></dt>
+        <dd>No.</dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#remote-device">
+          Does this specification allow an origin access to other devices?
+        </a></dt>
+        <dd>No.</dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#native-ui">
+          Does this specification allow an origin some measure of control over
+          a user agent’s native UI?
+        </a></dt>
+        <dd>No.</dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#temporary-id">
+          Does this specification expose temporary identifiers to the web?
+        </a></dt>
+        <dd>
+          Not directly.
+          However, mechanisms to authenticate an actor or authorize behavior
+          might.
+        </dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#first-third-party">
+          Does this specification distinguish between behavior in first-party
+          and third-party contexts?
+        </a></dt>
+        <dd>
+          No.
+        </dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#incognito">
+          How should this specification work in the context of a user agent’s
+          "incognito" mode?
+        </a></dt>
+        <dd>
+          Works in such a way that the website would not be able to determine
+          that the user was in "incognito".
+        </dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#storage">
+          Does this specification persist data to a user’s local device?
+        </a></dt>
+        <dd>
+          This depends on implementation.
+          Clients might choose to cache activities they have previously
+          seen, but this is not a normative requirement.
+        </dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#considerations">
+          Does this specification have a "Security Considerations" and
+          "Privacy Considerations" section?
+        </a></dt>
+        <dd>
+          You're looking at it!
+        </dd>
+
+        <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#relaxed-sop">
+          Does this specification allow downgrading default security
+          characteristics?
+        </a></dt>
+        <dd>
+          No.
+        </dd>
+      </dl>
+    </section>
 
     <section class="appendix informative">
       <h2>Change Log</h2>
