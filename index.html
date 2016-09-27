@@ -1395,7 +1395,7 @@ Location: https://dustycloud.org/likes/345
       </section>
     </section>
 
-    <section id="authorization">
+    <section id="authorization" class="informative">
       <h2>Authentication and Authorization</h2>
       <p>
         ActivityPub uses authentication for two purposes; first, to
@@ -1454,6 +1454,8 @@ Location: https://dustycloud.org/likes/345
 
       <section id="authorization-lds">
         <h2>Linked Data Signatures and HTTP Signatures</h2>
+        <!-- TODO: authentication and authorization are very tricky words -->
+
         <p>
           ActivityPub implementations MAY use
           <a href="https://web-payments.org/specs/source/ld-signatures/">
@@ -1465,7 +1467,7 @@ Location: https://dustycloud.org/likes/345
           (Linked Data Signatures are best used when authentication is meant to
           be "long lived" and attached to an object, such as verifying that an
           object truly was posted by this actor, and signed HTTP messages
-          should be used when authorization is ephemeral.)
+          should be used when authentication is ephemeral.)
           This has the advantage of clean integration with existing json-ld
           based technologies already used by ActivityPub.
           However, at the time of specification, Linked Data Signatures and
@@ -1475,7 +1477,7 @@ Location: https://dustycloud.org/likes/345
         <p>
           When Linked Data Signatures in combined with ActivityPub, the server
           should assign an <a href="actors">actor</a> a public and private key
-          pair, and attach the public key to the actor's profile object,
+          pair, and link the public key to the actor's profile object,
           which may later be used with the
           <a href="https://web-payments.org/specs/source/ld-signatures/#signature-verification-algorithm">
             Linked Data Signatures verification algorithm</a>
@@ -1531,15 +1533,15 @@ Location: https://dustycloud.org/likes/345
             key.
           </p>
           <p>
-            Servers receiving activities verified via Linked Data Signatures
-            SHOULD NOT process an object with an <code>id</code> they have seen
-            before, so as to prevent replay attacks.
+            Servers receiving activities verified via Linked Data
+            Signatures SHOULD NOT process an object with a nonce they
+            have seen before, so as to prevent replay attacks.
           </p>
         </section>
       </section>
     </section>
 
-    <section id="security-considerations">
+    <section id="security-considerations" class="appendix informative">
       <h2>Security Considerations</h2>
       <section id="security-verification">
         <h2>Verification and authorization</h2>
@@ -1597,7 +1599,7 @@ Location: https://dustycloud.org/likes/345
       </section>
     </section>
 
-    <section class="appendix" id="acknowledgements">
+    <section class="appendix informative" id="acknowledgements">
       <h2>Acknowledgements</h2>
       <p>
         This specification comes from years of hard work and experience by a
