@@ -57,13 +57,6 @@
                   url:        "https://owenshepherd.net/",
                   mailto:     "owen.shepherd@e43.eu"
               },
-              {
-                  name: "Evan Prodromou",
-                  url: "https://fuzzy.ai/about#evan",
-                  company: "Fuzzy.ai",
-                  companyUrl: "https://fuzzy.ai",
-                  w3cid: "43626"
-              },
           ],
           localBiblio:  {
             "ActivityStreams": {
@@ -1603,6 +1596,53 @@ Location: https://dustycloud.org/likes/345
         </p>
       </section>
     </section>
+
+    <section class="appendix" id="acknowledgements">
+      <h2>Acknowledgements</h2>
+      <p>
+        This specification comes from years of hard work and experience by a
+        number of communities exploring the space of federation on the web.
+        In particular, much of this specification is informed by
+        <a href="https://www.w3.org/community/ostatus/wiki/Main_Page">OStatus</a>
+        and the
+        <a href="https://github.com/e14n/pump.io/blob/master/API.md">Pump API</a>,
+        as pioneered by StatusNet (now GNU Social) and Pump.io.
+        Both of those initiatives were the product of many developers' hard work,
+        but more than anyone, Evan Prodromou has been a constant leader in this
+        space, and it is unlikely that ActivityPub would exist in something
+        resembling its current state without his hard work.
+      </p>
+
+      <p>
+        Owen Shepherd built the initial version of this specification, borrowed
+        from the ideas in the
+        <a href="https://github.com/e14n/pump.io/blob/master/API.md">Pump API</a>
+        document, mostly as a complete rewrite of text, but sharing most of
+        the primary ideas while switching from ActivityStreams 1 to
+        ActivityStreams 2.
+        Jessica Tallon and Christopher Allan Webber took over as editors when
+        the standard moved to the W3C Social Working Group and did the majority
+        of transition from Owen's document to its current state as ActivityPub.
+      </p>
+
+      <p>
+        ActivityPub has been shaped by the careful input of many members in the
+        W3C Social Working Group.
+        ActivityPub especially owes a great debt to Amy Guy, who has done more
+        than anyone to map the ideas across the different Social Working Group
+        documents through her work on the
+        <a href="#bib-social-web-protocols" class="bibref">Social
+          Web Protocols</a>
+        overview document.
+        Amy also laid out the foundations for a significant refactoring of the
+        ActivityPub spec while sprinting for four days with Christopher Allan
+        Webber.
+        These revisions lead to cleaner separation between the client to server
+        and server components, along with clarity about ActivityPub's relationship
+        to [[!LDN]], among many other improvements.
+      </p>
+    </section>
+
 
     <section class="appendix informative">
       <h2>Change Log</h2>
