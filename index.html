@@ -396,11 +396,10 @@
         <p>
           Servers MAY require authorization as specified in
           <a href="#authorization"></a>, and may additionally implement their
-          own authentication rules.
-          Servers SHOULD fail requests which do not pass their authorization or
-          authentication checks with the appropriate HTTP error code, or the
-          404 Not Found error code where the existence of the object is
-          considered private.
+          own authorization rules.
+          Servers SHOULD fail requests which do not pass their authorization
+          checks with the appropriate HTTP error code, or the 404 Not Found
+          error code where the existence of the object is considered private.
         </p>
         <section id="method-get">
           <h2>The <code>GET</code> method</h2>
@@ -548,17 +547,19 @@
           <dt id="provideClientKey">provideClientKey</dt>
           <dd>
             If Linked Data Signatures and HTTP Signatures are being used for
-            authentication, this endpoint specifies a URI at which
-            browser-authenticated users may authorize a client's public key for
+            authentication and authorization, this endpoint specifies a URI at
+            which browser-authenticated users may authorize a client's public
+            key for
             <a href="#client-to-server-interactions">client to server
               interactions</a>.
           </dd>
           <dt id="signClientKey">signClientKey</dt>
           <dd>
             If Linked Data Signatures and HTTP Signatures are being used for
-            authentication, this endpoint specifies a URI at which a client key
-            may be signed by the actor's key for a time window to act on behalf
-            of the actor in interacting with foreign servers.
+            authentication and authorization, this endpoint specifies a URI at
+            which a client key may be signed by the actor's key for a time
+            window to act on behalf of the actor in interacting with foreign
+            servers.
           </dd>
         </dl>
       </section>
@@ -751,8 +752,7 @@
         ActivityStreams profile object.
         The request MUST contain the HTTP headers <code>Content-Type</code> and
         <code>Content-Length</code>.
-        A client should expect that it must be
-        <a href="#authorization-user-bearer">properly authenticated</a> in order
+        A client should expect that it must be properly authenticated in order
         to be able to upload media.
         Upon successful submission a response containing the object with an ID
         is returned that can be posted to the users outbox.
@@ -1467,7 +1467,7 @@ Location: https://dustycloud.org/likes/345
           (Linked Data Signatures are best used when authentication is meant to
           be "long lived" and attached to an object, such as verifying that an
           object truly was posted by this actor, and signed HTTP messages
-          should be used when authentication is ephemeral.)
+          should be used when authentication or authorization is ephemeral.)
           This has the advantage of clean integration with existing json-ld
           based technologies already used by ActivityPub.
           However, at the time of specification, Linked Data Signatures and
@@ -1561,7 +1561,7 @@ Location: https://dustycloud.org/likes/345
           running on localhost.
           However, permitting accessing localhost in a production client or
           server instance can be dangerous.
-          Accessing URIs on localhost which do not require authentication may
+          Accessing URIs on localhost which do not require authorization may
           unintentionally access or modify resources assumed to be protected to
           be usable by localhost-only.
         </p>
