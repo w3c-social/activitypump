@@ -284,6 +284,9 @@
             The <a href="#binary-data"></a> mechanism and
             its associated <a href="#uploadMedia"></a> endpoint.
           </li>
+          <li>
+            <a href="#source-property"></a>.
+          </li>
         </ul>
       </section>
     </section>
@@ -423,6 +426,74 @@
             object.
           </p>
         </section>
+      </section>
+
+      <section id="source-property">
+        <h2>The source property</h2>
+        <p>
+          In addition to all the properties defined by the
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/">
+            ActivityStreams Vocabulary</a>,
+          ActivityPub extends the <code>Object</code> by supplying the
+          <code>source</code> property.
+          The <code>source</code> property is intended to convey some
+          sort of source from which the <code>content</code> markup
+          was derived, as a form of provenance, or to support future
+          editing by clients.
+          In general, clients do the conversion from <code>source</code>
+          to <code>content</code>, not the other way around.
+        </p>
+        <p>
+          The value of <code>source</code> is itself an object
+          which uses its own <code>content</code> and <code>mediaType</code>
+          fields to supply source information.
+        </p>
+        <pre class="example">
+          {
+            "@context": "https://www.w3.org/ns/activitypub",
+            "object": "Note",
+            "id": "http://postparty.example/p/2415",
+            "content": "&lt;p&gt;I &lt;em&gt;really&lt;/em&gt; like strawberries!&lt;/p&gt;",
+            "source": {
+              "content": "I *really* like strawberries!",
+              "mediaType": "text/markdown"},
+          }
+        </pre>
+        <div class="note"
+             title="What to do when clients can't meaningfully handle a mediaType?">
+          <p>
+            In general, it's best to let a user edit their original post
+            in the same source format they originally composed it in.
+            But not all clients can reliably provide a nice interface for
+            all source types, and since clients are expected to do the
+            conversion from <code>source</code> to <code>content</code>,
+            some clients may work with a media type that another client
+            does not know how to work with.
+            While a client could feasibly provide the <code>content</code>
+            markup to be edited and ignore the source, this means that the
+            user will lose the more desirable form of the original
+            <code>source</code> in any future revisions.
+            A client doing so should thus provide a minimally obtrusive warning
+            cautioning that the original source format is not understood and is
+            thus being ignored.
+          </p>
+          <p>
+            For example, Alyssa P. Hacker likes to post to her ActivityPub
+            powered blog via an Emacs client she has written, leveraging
+            <a href="http://orgmode.org/">Org mode</a>.
+            Later she switches to editing on her phone's client, which
+            has no idea what <code>text/x-org</code> is or how to render
+            it to HTML, so it provides a text box to edit the original
+            <code>content</code> instead.
+            A helpful warning displays above the edit area saying,
+            "This was originally written in another markup language we don't
+            know how to handle.  If you edit, you'll lose your original
+            source!"
+            Alyssa decides the small typo fix isn't worth losing her nice
+            org-mode markup and decides to make the update when whe gets
+            home.
+          </p>
+        </div>
       </section>
     </section>
 
