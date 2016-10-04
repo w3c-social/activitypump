@@ -322,14 +322,12 @@
         In particular, servers SHOULD NOT trust client submitted content, and
         federated servers also SHOULD NOT trust content received from a server
         other than the content's origin without some form of verification.
-        The general mechanism that is specified for this at this time is for a
-        recipient of some referenced activitystreams object to verify the
-        presence of that object on the original server.
-        Other mechanisms such as verifying signatures are left out of scope of
-        this document.
-        (However, if other generally agreed upon mechanisms for handling
-        verification become available in the future, servers are welcome to use
-        those methods, in the future.)
+        No particular mechanism for verification is authoritively specified by
+        this document, though some possible directions are discussed in
+        <a href="#authorization"></a>.
+        (A server should do something at least as robust as checking that
+        the object appears as received at its origin, but better mechanisms
+        such as checking signatures would be better if available.)
       </p>
       <div class="informative">
         As an example, if example.com receives the activity
