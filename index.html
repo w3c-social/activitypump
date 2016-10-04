@@ -504,16 +504,15 @@
           If the entered ID is a valid URI, then it is to be used directly.
         </li>
         <li>
+          If it appears that the user neglected to add a scheme for a URI that
+          would otherwise be considered valid, such as
+          <code>example.org/alice/</code>, clients MAY attempt to provide
+          a default scheme, preferably <code>https</code>.
+        </li>
+        <li>
           Otherwise, the entered value should be considered invalid.
         </li>
       </ol>
-      <div class="note">
-        Client user interface designers are likely to find that their users
-        will implement incomplete URIs, lacking any scheme, such as
-        <code>example.org/alice/</code>.
-        It is reasonable for client interfaces to try to guess a scheme;
-        <code>https</code> is usually a good default.
-      </div>
 
       <div class="issue">
         How to normalize entries without URI scheme, e.g. <em>tantek.com</em>
