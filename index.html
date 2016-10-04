@@ -674,6 +674,19 @@
         MUST be presented consistently in reverse chronological order.
       </p>
 
+      <p class="note">
+        What property is used to determine the reverse chronological order
+        is intentionally left as an implementation detail.
+        For example, many SQL-style databases use an incrementing integer
+        as an identifier, which can be reasonably used for handling
+        insertion order in most cases.
+        In other databases, an insertion time timestamp may be preferred.
+        What is used isn't important, but the ordering of elements must
+        remain intact, with newer items first.
+        A property which changes regularly, such a "last updated" timestamp,
+        should not be used.
+      </p>
+
       <section id="followers">
         <h2>Followers Collection</h2>
         <p>
