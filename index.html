@@ -1048,7 +1048,8 @@ Location: https://dustycloud.org/likes/345
 
         <pre class="example" title="Object with audience targeting">
         {
-          "@context": "https://www.w3.org/ns/activitypub",
+          "@context": ["https://www.w3.org/ns/activitypub",
+                       {"@language": "en"}],
           "type": "Note",
           "content": "This is a note",
           "published": "2015-02-10T15:04:55Z",
@@ -1065,6 +1066,7 @@ Location: https://dustycloud.org/likes/345
           "id": "https://example.net/~mallory/87374"
           "actor": "https://example.net/~mallory",
           "object": {
+            "@context": {"@language": "en"},
             "id": "https://example.com/~mallory/note/72",
             "type": "Note",
             "attributedTo": "https://example.net/~mallory",
