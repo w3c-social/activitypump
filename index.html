@@ -441,7 +441,8 @@
         </p>
         <pre class="example">
           {
-            "@context": "https://www.w3.org/ns/activitypub",
+            "@context": ["https://www.w3.org/ns/activitypub",
+                         {"@language": "en"}],
             "object": "Note",
             "id": "http://postparty.example/p/2415",
             "content": "&lt;p&gt;I &lt;em&gt;really&lt;/em&gt; like strawberries!&lt;/p&gt;",
@@ -970,7 +971,8 @@ Authorization: Bearer XXXXXXXXXXX
 Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystreams#"
 
 {
-  "@context": "https://www.w3.org/ns/activitypub",
+  "@context": ["https://www.w3.org/ns/activitypub",
+               {"@language": "en"}],
   "type": "Like",
   "actor": "https://dustycloud.org/chris/"
   "name": "Chris liked 'Minimal ActivityPub update client'",
