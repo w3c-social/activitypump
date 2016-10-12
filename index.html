@@ -565,6 +565,11 @@
           <dt>name</dt>
           <dd>
             The preferred "nickname" or "display name" of the actor.
+            (Note that this is
+            <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-name">
+              the same <code>name</code> as in ActivityStreams</a>.
+            It's just commonly used enough by ActivityPub profiles to
+            be worth mentioning here.)
           </dd>
         </dl>
         <pre class="example">
@@ -650,6 +655,20 @@
             servers.
           </dd>
         </dl>
+
+        <p class="note">
+          Properties which contain natural language values follow
+          <a href="https://www.w3.org/TR/activitystreams-core/#naturalLanguageValues">
+            the same rules as in ActivityStreams</a>.
+          This includes <code>preferredUsername</code>, <code>name</code>,
+          and <code>summary</code>.
+          In general for
+          <a href="https://www.w3.org/TR/activitystreams-core/#biditext">
+            bidirectional text</a>,
+          <code>summary</code> will tend to use HTML markup, whereas
+          <code>preferredUsername</code> will tend to use the same
+          methods used for <code>name</code>.
+        </p>
       </section>
 
     </section>
