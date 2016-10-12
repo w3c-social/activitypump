@@ -563,7 +563,8 @@
         </dl>
         <pre class="example">
           {
-            "@context": "https://www.w3.org/ns/activitypub",
+            "@context": ["https://www.w3.org/ns/activitypub",
+                         {"@language": "en"}],
             "type": "Person",
             "id": "https://johnsmith.example.com/",
             "following": "https://johnsmith.example.com/following.json",
@@ -915,7 +916,8 @@
 
       <pre class="example" title="An Article">
 {
-  "@context": "https://www.w3.org/ns/activitypub",
+  "@context": ["https://www.w3.org/ns/activitypub",
+               {"@language": "en"}],
   "id": "https://rhiaro.co.uk/2016/05/minimal-activitypub",
   "type": "Article",
   "name": "Minimal ActivityPub update client",
@@ -930,7 +932,8 @@
 
       <pre class="example" title="A Like of the Article">
 {
-  "@context": "https://www.w3.org/ns/activitypub",
+  "@context": ["https://www.w3.org/ns/activitypub",
+               {"@language": "en"}],
   "type": "Like",
   "actor": "https://dustycloud.org/chris/"
   "name": "Chris liked 'Minimal ActivityPub update client'",
