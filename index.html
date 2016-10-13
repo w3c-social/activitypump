@@ -290,6 +290,11 @@
           <li>
             <a href="#source-property"></a>.
           </li>
+          <li>
+            The
+            <a href="#preferredUsername"><code>preferredUsername</code></a>
+            property.
+          </li>
         </ul>
       </section>
     </section>
@@ -535,12 +540,12 @@
           href="#obj-id"></a>, the following properties:
         </p>
         <dl>
-          <dt>inbox</dt>
+          <dt id="inbox">inbox</dt>
           <dd>
             A reference to an [[!ActivityStreams]] collection comprising of all
             the messages received by the actor; see <a href="#inbox"></a>.
           </dd>
-          <dt>outbox</dt>
+          <dt id="outbox">outbox</dt>
           <dd>
             An [[!ActivityStreams]] collection comprising of all the messages
             produced by the actor; see <a href="#outbox"></a>.
@@ -551,22 +556,22 @@
           properties:
         </p>
         <dl>
-          <dt>url</dt>
+          <dt id="actor-url">url</dt>
           <dd>
             A link to the actor's "profile web page", if it is not equal to the
             value of <code>id</code>.
           </dd>
-          <dt>following</dt>
+          <dt id="following">following</dt>
           <dd>
             A link to an [[!ActivityStreams]] collection of the actors that
             this actor is following.
           </dd>
-          <dt>followers</dt>
+          <dt id="followers">followers</dt>
           <dd>
             A link to an [[!ActivityStreams]] collection of the actors that
             follow this actor.
           </dd>
-          <dt>name</dt>
+          <dt id="actor-name">name</dt>
           <dd>
             The preferred "nickname" or "display name" of the actor.
             (Note that this is
@@ -596,23 +601,23 @@
         </pre>
         <p>Implementations MAY, in addition, provide the following properties:</p>
         <dl>
-          <dt>streams</dt>
+          <dt id="actor-streams">streams</dt>
           <dd>
             A list of supplementary Collections which may be of interest.
           </dd>
-          <dt>preferredUsername</dt>
+          <dt id="preferredUsername">preferredUsername</dt>
           <dd>
             A short username which may be used to refer to the actor, with no
             uniqueness guarantees.
           </dd>
-          <dt>summary</dt>
+          <dt id="summary">summary</dt>
           <dd>A quick summary or bio by the user about themselves.</dd>
-          <dt>icon</dt>
+          <dt id="icon">icon</dt>
           <dd>
             A media link to the user's profile picture (this may be a
             thumbnail).
           </dd>
-          <dt>endpoints</dt>
+          <dt id="endpoints">endpoints</dt>
           <dd>
             A mapping of additional endpoints which may be useful either for
             this actor or someone referencing this actor.
