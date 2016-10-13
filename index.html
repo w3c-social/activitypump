@@ -540,12 +540,12 @@
           href="#obj-id"></a>, the following properties:
         </p>
         <dl>
-          <dt id="actor-inbox">inbox</dt>
+          <dt id="inbox-property">inbox</dt>
           <dd>
             A reference to an [[!ActivityStreams]] collection comprising of all
             the messages received by the actor; see <a href="#inbox"></a>.
           </dd>
-          <dt id="actor-outbox">outbox</dt>
+          <dt id="outbox-property">outbox</dt>
           <dd>
             An [[!ActivityStreams]] collection comprising of all the messages
             produced by the actor; see <a href="#outbox"></a>.
@@ -556,22 +556,22 @@
           properties:
         </p>
         <dl>
-          <dt id="actor-url">url</dt>
+          <dt id="url-property">url</dt>
           <dd>
             A link to the actor's "profile web page", if it is not equal to the
             value of <code>id</code>.
           </dd>
-          <dt id="following">following</dt>
+          <dt id="following-property">following</dt>
           <dd>
             A link to an [[!ActivityStreams]] collection of the actors that
-            this actor is following.
+            this actor is following; see <a href="#following"></a>
           </dd>
-          <dt id="followers">followers</dt>
+          <dt id="followers-property">followers</dt>
           <dd>
             A link to an [[!ActivityStreams]] collection of the actors that
-            follow this actor.
+            follow this actor; see <a href="#followers"></a>.
           </dd>
-          <dt id="actor-name">name</dt>
+          <dt id="name-property">name</dt>
           <dd>
             The preferred "nickname" or "display name" of the actor.
             (Note that this is
@@ -601,7 +601,7 @@
         </pre>
         <p>Implementations MAY, in addition, provide the following properties:</p>
         <dl>
-          <dt id="actor-streams">streams</dt>
+          <dt id="streams-property">streams</dt>
           <dd>
             A list of supplementary Collections which may be of interest.
           </dd>
