@@ -1393,14 +1393,13 @@ Location: https://dustycloud.org/likes/345
       <section id="delivery">
         <h2>Delivery</h2>
         <p>
-          Once the target(s) for delivery have been determined, discovery of the
-          recipient <a href="#inbox">inbox(es)</a>, and delivery, are performed
-          according to [[!LDN]].
-        </p>
-
-        <p>
-          In summary, the <a href="#inbox">inbox</a> is determined through the
-          <code>inbox</code> property in the actor's profile.
+          An activity is delivered to its targets (which are
+          <a href="#actors">actors</a>) by first looking up the targets'
+          inboxes and then posting the activity to those inboxes.
+          The <a href="#inbox">inbox</a> property is determined by first
+          <a href="#retrieving-objects">
+            retrieving the target actor's json-ld representation</a>
+          and then looking up the <code>inbox</code> property.
           An HTTP POST request (with authorization of the submitting user) is
           then made to to the <a href="#inbox">inbox</a>, with the Activity as
           the body of the request.
@@ -1408,10 +1407,25 @@ Location: https://dustycloud.org/likes/345
           <a href="#inbox">inbox</a> OrderedCollection.
         </p>
 
-        <p>For federated servers performing delivery to a 3rd party server,
+        <p>
+          For federated servers performing delivery to a 3rd party server,
           delivery SHOULD be performed asynchronously to completion of the
           original activity submission request, and SHOULD additionally retry
-          delivery to recipients if it fails due to network error.</p>
+          delivery to recipients if it fails due to network error.
+        </p>
+
+        <p class="note" title="Relationship to Linked Data Notifications">
+          While it is not required reading to understand this specification,
+          it is worth noting that ActivityPub's targeting and delivery
+          mechanism overlaps with the
+          <a href="https://www.w3.org/TR/ldn/">Linked Data Notifications</a>
+          specification, and the two specifications may interoperably
+          combined.
+          In particular, the <code>inbox</code> property is the same between
+          ActivityPub and Linked Data Notifications, and the targeting
+          and delivery systems described in this document are supported
+          by Linked Data Notifications.
+        </p>
 
         <section id="outbox-delivery">
           <h3>Outbox Delivery</h3>
