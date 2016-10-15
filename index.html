@@ -1480,8 +1480,10 @@ Location: https://dustycloud.org/likes/345
         <h3>Like Activity</h3>
         <p>
           The side effect of receving this in an <strong>inbox</strong> is
-          that the server MAY increment the <code>object</code>'s count of 
-          likes.
+          that the server SHOULD increment the <code>object</code>'s count of
+          likes, or perform other appropriate indication of the like
+          being performed, such as listing the liking <code>actor</code>
+          amongst actors who have liked this <code>object</code>.
         </p>
       </section>
       <section id="add-activity-inbox">
