@@ -1270,8 +1270,9 @@ Location: https://dustycloud.org/likes/345
           <code>Like</code> or <code>Follow</code>.
           The undo activity and the activity being undone MUST both have the
           same author.
-          Side effects (such as adding activities to a user's inbox after a
-          <code>Follow</code>) should be undone, to the extent possible.
+          Side effects should be undone, to the extent possible.
+          For example, if undoing a <code>Like</code>, any counter that had
+          been incremented previously should be decremented appropriately.
         </p>
 
         <p>
