@@ -428,8 +428,11 @@
           <a href="#authorization"></a>, and may additionally implement their
           own authorization rules.
           Servers SHOULD fail requests which do not pass their authorization
-          checks with the appropriate HTTP error code, or the 404 Not Found
+          checks with the appropriate HTTP error code, or the 403 Forbidden
           error code where the existence of the object is considered private.
+          An origin server which does not wish to disclose the existence of
+          a private target MAY instead respond with a status code of
+          404 Not Found.
         </p>
       </section>
 
