@@ -626,13 +626,13 @@
           <dd>A quick summary or bio by the user about themselves.</dd>
           <dt id="icon">icon</dt>
           <dd>
-            A media link to the user's profile picture (this may be a
-            thumbnail).
+            A URI to an image which represents the user's profile picture
+            (this may be a thumbnail).
           </dd>
           <dt id="endpoints">endpoints</dt>
           <dd>
-            A mapping of additional endpoints which may be useful either for
-            this actor or someone referencing this actor.
+            A json object which maps additional endpoints which may be useful
+            either for this actor or someone referencing this actor.
             This mapping may be nested inside the actor document as the value
             or may be a link to a json-ld document with these properties.
           </dd>
@@ -1168,8 +1168,9 @@ Location: https://dustycloud.org/likes/345
           that will be displayed in activities which reference the deleted
           object.
           If the deleted object is requested the server SHOULD respond with
-          either the HTTP 410 Gone status code if a <code>Tombstone</code> is
-          used, otherwise respond with a HTTP 404 Not Found.
+          either the HTTP 410 Gone status code if a <code>Tombstone</code>
+          object is presented as the response body, otherwise respond with a
+          HTTP 404 Not Found.
         </p>
 
         <p>
@@ -1231,7 +1232,7 @@ Location: https://dustycloud.org/likes/345
             thus they can't update it.
           </li>
           <li>
-            the <code>object</code> is not allowed to be added to the
+            the <code>object</code> is not allowed to be removed from the
             <code>target</code> collection for some other reason, at the
             receiver's discretion.
           </li>
@@ -1736,16 +1737,16 @@ Location: https://dustycloud.org/likes/345
         <p>
           It is often convenient while developing to test against a process
           running on localhost.
-          However, permitting accessing localhost in a production client or
+          However, permitting requests to localhost in a production client or
           server instance can be dangerous.
-          Accessing URIs on localhost which do not require authorization may
-          unintentionally access or modify resources assumed to be protected to
-          be usable by localhost-only.
+          Making requests to URIs on localhost which do not require
+          authorization may unintentionally access or modify resources assumed
+          to be protected to be usable by localhost-only.
         </p>
         <p>
-          If your ActivityPub server or client does permit accessing localhost
-          URIs for development purposes, consider making it a configuration
-          option which defaults to off.
+          If your ActivityPub server or client does permit making requests to
+          localhost URIs for development purposes, consider making it a
+          configuration option which defaults to off.
         </p>
       </section>
 
