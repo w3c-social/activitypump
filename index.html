@@ -496,7 +496,7 @@
             know how to handle.  If you edit, you'll lose your original
             source!"
             Alyssa decides the small typo fix isn't worth losing her nice
-            org-mode markup and decides to make the update when whe gets
+            org-mode markup and decides to make the update when she gets
             home.
           </p>
         </div>
@@ -898,7 +898,7 @@
         A client should expect that it must be properly authenticated in order
         to be able to upload media.
         Upon successful submission a response containing the object with an ID
-        is returned that can be posted to the users outbox.
+        is returned that can be posted to the user's outbox.
       </p>
 
       <p>An example response for an image I might upload is:</p>
@@ -1254,7 +1254,7 @@ Location: https://dustycloud.org/likes/345
         <p>
           The <code>Block</code> activity is used to indicate that the actor
           does not want a user (defined in the <code>object</code> property) to
-          be able to interact with objects posted by the user.
+          be able to interact with objects posted by the actor.
           The server SHOULD prevent the user from interacting with any object
           posted by the actor.
         </p>
@@ -1300,7 +1300,7 @@ Location: https://dustycloud.org/likes/345
         Servers communicate with other servers and propagate information across
         the social graph by posting activities to actors'
         <a href="#inbox">inbox</a> endpoints.
-        An Activity sent over over the network SHOULD have an <code>id</code>,
+        An Activity sent over the network SHOULD have an <code>id</code>,
         unless it is intended to be transient (in which case it MAY omit the
         <code>id</code> or use a fragment identifier).
       </p>
@@ -1640,10 +1640,10 @@ Location: https://dustycloud.org/likes/345
         </p>
 
         <p>
-          When Linked Data Signatures in combined with ActivityPub, the server
-          should assign an <a href="#actors">actor</a> a public and private key
-          pair, and link the public key to the actor's profile object,
-          which may later be used with the
+          When Linked Data Signatures is used in combination with ActivityPub,
+          the server should assign an <a href="#actors">actor</a> a public and
+          private key pair, and link the public key to the actor's profile
+          object, which may later be used with the
           <a href="https://web-payments.org/specs/source/ld-signatures/#signature-verification-algorithm">
             Linked Data Signatures verification algorithm</a>
           to validate the authenticity of messages passed along the network.
@@ -1863,9 +1863,9 @@ Location: https://dustycloud.org/likes/345
           from clients to servers, but depending on what mechanism is used,
           OAuth tokens may be exposed, particularly if HTTP is used without
           TLS/SSL support.
-          Similarly, no normative mechanism for authentication between
-          servers is exposed, though similar issues with exposure of data such
-          as OAuth tokens could be exposed.
+          Similarly, no normative mechanism for authentication between servers
+          is exposed, though without TLS/SSL support, OAuth tokens could be
+          exposed here as well.
         </dd>
         
         <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#persistent-origin-specific-state">
