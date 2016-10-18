@@ -295,6 +295,12 @@
             <a href="#preferredUsername"><code>preferredUsername</code></a>
             property.
           </li>
+          <li>
+            <a href="#public-inbox-delivery"></a> section
+            and its associated
+            <a href="#publicInbox"><code>publicInbox</code></a>
+            endpoint.
+          </li>
         </ul>
       </section>
     </section>
@@ -679,6 +685,14 @@
             which a client key may be signed by the actor's key for a time
             window to act on behalf of the actor in interacting with foreign
             servers.
+          </dd>
+          <dt id="publicInbox">publicInbox</dt>
+          <dd>
+            An optional endpoint
+            <a href="#public-inbox-delivery">
+              used for wide delivery of publicly addressed posts</a>.
+            <code>publicInbox</code> endpoints SHOULD also be publicly
+            readable <code>OrderedCollection</code> objects.
           </dd>
         </dl>
 
@@ -1484,6 +1498,45 @@ Location: https://dustycloud.org/likes/345
           </ul>
           <p>The server MAY filter its delivery targets according to implementation-specific
           rules, for example, spam filtering.</p>
+        </section>
+
+        <section id="public-inbox-delivery">
+          <h2>Public Inbox Delivery</h2>
+          <p>
+            For servers hosting many actors, delivery to all participants can
+            result in an overwhelming number of messages sent.
+            Some servers would also like to display a list of all messages
+            posted publicly to the "known network".
+            Thus ActivityPub provides an optional mechanism for serving these
+            two use cases.
+          </p>
+          <p>
+            When an origin server is sending an activity to a remote server
+            which is addressed with the special
+            <a href="#public-addressing">Public</a>
+            recipient, the origin server MAY reduce the number of actors
+            delivered to by identifying all actors which would be recipients
+            who share a
+            <a href="publicInbox">publicInbox</a>
+            who would otherwise be individual recipients and instead deliver
+            to only <code>publicInbox</code> objects.
+            (An origin server MAY alternately decide to publish all posts
+            to all <code>publicInbox</code> endpoints known.)
+            The server with the receiving <code>publicInbox</code> should
+            use its own <a href="#following">following lists</a> to determine
+            which actors should have the post delivered to their inbox.
+            Thus in this scenario, the remote/receiving server participates
+            in determining targeting and performing delivery to specific
+            inboxes.
+          </p>
+          <p>
+            Origin servers sending publicly addressed activities to
+            <code>publicInbox</code> endpoints MUST still deliver to actors
+            and collections otherwise addressed (through <code>to</code>,
+            <code>cc</code>, and <code>bcc</code>) which do not have a
+            <code>publicInbox</code> and would not otherwise receive
+            the activity through the <code>publicInbox</code> mechanism.
+          </p>
         </section>
       </section>
 
