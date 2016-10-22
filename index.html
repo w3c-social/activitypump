@@ -910,37 +910,56 @@
     <section id="uploading-media">
       <h2>Uploading Media</h2>
       <p>
-        There is the ability to submit binary data such as images, video or
-        other binary data you wish to use in ActivityPub.
-        This is done by means of submitting the binary data to the user's
-        <a href="#uploadMedia"><code>uploadMedia</code></a> on their
+        ActivityPub supports uploading document types to be referenced in
+        activites, such as images, video or other binary data, and servers
+        MAY implement this feature.
+        To accomplish this, a client MUST submit a
+        <code>multipart/form-data</code> message to the user's
+        <a href="#uploadMedia"><code>uploadMedia</code></a> endpoint on their
         ActivityStreams profile object.
-        The request MUST contain the HTTP headers <code>Content-Type</code> and
-        <code>Content-Length</code>.
         A client should expect that it must be properly authenticated in order
         to be able to upload media.
-        Upon successful submission a response containing the object with an ID
-        is returned that can be posted to the user's outbox.
       </p>
 
-      <p>An example response for an image I might upload is:</p>
-      <pre class="example">
-        {
-          "@context": "https://www.w3.org/ns/activitystreams",
-          "id": "https://example.com/~erik/photos/1",
-          "type": "Image",
-          "to": ["https://example.com/~erik/public",
-                 "https://example.org/~sarah/"],
-          "cc": ["https://example.com/~erik/followers"],
-          "url": [
-            {
-              "type": "Link",
-              "href": "https://example.com/~erik/photos/1.png",
-              "mediaType": "image/png"
-            }
-          ]
-        }
-      </pre>
+      <p>
+        The submitted form data should contain two parts / fields:
+      </p>
+
+      <dl>
+        <dt id="uploading-media-file">file</dt>
+        <dd>
+          The media file file being uploaded.
+        </dd>
+        <dt id="uploading-media-object">object</dt>
+        <dd>
+          A shell of an ActivityStreams object, which will be finalized by the
+          server.
+        </dd>
+      </dl>
+
+      <p>
+        Assuming that the server accepts the request and that the user was
+        appropriately authorized to upload media, servers MUST respond with a
+        <code>201 Created</code> if the object is immediately available or a
+        <code>202 Accepted</code> if the server is still processing the
+        submitted media.
+        The response MUST contain a <code>Location</code> header pointing
+        to the to-be-created object's <code>id</code>.
+      </p> 
+
+      <p>
+        The server, having done any appropriate processing on the received
+        <code>file</code> and putting it in place, transforms the
+        <code>object</code> that will be retrievable by the <code>id</code>.
+        In particular, servers MUST append an <code>id</code> property to the
+        object, and SHOULD include the uploaded and/or processed file paths in
+        the object's <code>url</code> property.
+        The server MAY wrap the shell object submitted by the user in a
+        <code>Create</code> via <a href="#object-without-create"></a> if
+        appropriate and present this as the object pointed to by the
+        forementioned <code>Location</code> header in the post-media-upload
+        response.
+      </p>
     </section>
 
     <section id="client-to-server-interactions">
