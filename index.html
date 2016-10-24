@@ -1078,6 +1078,15 @@ Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystream
 HTTP/1.1 201 Created
 Location: https://dustycloud.org/likes/345
       </pre>
+
+      <p>
+        The server MUST remove the <code>bcc</code> property, if it exists,
+        from the ActivityStreams object before storage and delivery,
+        but MUST utilize the addressing originally stored on the
+        <code>bcc</code> property for determining recipients in
+        <a href="#delivery">delivery</a>.
+      </p>
+
       <p>
         The server adds this new Activity to the <a href="#outbox">outbox</a>
         collection. 
