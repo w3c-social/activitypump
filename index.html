@@ -123,7 +123,7 @@
         </li>
         <li>
           A consequence of the above activity (per
-          <a href="#targeting"></a>) is that the server hosting the liked
+          <a href="#delivery"></a>) is that the server hosting the liked
           object will be notified of the operation, and will normally add the
           activity to the list of "likes" the object has received.
           (ActivityPub makes use of
@@ -1355,9 +1355,9 @@ Location: https://dustycloud.org/likes/345
         In order to propagate updates throughout the social graph, Activities
         are sent to the appropriate recipients.
         First, these recipients are determined through following the
-        appropriate links between objects until you reach an agent
-        (<a href="#targeting">targeting</a>), and then the Activity is inserted
-        into the agent's <em>inbox</em> (<a href="#delivery">delivery</a>).
+        appropriate links between objects until you reach an agent, and then
+        the Activity is inserted into the agent's <em>inbox</em>
+        (<a href="#delivery">delivery</a>).
         This allows recipient servers to:
       </p>
       <ul>
@@ -1389,37 +1389,29 @@ Location: https://dustycloud.org/likes/345
         </li>
       </ul>
 
-      <section id="targeting">
-        <h2>Targeting</h2>
+      <section id="delivery">
+        <h2>Delivery</h2>
         <p>
-          Primary targeting is per the audience targeting properties from the
-          [[!ActivityStreams]] specification.
-          Notification targeting ensures the owners of all linked objects are
-          notified of a new Activity that relates to them.
-          Thus, the target(s) for delivery of an Activity may be:
+          An activity is delivered to its targets (which are
+          <a href="#actors">actors</a>) by first looking up the targets'
+          inboxes and then posting the activity to those inboxes.
+          Targets for delivery are determined by checking the
+          <code>to</code>, <code>cc</code> and <code>bcc</code> fields
+          of the activity.
         </p>
 
-        <ul>
-          <li>
-            <strong>Primary targeting:</strong> the values of the
-            <code>to</code>, <code>cc</code> or <code>bcc</code> fields (likely
-            to include the <a href="#followers">followers</a> collection)
-          </li>
-
-          <li>
-            <strong>Notification targeting:</strong> the <code>actors</code>
-            for all objects in the <code>object</code>, <code>target</code>,
-            <code>inReplyTo</code> or <code>tag</code> fields
-          </li>
-        </ul>
-
         <p>
-          If the entry is a collection, then the server MUST dereference the
-          collection (with the user's credentials) and discover inboxes for
-          each item in the collection.
+          The <a href="#inbox">inbox</a> is determined by first
+          <a href="#retrieving-objects">
+            retrieving the target actor's json-ld representation</a>
+          and then looking up the <code>inbox</code> property.
+          If a recipient is a <cod>Collection</cod> or <code>OrderedCollection</code>,
+          then the server MUST dereference the collection (with the user's
+          credentials) and discover inboxes for each item in the collection.
           Servers MUST limit the number of layers of indirections through
           collections which will be performed, which MAY be one.
         </p>
+
         <p>
           Servers MUST de-duplicate the final recipient list. Servers MUST also
           exclude actors from the list which are the same as the <code>actor</code>
@@ -1435,18 +1427,8 @@ Location: https://dustycloud.org/likes/345
           not delivered to any users but is publicly viewable in the actor's
           outbox.
         </p>
-      </section>
 
-      <section id="delivery">
-        <h2>Delivery</h2>
         <p>
-          An activity is delivered to its targets (which are
-          <a href="#actors">actors</a>) by first looking up the targets'
-          inboxes and then posting the activity to those inboxes.
-          The <a href="#inbox">inbox</a> property is determined by first
-          <a href="#retrieving-objects">
-            retrieving the target actor's json-ld representation</a>
-          and then looking up the <code>inbox</code> property.
           An HTTP POST request (with authorization of the submitting user) is
           then made to to the <a href="#inbox">inbox</a>, with the Activity as
           the body of the request.
@@ -1503,8 +1485,8 @@ Location: https://dustycloud.org/likes/345
           <p>
             When Activities are received in the <a href="#inbox">inbox</a>, the
             server needs to forward these to recipients that the origin was unable
-            to deliver them to. To do this, the server MUST <a href="#targeting">target</a>
-            and <a href="#delivery">deliver</a> 
+            to deliver them to. To do this, the server MUST target and
+            <a href="#delivery">deliver</a> 
             to the values of <code>to</code>, <code>cc</code> and/or <code>bcc</code> 
             if and only if all of the following are true:
           </p>
