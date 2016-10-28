@@ -982,7 +982,8 @@
         To some extent, this is dependent upon the particular client
         implementation, but clients must be aware that the server will only
         forward new Activities to addressees in the <code>to</code>,
-        <code>cc</code> and <code>bcc</code> fields.
+        <code>bto</code>, <code>cc</code>, <code>bcc</code>, and
+        <code>audience</code> fields.
       </p>
       <p>
         Clients MAY address new Activities to the user's
@@ -1086,11 +1087,11 @@ Location: https://dustycloud.org/likes/345
       </pre>
 
       <p>
-        The server MUST remove the <code>bcc</code> property, if it exists,
-        from the ActivityStreams object before storage and delivery,
-        but MUST utilize the addressing originally stored on the
-        <code>bcc</code> property for determining recipients in
-        <a href="#delivery">delivery</a>.
+        The server MUST remove the <code>bto</code> and/or <code>bcc</code>
+        properties, if they exist, from the ActivityStreams object before
+        storage and delivery, but MUST utilize the addressing originally stored
+        on the <code>bto</code> / <code>bcc</code> properties for determining
+        recipients in <a href="#delivery">delivery</a>.
       </p>
 
       <p>
@@ -1418,8 +1419,8 @@ Location: https://dustycloud.org/likes/345
           <a href="#actors">actors</a>) by first looking up the targets'
           inboxes and then posting the activity to those inboxes.
           Targets for delivery are determined by checking the
-          <code>to</code>, <code>cc</code> and <code>bcc</code> fields
-          of the activity.
+          <code>to</code>, <code>bto</code>, <code>cc</code>, <code>bcc</code>,
+          and <code>audience</code> fields of the activity.
         </p>
 
         <p>
@@ -1493,8 +1494,9 @@ Location: https://dustycloud.org/likes/345
           </p>
           <ul>
             <li>
-              The <code>to</code>, <code>cc</code> or <code>bcc</code> fields
-              if their values are individuals, or Collections owned by the actor.
+              The <code>to</code>, <code>bto</code>, <code>cc</code>,
+              <code>bcc</code> or <code>audience</code> fields if their values
+              are individuals, or Collections owned by the actor.
             </li>
           </ul>
           <p>
@@ -1511,14 +1513,16 @@ Location: https://dustycloud.org/likes/345
             server needs to forward these to recipients that the origin was unable
             to deliver them to. To do this, the server MUST target and
             <a href="#delivery">deliver</a> 
-            to the values of <code>to</code>, <code>cc</code> and/or <code>bcc</code> 
+            to the values of <code>to</code>, <code>bto</code>, <code>cc</code>,
+            <code>bcc</code>, and/or <code>audience</code>
             if and only if all of the following are true:
           </p>
           <ul>
             <li>This is the first time the server has seen this Activity.</li>
             <li>
-              The values of <code>to</code>, <code>cc</code> and/or <code>bcc</code>
-              contain a Collection owned by the server.
+              The values of <code>to</code>, <code>bto</code>, <code>cc</code>,
+              <code>bcc</code>, and/or <code>audience</code> contain a
+              Collection owned by the server.
             </li>
             <li>
               The values of <code>inReplyTo</code>, <code>object</code>, 
@@ -1529,9 +1533,10 @@ Location: https://dustycloud.org/likes/345
               point at which the thread is so deep the recipients followers may not mind
               if they are no longer getting updates that don't directly involve the 
               recipient). 
-              The server MUST only target the values of <code>to</code>, <code>cc</code> 
-              and/or <code>bcc</code> on the original object being forwarded, and not
-              pick up any new addressees whilst recursing through the linked objects
+              The server MUST only target the values of <code>to</code>, <code>bto</code>,
+              <code>cc</code>, <code>bcc</code>, and/or <code>audience</code>
+              on the original object being forwarded, and not pick up any new
+              addressees whilst recursing through the linked objects
               (in case these addressees were purposefully amended by or via the client).
             </li>
           </ul>
@@ -1572,9 +1577,10 @@ Location: https://dustycloud.org/likes/345
             Origin servers sending publicly addressed activities to
             <code>publicInbox</code> endpoints MUST still deliver to actors
             and collections otherwise addressed (through <code>to</code>,
-            <code>cc</code>, and <code>bcc</code>) which do not have a
-            <code>publicInbox</code> and would not otherwise receive
-            the activity through the <code>publicInbox</code> mechanism.
+            <code>bto</code>, <code>cc</code>, <code>bcc</code>, and
+            <code>audience</code>) which do not have a <code>publicInbox</code>
+            and would not otherwise receive the activity through the
+            <code>publicInbox</code> mechanism.
           </p>
         </section>
       </section>
