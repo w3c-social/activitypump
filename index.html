@@ -1419,8 +1419,10 @@ Location: https://dustycloud.org/likes/345
           <a href="#actors">actors</a>) by first looking up the targets'
           inboxes and then posting the activity to those inboxes.
           Targets for delivery are determined by checking the
-          <code>to</code>, <code>bto</code>, <code>cc</code>, <code>bcc</code>,
-          and <code>audience</code> fields of the activity.
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#audienceTargeting">
+            ActivityStreams audience targeting</a>;
+          namely, the <code>to</code>, <code>bto</code>, <code>cc</code>,
+          <code>bcc</code>, and <code>audience</code> fields of the activity.
         </p>
 
         <p>
