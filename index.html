@@ -805,7 +805,7 @@
         <h2>Likes Collection</h2>
         <p>
           Every actor MAY have a Likes collection.
-          This is a list of every object from all of the actor's <code>Like</code> 
+          This is a list of every object from all of the actor's <code>Like</code>
           activities, added as a <a href="#like-activity-outbox">side effect</a>.
           The <code>following</code> collection MUST be either an
           <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
@@ -872,7 +872,7 @@
 
         <p>
           The server MUST perform de-duplication of activities returned by
-          the inbox. Duplication can occur if an activity is addressed both 
+          the inbox. Duplication can occur if an activity is addressed both
           to a user's followers, and a specific
           user who also follows the recipient user, and the server has failed
           to de-duplicate the recipients list.
@@ -950,7 +950,7 @@
         submitted media.
         The response MUST contain a <code>Location</code> header pointing
         to the to-be-created object's <code>id</code>.
-      </p> 
+      </p>
 
       <p>
         The server, having done any appropriate processing on the received
@@ -991,17 +991,17 @@
         and/or the <a href="#public-addressing">Public Collection</a> by default.
       </p>
       <p>
-        Clients SHOULD check any objects attached to the Activity via the 
-        <code>object</code>, <code>target</code>, <code>inReplyTo</code> and/or 
-        <code>tag</code> fields, retrieve <em>their</em> <code>actor</code> or 
-        <code>attributedTo</code> properties, and MAY also retrieve their addressing 
-        properties, and add these to the <code>to</code> or <code>cc</code> 
+        Clients SHOULD check any objects attached to the Activity via the
+        <code>object</code>, <code>target</code>, <code>inReplyTo</code> and/or
+        <code>tag</code> fields, retrieve <em>their</em> <code>actor</code> or
+        <code>attributedTo</code> properties, and MAY also retrieve their addressing
+        properties, and add these to the <code>to</code> or <code>cc</code>
         fields of the new Activity being created.
         Clients MAY recurse through attached objects, but if doing so, SHOULD
         set a limit for this recursion.
       </p>
       <p>
-        Clients MAY give the user the chance to amend this addressing in the 
+        Clients MAY give the user the chance to amend this addressing in the
         UI.
       </p>
       <p>
@@ -1017,7 +1017,7 @@
   "name": "Minimal ActivityPub update client",
   "content": "Today I finished morph, a client for posting ActivityStreams2...",
   "attributedTo": "<strong>https://rhiaro.co.uk/#amy</strong>",
-  "to": "<strong>https://rhiaro.co.uk/followers/</strong>", 
+  "to": "<strong>https://rhiaro.co.uk/followers/</strong>",
   "cc": "<strong>https://e14n.com/evan</strong>"
 }
       </pre>
@@ -1045,11 +1045,11 @@
 
       <p>
         To submit new Activities to a user's server, clients MUST discover
-        the URL of the user's <strong><a href="#outbox">outbox</a></strong> 
-        from their <a href="#actor-objects">profile</a> and then MUST make an 
+        the URL of the user's <strong><a href="#outbox">outbox</a></strong>
+        from their <a href="#actor-objects">profile</a> and then MUST make an
         HTTP <code>POST</code> request to to this URL with the Content-Type of
         <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams#"</code>.
-        The request MUST be authenticated with the credentials of the user to 
+        The request MUST be authenticated with the credentials of the user to
         whom the outbox belongs.
         The body of the <code>POST</code> request MUST contain a single
         Activity (which MAY contain embedded objects), or a single non-Activity
@@ -1075,7 +1075,7 @@ Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystream
 }
       </pre>
       <p>
-        If an Activity is submitted with a value in the <code>id</code> 
+        If an Activity is submitted with a value in the <code>id</code>
         property, servers MUST ignore this and generate a new <code>id</code>
         for the Activity.
         Servers MUST return a <code>201 Created</code> HTTP code with the new
@@ -1096,8 +1096,8 @@ Location: https://dustycloud.org/likes/345
 
       <p>
         The server adds this new Activity to the <a href="#outbox">outbox</a>
-        collection. 
-        Depending on the type of Activity, servers may then be required to 
+        collection.
+        Depending on the type of Activity, servers may then be required to
         carry out further side effects.
         These are described per individual Activity below.
       </p>
@@ -1132,7 +1132,7 @@ Location: https://dustycloud.org/likes/345
           For client to server posting, it is possible to create a new object
           without a surrounding activity.
           The server MUST accept a valid [[!ActivityStreams]] object that
-          isn't a subtype of <code>Activity</code> in the POST request to the 
+          isn't a subtype of <code>Activity</code> in the POST request to the
           outbox.
           The server then MUST attach this object as the <code>object</code>
           of a <a href="#create-activity-outbox">Create Activity</a>.
@@ -1142,7 +1142,7 @@ Location: https://dustycloud.org/likes/345
         </p>
 
         <p class="note">
-          The <code>Location</code> value returned by the server should be the URL of 
+          The <code>Location</code> value returned by the server should be the URL of
           the new Create activity (rather than the object).
         </p>
 
@@ -1196,8 +1196,8 @@ Location: https://dustycloud.org/likes/345
         <p>
           The <code>Update</code> activity is used when updating an already
           existing object.
-          The side effect of this is that the <code>object</code> MUST be 
-          modified to reflect the new structure as defined in the update 
+          The side effect of this is that the <code>object</code> MUST be
+          modified to reflect the new structure as defined in the update
           activity, assuming the actor has permission to update this
           object.
         </p>
@@ -1233,7 +1233,7 @@ Location: https://dustycloud.org/likes/345
           The <code>Delete</code> activity is used to delete an already
           existing object.
           The side effect of this is that the server MAY replace the
-          <code>object</code> with a <code>Tombstone</code> of the object 
+          <code>object</code> with a <code>Tombstone</code> of the object
           that will be displayed in activities which reference the deleted
           object.
           If the deleted object is requested the server SHOULD respond with
@@ -1264,26 +1264,26 @@ Location: https://dustycloud.org/likes/345
         </p>
         <p>
           The side effect of receiving this in an <strong>outbox</strong>
-          is that the server SHOULD add the <code>object</code> to the 
+          is that the server SHOULD add the <code>object</code> to the
           <code>actor</code>'s <a href="#following">Following Collection</a>.
         </p>
       </section>
       <section id="add-activity-outbox">
         <h3>Add Activity</h3>
         <p>
-          Upon receipt of an <code>Add</code> activity into the 
+          Upon receipt of an <code>Add</code> activity into the
           <strong>outbox</strong>, the server SHOULD
-          add the <code>object</code> to the collection specified in the 
+          add the <code>object</code> to the collection specified in the
           <code>target</code> property, unless:
         </p>
         <ul>
           <li>
-            the <code>target</code> is not owned by the receiving 
+            the <code>target</code> is not owned by the receiving
             user, and thus they can't update it.
           </li>
           <li>
             the <code>object</code> is not allowed to be added to the
-            <code>target</code> collection for some other reason, at the 
+            <code>target</code> collection for some other reason, at the
             receiver's discretion.
           </li>
         </ul>
@@ -1291,9 +1291,9 @@ Location: https://dustycloud.org/likes/345
       <section id="remove-activity-outbox">
         <h3>Remove Activity</h3>
         <p>
-          Upon receipt of a <code>Remove</code> activity into the 
+          Upon receipt of a <code>Remove</code> activity into the
           <strong>outbox</strong>, the server SHOULD
-          remove the <code>object</code> from the collection specified in the 
+          remove the <code>object</code> from the collection specified in the
           <code>target</code> property, unless:
         <ul>
           <li>
@@ -1315,7 +1315,7 @@ Location: https://dustycloud.org/likes/345
         </p>
         <p>
           The side effect of receiving this in an <strong>outbox</strong>
-          is that the server MAY add the <code>object</code> to the 
+          is that the server MAY add the <code>object</code> to the
           <code>actor</code>'s <a href="#likes">Likes Collection</a>.
         </p>
       </section>
@@ -1514,7 +1514,7 @@ Location: https://dustycloud.org/likes/345
             When Activities are received in the <a href="#inbox">inbox</a>, the
             server needs to forward these to recipients that the origin was unable
             to deliver them to. To do this, the server MUST target and
-            <a href="#delivery">deliver</a> 
+            <a href="#delivery">deliver</a>
             to the values of <code>to</code>, <code>bto</code>, <code>cc</code>,
             <code>bcc</code>, and/or <code>audience</code>
             if and only if all of the following are true:
@@ -1527,14 +1527,14 @@ Location: https://dustycloud.org/likes/345
               Collection owned by the server.
             </li>
             <li>
-              The values of <code>inReplyTo</code>, <code>object</code>, 
+              The values of <code>inReplyTo</code>, <code>object</code>,
               <code>target</code> and/or <code>tag</code> are objects owned by
               the server.
               The server SHOULD recurse through these values to look for linked objects
               owned by the server, and SHOULD set a maximum limit for recursion (ie. the
               point at which the thread is so deep the recipients followers may not mind
-              if they are no longer getting updates that don't directly involve the 
-              recipient). 
+              if they are no longer getting updates that don't directly involve the
+              recipient).
               The server MUST only target the values of <code>to</code>, <code>bto</code>,
               <code>cc</code>, <code>bcc</code>, and/or <code>audience</code>
               on the original object being forwarded, and not pick up any new
@@ -1608,9 +1608,9 @@ Location: https://dustycloud.org/likes/345
       <section id="add-activity-inbox">
         <h3>Add Activity</h3>
         <p>
-          Upon receipt of an <code>Add</code> activity into the 
+          Upon receipt of an <code>Add</code> activity into the
           <strong>inbox</strong>, the server SHOULD
-          add the <code>object</code> to the collection specified in the 
+          add the <code>object</code> to the collection specified in the
           <code>target</code> property, unless:
         </p>
         <ul>
@@ -1628,9 +1628,9 @@ Location: https://dustycloud.org/likes/345
       <section id="remove-activity-inbox">
         <h3>Remove Activity</h3>
         <p>
-          Upon receipt of a <code>Remove</code> activity into the 
+          Upon receipt of a <code>Remove</code> activity into the
           <strong>inbox</strong>, the server SHOULD
-          remove the <code>object</code> from the collection specified in the 
+          remove the <code>object</code> from the collection specified in the
           <code>target</code> property, unless:
         <ul>
           <li>
@@ -1706,7 +1706,7 @@ Location: https://dustycloud.org/likes/345
           flux, so it is not feasible to recommend a general pattern for
           OAuth 2.0 based deployments at this time.
         </p>
-        
+
         <section id="client-to-origin-oauth">
           <h2>Client to Origin Server Authentication</h2>
           <p>
@@ -1994,7 +1994,7 @@ Location: https://dustycloud.org/likes/345
           is exposed, though without TLS/SSL support, OAuth tokens could be
           exposed here as well.
         </dd>
-        
+
         <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#persistent-origin-specific-state">
           Does this specification introduce new state for an origin that
           persists across browsing sessions?
