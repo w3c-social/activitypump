@@ -385,8 +385,11 @@
           All Objects in [[!ActivityStreams]] should have unique global
           identifiers.
           ActivityPub extends this requirement; all objects distributed by the
-          ActivityPub protocol MUST have unique global identifiers; these
-          identifiers must fall into one of the following groups:
+          ActivityPub protocol MUST have unique global identifiers, unless they
+          are intentionally transient (short lived activities that are not
+          intended to be able to be looked up, such as chat messages or game
+          notifications).
+          These identifiers must fall into one of the following groups:
         </p>
         <ol>
           <li>
@@ -401,15 +404,22 @@
         </ol>
         <p>
           Identifiers MUST be provided for activities posted in server to
-          server communication.
+          server communication, unless the activity is intentionally transient.
           However, for client to server communication, a server receiving an
           object with no specified <code>id</code> SHOULD allocate an object ID
           in the user's namespace and attach it to the posted object.
         </p>
-        <p>All objects must have the following properties:</p>
+        <p>All objects have the following properties:</p>
         <dl>
-          <dt>id</dt><dd>The object's unique global identifier</dd>
-          <dt>type</dt><dd>The type of the object</dd>
+          <dt>id</dt>
+          <dd>
+            The object's unique global identifier (unless the object is transient,
+            in which case the <code>id</code> MAY be omitted).
+          </dd>
+          <dt>type</dt>
+          <dd>
+            The type of the object.
+          </dd>
         </dl>
       </section>
 
@@ -1075,8 +1085,9 @@ Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystream
         If an Activity is submitted with a value in the <code>id</code>
         property, servers MUST ignore this and generate a new <code>id</code>
         for the Activity.
-        Servers MUST return a <code>201 Created</code> HTTP code with the new
-        URL in the <code>Location</code> header.
+        Servers MUST return a <code>201 Created</code> HTTP code, and unless
+        the activity is transient, MUST include the new URL in the
+        <code>Location</code> header.
       </p>
       <pre class="example" title="Outbox response to submitted Activity">
 HTTP/1.1 201 Created
@@ -1381,7 +1392,7 @@ Location: https://dustycloud.org/likes/345
         <a href="#inbox">inbox</a> endpoints.
         An Activity sent over the network SHOULD have an <code>id</code>,
         unless it is intended to be transient (in which case it MAY omit the
-        <code>id</code> or use a fragment identifier).
+        <code>id</code>).
       </p>
       <p>
         In order to propagate updates throughout the social graph, Activities
