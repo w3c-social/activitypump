@@ -1694,7 +1694,7 @@ Location: https://dustycloud.org/likes/345
       <section id="authorization-oauth">
         <h2>OAuth 2.0 and JSON Web Signatures</h2>
         <p>
-          ActivityPub implementations MAY use
+          ActivityPub implementations may use
           <a href="https://oauth.net/2/">OAuth 2.0</a>
           with
           <a href="https://tools.ietf.org/html/rfc7515">JSON Web Signatures</a>
@@ -1710,7 +1710,7 @@ Location: https://dustycloud.org/likes/345
           <h2>Client to Origin Server Authentication</h2>
           <p>
             For client to server interactions where the client is interacting
-            directly to the actor's server, clients MAY use OAuth 2.0 bearer
+            directly to the actor's server, clients may use OAuth 2.0 bearer
             tokens to authenticate.
           </p>
         </section>
@@ -1719,7 +1719,7 @@ Location: https://dustycloud.org/likes/345
           <h2>Client to Foreign Server Authentication</h2>
           <p>
             For client to server interactions where the client is interacting
-            with servers beyond the user's origin server, clients and servers MAY
+            with servers beyond the user's origin server, clients and servers may
             support use of OAuth 2.0 with JSON Web Signatures.
           </p>
         </section>
@@ -1728,7 +1728,7 @@ Location: https://dustycloud.org/likes/345
           <h2>Servers Acting on Behalf of Users</h2>
           <p>
             Servers performing operations on behalf of a user (e.g. delivery
-            to a recipient) MAY use OAuth 2.0 with JSON Web Signatures to
+            to a recipient) may use OAuth 2.0 with JSON Web Signatures to
             authenticate with a 3rd party server.
           </p>
         </section>
@@ -1739,7 +1739,7 @@ Location: https://dustycloud.org/likes/345
         <!-- TODO: authentication and authorization are very tricky words -->
 
         <p>
-          ActivityPub implementations MAY use
+          ActivityPub implementations may use
           <a href="https://web-payments.org/specs/source/ld-signatures/">
             Linked Data Signatures</a>
           and
@@ -1770,7 +1770,7 @@ Location: https://dustycloud.org/likes/345
           <h2>Client to Origin Server Authentication</h2>
           <p>
             For client to server interactions where the client is interacting
-            directly with the actor's server, a client MAY use HTTP signatures by
+            directly with the actor's server, a client may use HTTP signatures by
             <a href="#provideClientKey">registering their client's public key</a>
             with the actor on the server, and then subsequently signing HTTP
             requests made with this key.
@@ -1781,7 +1781,7 @@ Location: https://dustycloud.org/likes/345
           <h2>Client to Foreign Server Authentication</h2>
           <p>
             For client to server interactions where the client is interacting
-            with servers beyond the user's origin server, clients MAY use a
+            with servers beyond the user's origin server, clients may use a
             combination of HTTP signatures and Linked Data Signatures.
           </p>
           <p>
@@ -1800,7 +1800,7 @@ Location: https://dustycloud.org/likes/345
           <h2>Servers Acting on Behalf of Users</h2>
           <p>
             Servers performing operations on behalf of a user (e.g. delivery to
-            a recipient) MAY use Linked Data Signatures to authenticate with a
+            a recipient) may use Linked Data Signatures to authenticate with a
             3rd party server.
             This may be achieved by attaching the linked data signature to the
             activity posted to the remote inbox, signed by the actor's public
