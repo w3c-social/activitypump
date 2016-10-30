@@ -1099,6 +1099,17 @@ Location: https://dustycloud.org/likes/345
         These are described per individual Activity below.
       </p>
 
+      <p>
+        Clients submitting the following activities to an <code>outbox</code>
+        MUST provide the <code>object</code> property in the activity:
+        <code>Create</code>, <code>Update</code>, <code>Delete</code>,
+        <code>Follow</code>, <code>Add</code>, <code>Remove</code>,
+        <code>Like</code>, <code>Block</code>, <code>Undo</code>.
+        Additionally, clients submitting the following activities to an outbox
+        MUST also provide the <code>target</code> property:
+        <code>Add</code>, <code>Remove</code>.
+      </p>
+
       <section id="create-activity-outbox">
         <h3>Create Activity</h3>
         <p>
@@ -1198,6 +1209,7 @@ Location: https://dustycloud.org/likes/345
           activity, assuming the actor has permission to update this
           object.
         </p>
+
         <section id="partial-updates">
           <h4>Partial Updates</h4>
           <p>
@@ -1408,6 +1420,18 @@ Location: https://dustycloud.org/likes/345
           <a href="#inbox">inbox</a> which references another object.
         </li>
       </ul>
+
+      <p>
+        Servers performing delivery to the <code>inbox</code> or
+        <code>publicInbox</code> properties of actors on other servers MUST
+        provide the <code>object</code> property in the activity:
+        <code>Create</code>, <code>Update</code>, <code>Delete</code>,
+        <code>Follow</code>, <code>Add</code>, <code>Remove</code>,
+        <code>Like</code>, <code>Block</code>, <code>Undo</code>.
+        Additionally, servers performing server to server delivery of the
+        following activities MUST also provide the <code>target</code>
+        property: <code>Add</code>, <code>Remove</code>.
+      </p>
 
       <section id="delivery">
         <h2>Delivery</h2>
