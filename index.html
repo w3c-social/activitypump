@@ -104,7 +104,8 @@
       <p>
         The ActivityPub protocol is broadly based on the distribution of
         <i>activities</i>, described using [[!ActivityStreams]]; these
-        activities are produced in response to a user performing an activity.
+        activities are produced in response to a user performing delivery of an
+        activity.
         Most activities are purely responsive in nature - they are produced as
         a response to a user having <em>done</em> something.
         In addition, certain activities posted by a user to their
@@ -118,9 +119,9 @@
       <ol>
         <li>
           A user posts the <code>Like</code> activity to their outbox.
-          This activity causes the user's server to perform an activity on
-          behalf of the user; in particular, it adds the specified object to
-          the collection of objects the user has liked.
+          This activity causes the user's server to perform deliver of an
+          activity on behalf of the user; in particular, it adds the specified
+          object to the collection of objects the user has liked.
         </li>
         <li>
           A consequence of the above activity (per
