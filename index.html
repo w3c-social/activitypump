@@ -1082,7 +1082,7 @@ Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystream
         property, servers MUST ignore this and generate a new <code>id</code>
         for the Activity.
         Servers MUST return a <code>201 Created</code> HTTP code, and unless
-        the activity is transient, MUST include the new URL in the
+        the activity is transient, MUST include the new <code>id</code> in the
         <code>Location</code> header.
       </p>
       <pre class="example" title="Outbox response to submitted Activity">
