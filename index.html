@@ -1068,12 +1068,14 @@ Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystream
 
 {
   "@context": ["https://www.w3.org/ns/activitystreams",
-               {"@language": "en-GB"}],
+               {"@language": "en"}],
   "type": "Like",
   "actor": "https://dustycloud.org/chris/"
   "name": "Chris liked 'Minimal ActivityPub update client'",
   "object": "https://rhiaro.co.uk/2016/05/minimal-activitypub",
-  "to": ["https://dustycloud.org/followers", "https://rhiaro.co.uk/followers/"],
+  "to": ["https://rhiaro.co.uk/#amy",
+         "https://dustycloud.org/followers",
+         "https://rhiaro.co.uk/followers/"],
   "cc": "https://e14n.com/evan"
 }
       </pre>
