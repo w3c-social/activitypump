@@ -2238,6 +2238,78 @@ Location: https://dustycloud.org/likes/345
           <li>
             Add public content delivery section, marked at risk.
           </li>
+          <li>
+            Add non-normative recommendation that implementations seeking to
+            gain broader interop with LDN might want to support other RDF types.
+          </li>
+          <li>
+            "Object without Create" section marked at-risk.
+          </li>
+          <li>
+            Renamed "Binary Data" to "Uploading Media".
+          </li>
+          <li>
+            Significant refactoring to media endpoint's mechanism.
+            Now works on a single request.
+          </li>
+          <li>
+            Add text about adding an id to both an object and its wrapping Create.
+          </li>
+          <li>
+            Add Public special collection to some more examples.
+          </li>
+          <li>
+            Note that implementations MUST NOT deliver to the Public special
+            collection.
+          </li>
+          <li>
+            Merged targeting and delivery; remove outdated "notification targeting".
+          </li>
+          <li>
+            Note that bcc/bto must be stripped from the delivered
+            ActivityStreams object.
+          </li>
+          <li>
+            Add SHOULD on not overloading servers with submissions; recommend
+            exponential backoff.
+          </li>
+          <li>
+            Move "Partial Updates" to own section; mark at risk.
+          </li>
+          <li>
+            Explicitly name addressing properties to copy for object creation
+            w/o Create.
+          </li>
+          <li>
+            Add <code>bto</code> and <code>audience</code> to everything that
+            isn't referencing it currently and Reference the ActivityStreams
+            audience targeting directly.
+          </li>
+          <li>
+            Fixed non-normative citation of Micropub and Social Web Protocols.
+          </li>
+          <li>
+            Went over all MAY / SHOULD / MUST and made sure correct everywhere.
+          </li>
+          <li>
+            Note where <code>object</code> and <code>target</code> are required.
+          </li>
+          <li>
+            Clarify transient messages: allowed, and happen by omitting id (not
+            via fragment id).
+          </li>
+          <li>
+            Clarify that the proxyUrl uses a form-urlencoded <code>id</code>
+            parameter.
+          </li>
+          <li>
+            Point to the AS2 docs on Undo.
+          </li>
+          <li>
+            Added <code>Create</code> and <code>Delete</code> activities to
+            the server to server side effects section and put all listed
+            activities in the same order as in client to server.
+          </li>
         </ul>
       </section>
 
