@@ -1655,6 +1655,24 @@ Location: https://dustycloud.org/likes/345
           and its <code>object</code> are of same origin.
         </p>
       </section>
+
+      <section id="delete-activity-inbox">
+        <h3>Delete Activity</h3>
+        <p>
+          The side effect of receiving this is that (assuming the
+          <code>object</code> is owned by the sending actor / server) the
+          server receiving the delete activity SHOULD remove its representation
+          of the <code>object</code> with the same <code>id</code>, and MAY
+          replace that representation with a <code>Tombstone</code> object.
+        </p>
+        <p>
+          (Note that after an activity has been transmitted from an origin
+          server to a remote server, there is nothing in the ActivityPub
+          protocol that can <em>enforce</em> remote deletion of an object's
+          representation.)
+        </p>
+      </section>
+
       <section id="follow-activity-inbox">
         <h3>Follow Activity</h3>
         <p>
