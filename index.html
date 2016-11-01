@@ -1623,22 +1623,31 @@ Location: https://dustycloud.org/likes/345
         </section>
       </section>
 
+      <section id="update-activity-inbox">
+        <h3>Update Activity</h3>
+        <p>
+          For server to server interactions, an <code>Update</code> activity
+          means that the receiving server SHOULD update its copy of the
+          <code>object</code> of the same <code>id</code> to the copy
+          supplied in the <code>Update</code> activity.
+          Unlike the
+          <a href="#update-activity-outbox">
+            client to server handling of the Update activity</a>,
+          this is not a partial update but a complete replacement of the object.
+        </p>
+        <p>
+          The receiving server MUST take care to be sure that the
+          <code>Update</code> is authorized to modify its <code>object</code>.
+          At minimum, this may be done by ensuring that the <code>Update</code>
+          and its <code>object</code> are of same origin.
+        </p>
+      </section>
       <section id="follow-activity-inbox">
         <h3>Follow Activity</h3>
         <p>
           The side effect of receving this in an <strong>inbox</strong> is
           that the server SHOULD add the <code>actor</code> to the <code>object</code>
           user's <a href="#followers">Followers Collection</a>.
-        </p>
-      </section>
-      <section id="like-activity-inbox">
-        <h3>Like Activity</h3>
-        <p>
-          The side effect of receving this in an <strong>inbox</strong> is
-          that the server SHOULD increment the <code>object</code>'s count of
-          likes, or perform other appropriate indication of the like
-          being performed, such as listing the liking <code>actor</code>
-          amongst actors who have liked this <code>object</code>.
         </p>
       </section>
       <section id="add-activity-inbox">
@@ -1680,23 +1689,14 @@ Location: https://dustycloud.org/likes/345
           </li>
         </ul>
       </section>
-      <section id="update-activity-inbox">
-        <h3>Update Activity</h3>
+      <section id="like-activity-inbox">
+        <h3>Like Activity</h3>
         <p>
-          For server to server interactions, an <code>Update</code> activity
-          means that the receiving server SHOULD update its copy of the
-          <code>object</code> of the same <code>id</code> to the copy
-          supplied in the <code>Update</code> activity.
-          Unlike the
-          <a href="#update-activity-outbox">
-            client to server handling of the Update activity</a>,
-          this is not a partial update but a complete replacement of the object.
-        </p>
-        <p>
-          The receiving server MUST take care to be sure that the
-          <code>Update</code> is authorized to modify its <code>object</code>.
-          At minimum, this may be done by ensuring that the <code>Update</code>
-          and its <code>object</code> are of same origin.
+          The side effect of receving this in an <strong>inbox</strong> is
+          that the server SHOULD increment the <code>object</code>'s count of
+          likes, or perform other appropriate indication of the like
+          being performed, such as listing the liking <code>actor</code>
+          amongst actors who have liked this <code>object</code>.
         </p>
       </section>
       <section id="undo-activity-inbox">
