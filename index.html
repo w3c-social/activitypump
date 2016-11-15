@@ -735,16 +735,16 @@
 
       <p>
         Note that some of these collections are specified to be of type
-        <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+        <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
           <code>OrderedCollection</code></a>
         specifically, while others are permitted to be either a
-        <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+        <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-collection">
           <code>Collection</code></a>
         or an
-        <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+        <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
           <code>OrderedCollection</code></a>.
         An
-        <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+        <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
           <code>OrderedCollection</code></a>
         MUST be presented consistently in reverse chronological order.
       </p>
@@ -774,10 +774,10 @@
           This is where one would find a list of all the users that are
           following the actor.
           The <code>followers</code> collection MUST be either an
-          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
             <code>OrderedCollection</code></a>
           or a
-          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-collection">
             <code>Collection</code></a>
           and MAY be filtered on privileges of an authenticated user
           or as appropriate when no authentication is given.
@@ -797,10 +797,10 @@
           This is a list of everybody that the actor has followed, added as a
           <a href="#follow-activity-outbox">side effect</a>.
           The <code>following</code> collection MUST be either an
-          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
             <code>OrderedCollection</code></a>
           or a
-          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-collection">
             <code>Collection</code></a>
           and MAY be filtered on privileges of an authenticated user
           or as appropriate when no authentication is given.
@@ -814,10 +814,10 @@
           This is a list of every object from all of the actor's <code>Like</code>
           activities, added as a <a href="#like-activity-outbox">side effect</a>.
           The <code>following</code> collection MUST be either an
-          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
             <code>OrderedCollection</code></a>
           or a
-          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-collection">
             <code>Collection</code></a>
           and MAY be filtered on privileges of an authenticated user
           or as appropriate when no authentication is given.
@@ -830,7 +830,7 @@
           The outbox is discovered through the <code>outbox</code>
           property of an <a href="#actors">actor's</a> profile.
           The <code>outbox</code> MUST be an
-          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
             <code>OrderedCollection</code></a>.
         </p>
         <p>
@@ -860,7 +860,7 @@
           The inbox is discovered through the <code>inbox</code>
           property of an <a href="#actors">actor's</a> profile.
           The <code>inbox</code> MUST be an
-          <a href="https://www.w3.org/ns/activitystreams#OrderedCollection">
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
             <code>OrderedCollection</code></a>.
         </p>
 
