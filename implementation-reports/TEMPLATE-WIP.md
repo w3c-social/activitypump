@@ -45,8 +45,10 @@ MUST
 * [ ] Client discovers the URL of a user's outbox from their profile
 * [ ] Client submits activity by sending an HTTP post request to the outbox URL with the Content-Type of application/ld+json; profile="https://www.w3.org/ns/activitystreams#"
 * [ ] Client submission request body is either a single Activity or a single non-Activity Object
+  * [ ] Clients provide the object property when submitting the following activity types to an outbox: Create, Update, Delete, Follow, Add, Remove, Like, Block, Undo.
+  * [ ] Clients provide the target property when submitting the following activity types to an outbox: Add, Remove.
 * [ ] Client sumission request is authenticated with the credentials of the user to whom the outbox belongs
-* [ ] Client supports uploading media by sending a multipart/form-data request body
+* [ ] Client supports [uploading media](https://www.w3.org/TR/activitypub/#uploading-media) by sending a multipart/form-data request body
 
 #### Object Retrieval
 
@@ -73,6 +75,8 @@ MUST
 #### Accept notifications from other servers
 
 > A federated server receiving an activity to its actor's inbox, validating that the activity and any nested objects were created by their respective actors, and handling server to server side effects appropriately.
+
+#### Object Retrieval
 
 ## Security Considerations (B)
 
