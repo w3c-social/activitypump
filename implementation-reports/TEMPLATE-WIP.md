@@ -50,6 +50,11 @@ MUST
 * [ ] Client sumission request is authenticated with the credentials of the user to whom the outbox belongs
 * [ ] Client supports [uploading media](https://www.w3.org/TR/activitypub/#uploading-media) by sending a multipart/form-data request body
 
+SHOULD
+
+* [ ] Before submitting a new activity or object, Client infers appropriate target audience by recursively looking at certain properties (e.g. `inReplyTo`, See Section 7), and adds these targets to the new submission's audience.
+* [ ] Client limits depth of this recursion.
+
 #### Object Retrieval
 
 * [ ] - When retrieving objects, "The client MUST specify an Accept header with the application/ld+json; profile="https://www.w3.org/ns/activitystreams#" media type in order to retrieve the activity."
