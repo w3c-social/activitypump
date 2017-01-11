@@ -34,7 +34,7 @@ Description of software component that acts as an ActivityPub Client, and how an
 
 ### Features
 
-#### Activity Submission
+#### Outbox Submission
 
 > A client receiving authorization and subsequently submitting an activity to the authenticated actor's outbox.
 
@@ -53,9 +53,14 @@ MUST
 SHOULD
 
 * [ ] Before submitting a new activity or object, Client infers appropriate target audience by recursively looking at certain properties (e.g. `inReplyTo`, See Section 7), and adds these targets to the new submission's audience.
-* [ ] Client limits depth of this recursion.
+  * [ ] Client limits depth of this recursion.
 
-#### Object Retrieval
+* [ ] Validate the content they receive to avoid content spoofing attacks.
+* [ ] Don't trust client submitted content
+* [ ] Don't trust content received from a server other than the content's origin without some form of verification.
+
+
+#### Retrieval
 
 MUST
 
@@ -71,13 +76,109 @@ Description of software component that acts as an ActivityPub Server, and how an
 
 > A server handling an activity submitted by an authenticated actor to their outbox and handling client to server interaction side effects appropriately.
 
-#### Deliver activities to inboxes of recipients
+MUST
+
+* [ ] Accepts Activity Objects
+* [ ] Accepts non-Activity Objects, and converts to Create Activities per 7.1.1
+* [ ] Removes the `bto` and `bcc` properties from Objects before storage and delivery
+* [ ] Ignores 'id' on submitted objects, and generates a new id instead
+* [ ] Responds with status code 201 Created
+* [ ] Response includes Location header whose value is id of new object, unless the Activity is transient
+* [ ] Accepts Uploaded Media in submissions
+  * Responds with status code of 201 Created or 202 Accepted as described in 6.
+  * Response contains a Location header pointing to the to-be-created object's id.
+  * Appends an id property to the new object
+
+* Update
+  * [ ] Server takes care to be sure that the Update is authorized to modify its object before modifying the server's stored copy
+
+SHOULD
+
+* [ ] After receiving submission with uploaded media, the server should include the upload's new URL in the submitted object's url property
+* [ ] Take care not to overload other servers with delivery submissions
+* Create
+  * [ ] merges audience properties (to, bto, cc, bcc, audience) with the Create's 'object's audience properties
+  * [ ] Create's actor property is copied to be the value of .object.attributedTo
+* Follow
+  * [ ] Adds followed object to the actor's Following Collection
+* Add
+  * [ ] Adds object to the target Collection, unless not allowed due to requirements in 7.5
+* Remove
+  * [ ] Remove object from the target Collection, unless not allowed due to requirements in 7.5
+* Like
+  * [ ] Adds the object to the actor's Likes Collection.
+* Block
+  * Prevent the blocked object from interacting with any object posted by the actor.
+
+#### Deliver to inbox and receive at inbox
 
 > A federated server delivering an activity posted by a local actor to the inbox endpoints of all recipients specified in the activity, including those on other remote federated servers.
 
+##### Delivery
+
 MUST
 
-* [ ] - MUST - [3.1](https://www.w3.org/TR/activitypub/#obj-id) - "Identifiers MUST be provided for activities posted in server to server communication, unless the activity is intentionally transient."
+* [ ] Performs delivery on all Activities posted to the outbox
+* [ ] Utilizes `to`, `bto`, `cc`, and `bcc` to determine delivery recipients.
+* [ ] Provides an `id` all Activities sent to other servers, unless the activity is intentionally transient.
+* [ ] Dereferences delivery targets with the submitting user's credentials
+* [ ] Delivers to all items in recipients that are Collections or OrderedCollections
+  * [ ] Applies the above, recursively if the Collection contains Collections, and limits recursion depth >= 1
+* [ ] Delivers activity with 'object' property if the Activity type is one of Create, Update, Delete, Follow, Add, Remove, Like, Block, Undo
+* [ ] Delivers activity with 'target' property if the Activity type is one of Add, Remove
+* [ ] Deduplicates final recipient list
+* [ ] Does not deliver to recipients which are the same as the actor of the Activity being notified about
+
+SHOULD
+
+* [ ] NOT deliver Block Activities to their object.
+
+##### Inbox Receiving
+
+MUST
+
+* [ ] Deduplicates activities returned by the inbox by comparing activity `id`s
+* [ ] Forwards incoming activities to the values of to, bto, cc, bcc, audience if and only if criteria in 8.1.2 are met.
+* Update
+  * [ ] Take care to be sure that the Update is authorized to modify its object
+
+SHOULD
+
+* [ ] Recurse through to, bto, cc, bcc, audience object values to determine whether/where to forward according to criteria in 8.1.2
+  * [ ] Limit recursion in this process
+
+* Update
+  * [ ] Completely replace its copy of the activity with the newly received value
+
+* Follow
+  * [ ] Add the actor to the object user's Followers Collection.
+
+* Add
+  * [ ] Add the object to the Collection specified in the target property, unless not allowed to per requirements in 8.6
+
+* Remove
+  * [ ] Remove the object from the Collection specified in the target property, unless not allowed per requirements in 8.6
+
+* Like
+  * [ ] Perform appropriate indication of the like being performed (See 8.8 for examples)
+
+* [ ] Validate the content they receive to avoid content spoofing attacks.
+* [ ] Don't trust client submitted content
+* [ ] Don't trust content received from a server other than the content's origin without some form of verification.
+
+##### Inbox Retrieval
+
+MUST
+
+* [ ] inbox is an OrderedCollection
+
+SHOULD
+
+* [ ] Server filters inbox content according to the requester's permission
+
+Implied
+
+* [ ] Server responds to GET request at inbox URL
 
 #### Accept notifications from other servers
 
@@ -110,4 +211,9 @@ Spec uses lowercase 'may', but in the details there is a MUST.
 * [ ] - MAY? - "The HTTP GET method may be dereferenced against an object's id property to retrieve the activity."
   * [ ] - MUST - presents the ActivityStreams object representation in response to application/ld+json; profile="https://www.w3.org/ns/activitystreams#"
   * [ ] - SHOULD - presents the ActivityStreams representation in response to application/activity+json as wel
-
+  * Deleted Object retrieval
+    * [ ] SHOULD respond with 410 Gone to requests for deleted objects
+    * [ ] Response body SHOULD be Object of type Tombstone.
+  * Never existed objects
+    * [ ] SHOULD respond with 404 status code
+  * [ ] SHOULD fail requests which do not pass their authorization checks with the appropriate HTTP error code, or the 403 Forbidden error code where the existence of the object is considered private.
