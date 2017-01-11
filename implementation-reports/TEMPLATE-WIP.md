@@ -57,7 +57,9 @@ SHOULD
 
 #### Object Retrieval
 
-* [ ] - When retrieving objects, "The client MUST specify an Accept header with the application/ld+json; profile="https://www.w3.org/ns/activitystreams#" media type in order to retrieve the activity."
+MUST
+
+* [ ] When retrieving objects, Client specifies an Accept header with the application/ld+json; profile="https://www.w3.org/ns/activitystreams#" media type
 
 ## Server
 
