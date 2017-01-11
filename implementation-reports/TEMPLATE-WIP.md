@@ -36,20 +36,17 @@ Description of software component that acts as an ActivityPub Client, and how an
 
 #### Activity Submission
 
-
 > A client receiving authorization and subsequently submitting an activity to the authenticated actor's outbox.
+
 - Section 7, Client to Server Interaction
 
-"To submit new Activities to a user's server, "
-* [ ] - "clients MUST discover the URL of the user's outbox from their profile"
+MUST
 
-"and then "
-
-* [ ] - clients "MUST make an HTTP POST request to to this URL with the Content-Type of application/ld+json; profile="https://www.w3.org/ns/activitystreams#""
-* [ ] - "The request MUST be authenticated with the credentials of the user to whom the outbox belongs. The body of the POST request must contain a single Activity (which may contain embedded objects), or a single non-Activity object which will be wrapped in a Create activity by the server.
-
-* [ ] - Client supports uploading media. "To accomplish this, a client MUST submit a multipart/form-data message to the user's uploadMedia endpoint on their ActivityStreams profile object." (Sec. 6)
-
+* [ ] Client discovers the URL of a user's outbox from their profile
+* [ ] Client submits activity by sending an HTTP post request to the outbox URL with the Content-Type of application/ld+json; profile="https://www.w3.org/ns/activitystreams#"
+* [ ] Client submission request body is either a single Activity or a single non-Activity Object
+* [ ] Client sumission request is authenticated with the credentials of the user to whom the outbox belongs
+* [ ] Client supports uploading media by sending a multipart/form-data request body
 
 #### Object Retrieval
 
