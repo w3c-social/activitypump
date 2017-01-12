@@ -6,14 +6,16 @@ If your implementation is only a Client or only a Server, and not both (a Federa
 
 When you are complete, send a pull request with the addition of your report file. Please remove this entire top section before submitting. If you haven't already, also consider filing an [ActivityStreams implemention report](https://github.com/w3c/activitystreams/blob/master/implementation-reports/template.md).
 
-# Implementation Name (Replace this header)
+# Your Implementation's Name
 
 Summary of the project.
+
 Summary of the role ActivityPub plays in enabling the project's goals and the goals of its end-users.
 
 Implementation Home Page URL: 
 
-Implementation Classes (Sender and/or Receiver): 
+Implementation Classes (Sender and/or Receiver):
+
 * [ ] Client
 * [ ] Server
 * [ ] Federated Server (all of the above)
@@ -21,16 +23,20 @@ Implementation Classes (Sender and/or Receiver):
 Developer(s): [Name](http://you.example.com)
 
 Interface to other applications: library | network service | other
+
 Publicly Accessible: [ ]
 
 Source Code repo URL(s): 
+
 * [ ] 100% open source implementation
+
 License: 
+
 Programming Language(s): 
 
 ## Client
 
-Description of software component that acts as an ActivityPub Client, and how an end-user makes use of it.
+Describe the software component that acts as an ActivityPub Client, and how an end-user makes use of it.
 
 ### Features
 
@@ -38,7 +44,7 @@ Description of software component that acts as an ActivityPub Client, and how an
 
 > A client receiving authorization and subsequently submitting an activity to the authenticated actor's outbox.
 
-- Section 7, Client to Server Interaction
+According to [Section 7](https://w3c.github.io/activitypub/#client-to-server-interactions)...
 
 MUST
 
@@ -55,16 +61,11 @@ SHOULD
 * [ ] Before submitting a new activity or object, Client infers appropriate target audience by recursively looking at certain properties (e.g. `inReplyTo`, See Section 7), and adds these targets to the new submission's audience.
   * [ ] Client limits depth of this recursion.
 
-* [ ] Validate the content they receive to avoid content spoofing attacks.
-* [ ] Don't trust client submitted content
-* [ ] Don't trust content received from a server other than the content's origin without some form of verification.
-
-
-#### Retrieval
+#### Retrieving Objects
 
 MUST
 
-* [ ] When retrieving objects, Client specifies an Accept header with the application/ld+json; profile="https://www.w3.org/ns/activitystreams#" media type
+* [ ] When retrieving objects, Client specifies an Accept header with the `application/ld+json; profile="https://www.w3.org/ns/activitystreams#"` media type ([3.2](https://w3c.github.io/activitypub/#retrieving-objects))
 
 ## Server
 
@@ -72,9 +73,18 @@ Description of software component that acts as an ActivityPub Server, and how an
 
 ### Features
 
-#### Accept activity submissions and produces side effects
+A Server:
+
+* Accepts activity submissions in an outbox, and updates the server's Objects per rules described below
+* Delivers these submissions to the inboxes of other Servers
+* Receives Activity from other servers in an inbox, and updates the server's Objects per rules described below
+* Makes Objects available for retrieval by Clients
+
+#### Accept activity submissions and produce correct side effects
 
 > A server handling an activity submitted by an authenticated actor to their outbox and handling client to server interaction side effects appropriately.
+
+When a Client submits Activities to a Server's outbox, the Server...
 
 MUST
 
@@ -94,6 +104,8 @@ MUST
 
 SHOULD
 
+* [ ] Server dodes not trust client submitted content
+* [ ] Validate the content they receive to avoid content spoofing attacks.
 * [ ] After receiving submission with uploaded media, the server should include the upload's new URL in the submitted object's url property
 * [ ] Take care not to overload other servers with delivery submissions
 * Create
@@ -110,11 +122,11 @@ SHOULD
 * Block
   * Prevent the blocked object from interacting with any object posted by the actor.
 
-#### Deliver to inbox and receive at inbox
+#### Deliver to inboxes
 
 > A federated server delivering an activity posted by a local actor to the inbox endpoints of all recipients specified in the activity, including those on other remote federated servers.
 
-##### Delivery
+After receiving submitted Activities in an Outbox, a Server...
 
 MUST
 
@@ -133,7 +145,11 @@ SHOULD
 
 * [ ] NOT deliver Block Activities to their object.
 
-##### Inbox Receiving
+#### Accept inbox notifications from other servers
+
+> A federated server receiving an activity to its actor's inbox, validating that the activity and any nested objects were created by their respective actors, and handling server to server side effects appropriately.
+
+When receiving notifications in an inbox, a Server...
 
 MUST
 
@@ -144,29 +160,26 @@ MUST
 
 SHOULD
 
+* [ ] Don't trust content received from a server other than the content's origin without some form of verification.
 * [ ] Recurse through to, bto, cc, bcc, audience object values to determine whether/where to forward according to criteria in 8.1.2
   * [ ] Limit recursion in this process
-
 * Update
   * [ ] Completely replace its copy of the activity with the newly received value
-
 * Follow
   * [ ] Add the actor to the object user's Followers Collection.
-
 * Add
   * [ ] Add the object to the Collection specified in the target property, unless not allowed to per requirements in 8.6
-
 * Remove
   * [ ] Remove the object from the Collection specified in the target property, unless not allowed per requirements in 8.6
-
 * Like
   * [ ] Perform appropriate indication of the like being performed (See 8.8 for examples)
-
 * [ ] Validate the content they receive to avoid content spoofing attacks.
-* [ ] Don't trust client submitted content
-* [ ] Don't trust content received from a server other than the content's origin without some form of verification.
 
 ##### Inbox Retrieval
+
+non-normative
+
+* [ ] Server responds to GET request at inbox URL
 
 MUST
 
@@ -176,44 +189,45 @@ SHOULD
 
 * [ ] Server filters inbox content according to the requester's permission
 
-Implied
+#### Allow Object Retrieval
 
-* [ ] Server responds to GET request at inbox URL
+According to [section 3.2](https://w3c.github.io/activitypub/#retrieving-objects), the Server...
 
-#### Accept notifications from other servers
+MAY
 
-> A federated server receiving an activity to its actor's inbox, validating that the activity and any nested objects were created by their respective actors, and handling server to server side effects appropriately.
+* [ ] Allow dereferencing Object `id`s by responding to HTTP GET requests with a representation of the Object
 
-#### Object Retrieval
+If the above, is true, the Server...
 
-## Security Considerations (B)
+MUST
 
-* [ ] acceptance criteria (NORMATIVITY)
+* [ ] Respond with the ActivityStreams object representation in response to requests that primarily Accept the media type `application/ld+json; profile="https://www.w3.org/ns/activitystreams#"`
+
+SHOULD
+
+* [ ] - Respond with the ActivityStreams object representation in response to requests that primarily Accept the media type `application/activity+json`
+* Deleted Object retrieval
+  * [ ] Respond with 410 Gone status code to requests for deleted objects
+  * [ ] Respond with response body that is an ActivityStreams Object of type `Tombstone`.
+  * [ ] Respond with 404 status code for Object URIs that have never existed
+* [ ] Respond with a 403 Forbidden status code to all requests that access Objects considered Private
+* [ ] Respond to requests which do not pass authorization checks using "the appropriate HTTP error code"
+* [ ] Respond with a 403 Forbidden error code to all requests to Object URIs where the existence of the object is considered private.
+
+## Security Considerations
+
+non-normative
+
+* [ ] Server verifies that the new content is really posted by the author indicated in Objects received in inbox and outbox ([B.1](https://w3c.github.io/activitypub/#security-verification))
+* [ ] By default, implementation does not make HTTP requests to localhost when delivering Activities ([B.2](https://w3c.github.io/activitypub/#security-localhost))
+* [ ] Implementation applies a whitelist of allowed URI protocols before issuing requests, e.g. for inbox delivery ([B.3](https://w3c.github.io/activitypub/#security-uri-schemes))
+* [ ] Server filters incoming content both by local untrusted users and any remote users through some sort of spam filter ([B.4](https://w3c.github.io/activitypub/#security-spam))
+* [ ] Implementation takes care to santizie fields containing markup to prevent cross site scripting attacks ([B.5](https://w3c.github.io/activitypub/#security-sanitizing-content))
 
 ## Other Features
 
-### Exit Criteria Features
+### Requirements not yet specified
 
 * Discovering an actor's profile based on their URI.
   * TODO clarify acceptance criteria: https://github.com/w3c/activitypub/issues/173
 
-### Non-Exit-Criteria Features implied by the spec
-
-#### Object Retrieval
-
-
-##### Server
-
-> The HTTP GET method may be dereferenced against an object's id property to retrieve the activity.
-
-Spec uses lowercase 'may', but in the details there is a MUST.
-
-* [ ] - MAY? - "The HTTP GET method may be dereferenced against an object's id property to retrieve the activity."
-  * [ ] - MUST - presents the ActivityStreams object representation in response to application/ld+json; profile="https://www.w3.org/ns/activitystreams#"
-  * [ ] - SHOULD - presents the ActivityStreams representation in response to application/activity+json as wel
-  * Deleted Object retrieval
-    * [ ] SHOULD respond with 410 Gone to requests for deleted objects
-    * [ ] Response body SHOULD be Object of type Tombstone.
-  * Never existed objects
-    * [ ] SHOULD respond with 404 status code
-  * [ ] SHOULD fail requests which do not pass their authorization checks with the appropriate HTTP error code, or the 403 Forbidden error code where the existence of the object is considered private.
