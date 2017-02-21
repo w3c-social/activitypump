@@ -427,11 +427,11 @@
           select the type of data to return in response to a request,
           but MUST present the ActivityStreams object representation
           in response to
-          <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams#"</code>,
+          <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>,
           and SHOULD also present the ActivityStreams representation in
           response to <code>application/activity+json</code> as well.
           The client MUST specify an <code>Accept</code> header with the
-          <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams#"</code>
+          <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>
           media type in order to retrieve the activity.
         </p>
         <p>
@@ -1054,7 +1054,7 @@
         the URL of the user's <strong><a href="#outbox">outbox</a></strong>
         from their <a href="#actor-objects">profile</a> and then MUST make an
         HTTP <code>POST</code> request to to this URL with the Content-Type of
-        <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams#"</code>.
+        <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>.
         The request MUST be authenticated with the credentials of the user to
         whom the outbox belongs.
         The body of the <code>POST</code> request MUST contain a single
@@ -1067,7 +1067,7 @@
 POST /outbox/ HTTP/1.1
 Host: dustycloud.org
 Authorization: Bearer XXXXXXXXXXX
-Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystreams#"
+Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystreams"
 
 {
   "@context": ["https://www.w3.org/ns/activitystreams",
@@ -2373,7 +2373,7 @@ Location: https://dustycloud.org/likes/345
           <li>
             More clear specification of content negotiation on retrieving AS2
             objects; make
-            <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams#"</code>
+            <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>
             the default media type.
             Servers MAY do content negotiation but MUST respond with AS2 to the
             right content type.
