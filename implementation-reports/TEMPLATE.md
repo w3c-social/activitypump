@@ -104,7 +104,7 @@ MUST
 
 SHOULD
 
-* [ ] Server dodes not trust client submitted content
+* [ ] Server does not trust client submitted content
 * [ ] Validate the content they receive to avoid content spoofing attacks.
 * [ ] After receiving submission with uploaded media, the server should include the upload's new URL in the submitted object's url property
 * [ ] Take care not to overload other servers with delivery submissions
