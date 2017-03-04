@@ -95,6 +95,8 @@ MUST
 * [ ] Responds with status code 201 Created
 * [ ] Response includes Location header whose value is id of new object, unless the Activity is transient
 * [ ] Accepts Uploaded Media in submissions
+  * accepts uploadedMedia file parameter
+  * accepts uploadedMedia object parameter
   * Responds with status code of 201 Created or 202 Accepted as described in 6.
   * Response contains a Location header pointing to the to-be-created object's id.
   * Appends an id property to the new object
