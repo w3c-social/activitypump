@@ -2158,8 +2158,9 @@ Location: https://dustycloud.org/likes/345
           "incognito" mode?
         </a></dt>
         <dd>
-          Works in such a way that the website would not be able to determine
-          that the user was in "incognito".
+          Being in "incognito" mode means that authentication information a
+          browser or agent might keep between sessions would not be preserved,
+          thus limiting access to any content requiring explicit authorization.
         </dd>
 
         <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#storage">
@@ -2169,6 +2170,8 @@ Location: https://dustycloud.org/likes/345
           This depends on implementation.
           Clients might choose to cache activities they have previously
           seen, but this is not a normative requirement.
+          Depending on the authentication method used, authentication tokens or
+          keys may be persisted.
         </dd>
 
         <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#considerations">
