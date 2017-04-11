@@ -589,11 +589,6 @@
           properties:
         </p>
         <dl>
-          <dt id="url-property">url</dt>
-          <dd>
-            A link to the actor's "profile web page", if it is not equal to the
-            value of <code>id</code>.
-          </dd>
           <dt id="following-property">following</dt>
           <dd>
             A link to an [[!ActivityStreams]] collection of the actors that
@@ -608,15 +603,6 @@
           <dd>
             A link to an [[!ActivityStreams]] collection of objects this
             actor has liked; see <a href="#likes"></a>.
-          </dd>
-          <dt id="name-property">name</dt>
-          <dd>
-            The preferred "nickname" or "display name" of the actor.
-            (Note that this is
-            <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-name">
-              the same <code>name</code> as in ActivityStreams</a>.
-            It's just commonly used enough by ActivityPub profiles to
-            be worth mentioning here.)
           </dd>
         </dl>
         <pre class="example">
@@ -727,6 +713,35 @@
           <a href="https://www.w3.org/TR/activitystreams-core/#naturalLanguageValues">
             natural language support defined in ActivityStreams</a>.
         </p>
+
+        <section id="actor-as2-properties" class="informative">
+          <h2>Usage of ActivityStreams properties on Actors</h2>
+          <p>
+            As the upstream vocabulary for ActivityPub, any applicable
+            ActivityStreams property may be used on ActivityPub Actors.
+            Some ActivityStreams properties are particularly worth highlighting
+            to demonstrate how they are used in ActivityPub implementations.
+          </p>
+
+          <dl>
+            <dt id="url-property">url</dt>
+            <dd>
+              A link to the actor's "profile web page", if it is not equal to the
+              value of <code>id</code>.
+            </dd>
+            <dt id="name-property">name</dt>
+            <dd>
+              The preferred "nickname" or "display name" of the actor.
+            </dd>
+            <dt id="summary">summary</dt>
+            <dd>A quick summary or bio by the user about themselves.</dd>
+            <dt id="icon">icon</dt>
+            <dd>
+              A link to an image or an Image object which represents the user's
+              profile picture (this may be a thumbnail).
+            </dd>
+          </dl>
+        </section>
       </section>
 
     </section>
