@@ -112,7 +112,7 @@
         Most activities are purely responsive in nature - they are produced as
         a response to a user having <em>done</em> something.
         In addition, certain activities posted by a user to their
-        <a href="#outbox">outbox</a> may trigger certain operations on the
+        <a href="#outbox">outbox</a> may trigger certain side effects on the
         user's behalf.
         Finally, activities may have side effects as they propagate throughout
         the social graph by being posted to the <a href="#inbox">inboxes</a>
@@ -122,9 +122,9 @@
       <ol>
         <li>
           A user posts the <code>Like</code> activity to their outbox.
-          This activity causes the user's server to perform deliver of an
-          activity on behalf of the user; in particular, it adds the specified
-          object to the collection of objects the user has liked.
+          This activity causes the user's server to perform delivery of an
+          activity on behalf of the user, adding the specified object to the
+          collection of objects the user has liked.
         </li>
         <li>
           A consequence of the above activity (per
@@ -203,8 +203,8 @@
           to implementation of the federation protocol.
           In addition, whenever requirements are specified, it is called out
           whether they apply to the client or server (for the client-to-server
-          protocol) or which of a pair of servers in the server-to-server
-          protocol.
+          protocol) or whether referring to a sending or receiving server in
+          the server-to-server protocol.
         </p>
       </section>
       <section id="cr-exit-criteria">
@@ -653,8 +653,8 @@
           <dd>A quick summary or bio by the user about themselves.</dd>
           <dt id="icon">icon</dt>
           <dd>
-            A URI to an image which represents the user's profile picture
-            (this may be a thumbnail).
+            A link to an image or an Image object which represents the user's
+            profile picture (this may be a thumbnail).
           </dd>
           <dt id="endpoints">endpoints</dt>
           <dd>
@@ -672,7 +672,8 @@
         <dl>
           <dt id="uploadMedia">uploadMedia</dt>
           <dd>
-            Upload endpoint URI for this user for binary data.
+            <a href="#uploading-media">Upload endpoint URI</a>
+            for this user for binary data.
           </dd>
           <dt id="proxyUrl">proxyUrl</dt>
           <dd>
