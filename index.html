@@ -699,6 +699,33 @@
           </dd>
         </dl>
 
+        <div class="note" id="as2-actor-properties">
+          <p>
+            As the upstream vocabulary for ActivityPub, any applicable
+            [[!ActivityStreams]] property may be used on ActivityPub Actors.
+            Some ActivityStreams properties are particularly worth highlighting
+            to demonstrate how they are used in ActivityPub implementations.
+          </p>
+
+          <dl>
+            <dt id="url-property">url</dt>
+            <dd>
+              A link to the actor's "profile web page", if it is not equal to the
+              value of <code>id</code>.
+            </dd>
+            <dt id="name-property">name</dt>
+            <dd>
+              The preferred "nickname" or "display name" of the actor.
+            </dd>
+            <dt id="summary-property">summary</dt>
+            <dd>A quick summary or bio by the user about themselves.</dd>
+            <dt id="icon-property">icon</dt>
+            <dd>
+              A link to an image or an Image object which represents the user's
+              profile picture (this may be a thumbnail).
+            </dd>
+          </dl>
+        </div>
         <p class="note" id="actor-text-direction">
           Properties containing natural language values,
           such as <code>name</code>, <code>preferredUsername</code>, or
@@ -706,34 +733,6 @@
           <a href="https://www.w3.org/TR/activitystreams-core/#naturalLanguageValues">
             natural language support defined in ActivityStreams</a>.
         </p>
-
-        <p><em>The following text in this section is non-normative.</em></p>
-
-        <p>
-          As the upstream vocabulary for ActivityPub, any applicable
-          [[!ActivityStreams]] property may be used on ActivityPub Actors.
-          Some ActivityStreams properties are particularly worth highlighting
-          to demonstrate how they are used in ActivityPub implementations.
-        </p>
-
-        <dl>
-          <dt id="url-property">url</dt>
-          <dd>
-            A link to the actor's "profile web page", if it is not equal to the
-            value of <code>id</code>.
-          </dd>
-          <dt id="name-property">name</dt>
-          <dd>
-            The preferred "nickname" or "display name" of the actor.
-          </dd>
-          <dt id="summary-property">summary</dt>
-          <dd>A quick summary or bio by the user about themselves.</dd>
-          <dt id="icon-property">icon</dt>
-          <dd>
-            A link to an image or an Image object which represents the user's
-            profile picture (this may be a thumbnail).
-          </dd>
-        </dl>
       </section>
 
     </section>
