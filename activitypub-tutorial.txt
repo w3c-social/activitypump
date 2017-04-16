@@ -1,0 +1,212 @@
+ActivityPub tutorial
+====================
+
+ActivityPub is two things:
+
+ - *A server to server federation protocol*
+   (so decentralized websites can share information)
+ - *A client to server protocol*
+   (so users can communicate with ActivityPub using servers,
+   from a phone or desktop or web application or whatever)
+
+ActivityPub implementations can implement just one of these things or
+both of them.  However, once you've implemented one, it isn't too many
+steps to implement the other, and there are a lot of benefits to both
+(making your website part of the decentralized social web, and being
+able to use clients and client libraries that work across a wide variety
+of social websites).
+
+In ActivityPub, every actor has:
+
+ - An INBOX:  How they get messages from the world
+ - An OUTBOX: How they send messages to others
+
+             .--------.
+     .--.    | INBOX  |  <- receive messages
+    ; o o;   '--------'
+    '.  .'
+    /    \
+    |    |   .--------.
+    '----'   | OUTBOX |  -> send messages
+             '--------'
+
+These are endpoints, or really, just URLs which are listed in the
+ActivityPub actor's ActivityStreams description.  (More on
+ActivityStreams later.)
+
+Here's an example of the record of our friend Alyssa P. Hacker:
+
+  {"@context": "https://www.w3.org/ns/activitystreams",
+   "type": "Person",
+   "id": "https://social.example/alyssa/",
+   "name": "Alyssa P. Hacker",
+   "summary": "Lisp enthusiast hailing from MIT",
+   "inbox": "https://social.example/alyssa/inbox/",
+   "outbox": "https://social.example/alyssa/outbox/",
+   "followers": "https://social.example/alyssa/following/",
+   "following": "https://social.example/alyssa/following/",
+   "likes": "https://social.example/alyssa/likes/"}
+
+ActivityStreams objects are JSON-LD documents.  If you know what
+JSON-LD is, you can take advantage of the cool linked data approaches
+provided by JSON-LD.  If you don't, don't worry, JSON-LD documents and
+ActivityStreams can be understood as plain old simple JSON.  (If
+you're going to add extensions, that's the point at which JSON-LD
+really helps you out.)
+
+So, okay.  Alyssa wants to talk to her friends, and her friends want
+to talk to her!  Luckily these "inbox" and "outbox" things can help us
+out.  They both behave differently for GET and POST.  Let's see how
+that works:
+
+
+               actor              send messages
+           reads incoming           to actor
+              messages            (federation!)
+                 |                     |          
+                 V                     V                   .---.
+                       .--------.                   .-.  .'     '.
+     .--.    .-[GET]-- | INBOX  | <--[POST]---    .'   '-         ;
+    ; o o; <-'         '--------'                .'               '.
+    '.  .'                                      ;    REST OF THE    ;
+    /    \                                      '.       WORLD    .-'
+    |    | --.         .--------.                 '._           .'
+    '----'   '-[POST]- | OUTBOX | ---[GET]--->       '-__---_---'
+                       '--------'
+                 ^                     ^
+                 |                     |
+             actor sends            outside
+          messages / posts        world can read
+              content          messages from actor
+
+Hey nice, so just as a recap:
+
+ - You can POST to someone's inbox to send them a message
+   (server-to-server / federation only... this *is* federation!)
+ - You can GET from your inbox to read your latest messages
+   (client-to-server; this is like reading your social
+   network stream)
+ - You can POST to your outbox to send messages to the world
+   (client-to-server)
+ - You can GET from someone's outbox to see what messages they've
+   posted (or at least the ones you're authorized to see).
+   (client-to-server and/or server-to-server)
+ 
+Of course, if that last one (GET'ing from someone's outbox) was the
+only way to see what people have sent, this wouldn't be a very
+efficient federation protocol!  Indeed, federation happens usually by
+servers posting messages sent by actors to actors on other servers'
+inboxes.
+
+Let's see an example!  Let's say Alyssa wants to catch up with her
+friend, Ben Bitdiddle.  She lent him a book recently and she wants to
+make sure he returns it to her.  Here's the message she composes, as
+an ActivityStreams object:
+
+  {"@context": "https://www.w3.org/ns/activitystreams",
+   "type": "Note",
+   "to": ["https://chatty.example/ben/"],
+   "attributedTo": "https://social.example/alyssa/",
+   "content": "Say, did you finish reading that book I lent you?"}
+
+This is a note addressed to Ben.  She POSTs it to her outbox.
+
+     .--.  
+    ; o o;               .---------.
+    '.  .'               | ALYSSA'S|
+    /    \  ---[POST]--> |  OUTBOX |
+    |  A |               '---------'
+    '----' 
+
+Since this is a non-activity object, the server recognizes that this
+is an object being newly created, and does the courtesy of wrapping it
+in a Create activity. (Activities sent around in ActivityPub generally
+follow the pattern of some activity by some author being taken on some
+object.  In this case the activity is a Create of a Note object,
+posted by a Person.)
+
+  {"@context": "https://www.w3.org/ns/activitystreams",
+   "type": "Create",
+   "id": "https://social.example/alyssa/posts/a29a6843-9feb-4c74-a7f7-081b9c9201d3",
+   "to": ["https://chatty.example/ben/"],
+   "author": "https://social.example/alyssa/",
+   "object": {"type": "Note",
+              "id": "https://social.example/alyssa/posts/49e2d03d-b53a-4c4c-a95c-94a6abf45a19",
+              "attributedTo": "https://social.example/alyssa/",
+              "to": ["https://chatty.example/ben/"],
+              "content": "Say, did you finish reading that book I lent you?"}}
+
+Alyssa's server looks up Ben's ActivityStreams actor object, finds his
+inbox endpoint, and POST's her object to his inbox.
+
+
+   .----------.
+   | ALYSSA'S |'.                              .--. 
+   |  SERVER  | |                  .-------.  ;o o ;
+   |----------|.|                  | BEN'S |  '.  .'
+   | ======== | |  ---[POST]-----> | INBOX |  /    \
+   | ======== | |                  '-------'  | B  |
+   | ======== | |                             '----'
+   |          |.;
+   '----------'  
+
+Technically these are two separate steps... one is client to server
+communication, and one is server to server communication (federation).
+But, since we're using them both in this example, we can abstractly
+think of this as being a streamlined submission from outbox to inbox:
+
+     .--.                                     .--. 
+    ; o o;  .---------.           .-------.  ;o o ;
+    '.  .'  | ALYSSA'S|           | BEN'S |  '.  .'
+    /    \  |  OUTBOX | --------> | INBOX |  /    \
+    |  A |  '---------'           '-------'  | B  |
+    '----'                                   '----'
+
+Cool!  A while later, Alyssa checks what new messages she's gotten.
+Her phone polls her inbox via GET, and amongst a bunch of cat videos
+posted by friends and photos of her nephew posted her sister, she sees
+the following:
+
+  {"@context": "https://www.w3.org/ns/activitystreams",
+   "type": "Create",
+   "id": "https://chatty.example/ben/p/51086",
+   "to": ["https://social.example/alyssa/"],
+   "inReplyTo": "https://social.example/alyssa/posts/49e2d03d-b53a-4c4c-a95c-94a6abf45a19",
+   "author": "https://chatty.example/ben/",
+   "object": {"type": "Note",
+              "id": "https://chatty.example/ben/p/51085",
+              "attributedTo": "https://chatty.example/ben/",
+              "to": ["https://social.example/alyssa/"],
+              "content": "<p>Argh, yeah, sorry, I'll get it back to you tomorrow.</p>
+                          <p>I was reviewing the section on register machines,
+                             since it's been a while since I wrote one.</p>"}}
+
+Alyssa is relieved, and likes Ben's post:
+
+  {"@context": "https://www.w3.org/ns/activitystreams",
+   "type": "Like",
+   "id": "https://social.example/alyssa/posts/5312e10e-5110-42e5-a09b-934882b3ecec",
+   "to": ["https://chatty.example/ben/"],
+   "author": "https://social.example/alyssa/",
+   "object": "https://chatty.example/ben/p/51086"}
+
+She POSTs this message to her outbox.  (Since it's an activity, her
+server knows it doesn't need to wrap it in a Create object.)
+
+Feeling happy about things, she decides to post a public message to
+her followers.  Soon the following message is blasted to all the
+members of her followers collection, and since it has the special
+Public group addressed, is generally readable by anyone.
+
+  {"@context": "https://www.w3.org/ns/activitystreams",
+   "type": "Create",
+   "id": "https://social.example/alyssa/posts/9282e9cc-14d0-42b3-a758-d6aeca6c876b",
+   "to": ["https://social.example/alyssa/following/",
+          "https://www.w3.org/ns/activitystreams#Public"],
+   "author": "https://social.example/alyssa/",
+   "object": {"type": "Note",
+              "id": "https://social.example/alyssa/posts/d18c55d4-8a63-4181-9745-4e6cf7938fa1",
+              "attributedTo": "https://social.example/alyssa/",
+              "to": ["https://social.example/alyssa/following/",
+                     "https://www.w3.org/ns/activitystreams#Public"],
+              "content": "Lending books to friends is nice.  Getting them back is even nicer! :)"}}
