@@ -16,7 +16,8 @@ steps to implement the other, and there are a lot of benefits to both
 able to use clients and client libraries that work across a wide variety
 of social websites).
 
-In ActivityPub, every actor has:
+In ActivityPub, every actor (users are represented as "actors" here)
+has:
 
  - An INBOX:  How they get messages from the world
  - An OUTBOX: How they send messages to others
