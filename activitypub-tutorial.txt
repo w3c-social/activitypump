@@ -61,24 +61,24 @@ out.  They both behave differently for GET and POST.  Let's see how
 that works:
 
 
-               actor              send messages
-           reads incoming           to actor
-              messages            (federation!)
-                 |                     |          
-                 V                     V                   .---.
-                       .--------.                   .-.  .'     '.
-     .--.    .-[GET]-- | INBOX  | <--[POST]---    .'   '-         ;
-    ; o o; <-'         '--------'                .'               '.
-    '.  .'                                      ;    REST OF THE    ;
-    /    \                                      '.       WORLD    .-'
-    |    | --.         .--------.                 '._           .'
-    '----'   '-[POST]- | OUTBOX | ---[GET]--->       '-__---_---'
-                       '--------'
-                 ^                     ^
-                 |                     |
-             actor sends            outside
-          messages / posts        world can read
-              content          messages from actor
+               actor               send messages
+           reads incoming            to actor
+              messages             (federation!)
+                 |                      |          
+                 V                      V                   .---.
+                        .--------.                   .-.  .'     '.
+     .--.    .-[GET]--- | INBOX  | <--[POST]---    .'   '-         ;
+    ; o o; <-'          '--------'                .'               '.
+    '.  .'                                       ;    REST OF THE    ;
+    /    \                                       '.       WORLD    .-'
+    |    | --.          .--------.                 '._           .'
+    '----'   '-[POST]-> | OUTBOX | ---[GET]--->       '-__---_---'
+                        '--------'
+                 ^                      ^
+                 |                      |
+             actor sends             outside
+          messages / posts         world can read
+              content           messages from actor
 
 Hey nice, so just as a recap:
 
