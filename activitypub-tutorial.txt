@@ -41,6 +41,7 @@ Here's an example of the record of our friend Alyssa P. Hacker:
    "type": "Person",
    "id": "https://social.example/alyssa/",
    "name": "Alyssa P. Hacker",
+   "preferredUsername": "alyssa",
    "summary": "Lisp enthusiast hailing from MIT",
    "inbox": "https://social.example/alyssa/inbox/",
    "outbox": "https://social.example/alyssa/outbox/",
