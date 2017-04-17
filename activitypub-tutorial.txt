@@ -43,7 +43,7 @@ Here's an example of the record of our friend Alyssa P. Hacker:
    "summary": "Lisp enthusiast hailing from MIT",
    "inbox": "https://social.example/alyssa/inbox/",
    "outbox": "https://social.example/alyssa/outbox/",
-   "followers": "https://social.example/alyssa/following/",
+   "followers": "https://social.example/alyssa/followers/",
    "following": "https://social.example/alyssa/following/",
    "likes": "https://social.example/alyssa/likes/"}
 
