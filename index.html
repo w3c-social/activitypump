@@ -408,8 +408,9 @@
           Identifiers MUST be provided for activities posted in server to
           server communication, unless the activity is intentionally transient.
           However, for client to server communication, a server receiving an
-          object with no specified <code>id</code> SHOULD allocate an object ID
-          in the user's namespace and attach it to the posted object.
+          object posted to the outbox with no specified <code>id</code> SHOULD
+          allocate an object ID in the user's namespace and attach it to the
+          posted object.
         </p>
         <p>All objects have the following properties:</p>
         <dl>
