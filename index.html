@@ -910,8 +910,12 @@
         </p>
 
         <p>
-          The inbox accepts HTTP POST requests, with behaviour described
-          in <a href="#delivery">Delivery</a>.
+          The inbox accepts HTTP POST requests, with behaviour described in
+          <a href="#delivery">Delivery</a>.
+          The inbox of actors on federated servers accepts HTTP POST requests,
+          with behaviour described in <a href="#delivery">Delivery</a>.
+          Non-federated servers SHOULD return a 405 Method Not Allowed upon
+          receipt of a POST request.
         </p>
       </section>
 
@@ -1525,6 +1529,8 @@ Location: https://dustycloud.org/likes/345
           the body of the request.
           This Activity is added by the receiver as an <code>item</code> in the
           <a href="#inbox">inbox</a> OrderedCollection.
+          Attempts to deliver to an inbox on a non-federated server SHOULD
+          result in a 405 Method Not Allowed response.
         </p>
 
         <p>
