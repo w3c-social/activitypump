@@ -1148,6 +1148,13 @@ Location: https://dustycloud.org/likes/345
         <code>Add</code>, <code>Remove</code>.
       </p>
 
+      <p>
+        In order to improve performance, care should be taken to properly
+        implement underlying HTTP caching mechanisms when appropriate, both in clients
+        receiving responses from servers as well as servers sending responses to
+        clients.
+      </p>
+
       <section id="create-activity-outbox">
         <h3>Create Activity</h3>
         <p>
@@ -1475,6 +1482,13 @@ Location: https://dustycloud.org/likes/345
         Additionally, servers performing server to server delivery of the
         following activities MUST also provide the <code>target</code>
         property: <code>Add</code>, <code>Remove</code>.
+      </p>
+
+      <p>
+        In order to improve performance, care should be taken to properly
+        implement underlying HTTP caching mechanisms when appropriate, both
+        when receiving responses from other servers as well as sending responses to
+        other servers.
       </p>
 
       <section id="delivery">
