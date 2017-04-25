@@ -1479,6 +1479,10 @@ Location: https://dustycloud.org/likes/345
 
       <section id="delivery">
         <h2>Delivery</h2>
+
+        <p>The following is required by federated servers communicating with
+        other federated servers only.</p>
+
         <p>
           An activity is delivered to its targets (which are
           <a href="#actors">actors</a>) by first looking up the targets'
@@ -1534,6 +1538,10 @@ Location: https://dustycloud.org/likes/345
           Servers SHOULD also take care not to overload servers with
           submissions, for example by using an exponential backoff strategy.
         </p>
+
+        <p><strong>Note:</strong> Activities being distributed between users on
+        the same origin may use any internal mechanism, and are not required to
+        use HTTP.</p>
 
         <p class="note" title="Relationship to Linked Data Notifications">
           While it is not required reading to understand this specification,
