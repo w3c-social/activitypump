@@ -70,7 +70,7 @@
               status:   "Editors Draft",
               publisher:  "ActivityStreams Working Group",
             },
-            "Activity Vocabulary": {
+            "Activity-Vocabulary": {
               title:    "Activity Vocabulary",
               href:     "https://www.w3.org/TR/activitystreams-vocabulary/",
               authors:  [
@@ -322,10 +322,7 @@
         ActivityPub are built.
         Objects are often wrapped in Activities and are contained in streams of
         Collections, which are themselves subclasses of Objects.
-        See the
-        <a href="https://www.w3.org/TR/activitystreams-vocabulary/">
-          Activity Vocabulary</a>
-        document, particularly the
+        See the [[!Activity-Vocabulary]] document, particularly the
         <a href="https://www.w3.org/TR/activitystreams-vocabulary/#types">Core Classes</a>;
         ActivityPub follows the mapping of this vocabulary very closely.
       </p>
@@ -466,10 +463,8 @@
         <h2>The source property</h2>
         <p>
           In addition to all the properties defined by the
-          <a href="https://www.w3.org/TR/activitystreams-vocabulary/">
-            Activity Vocabulary</a>,
-          ActivityPub extends the <code>Object</code> by supplying the
-          <code>source</code> property.
+	  [[!Activity-Vocabulary]], ActivityPub extends the <code>Object</code> by
+	  supplying the <code>source</code> property.
           The <code>source</code> property is intended to convey some
           sort of source from which the <code>content</code> markup
           was derived, as a form of provenance, or to support future
