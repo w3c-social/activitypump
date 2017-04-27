@@ -1093,9 +1093,42 @@
       <p>
         Activities as defined by [[!ActivityStreams]] are the core mechanism
         for creating, modifying and sharing content within the social graph.
-        Client to server interaction takes place through clients posting
-        activities to a user's <a href="#outbox">outbox</a>.
       </p>
+
+      <p>
+        Client to server interaction takes place through clients posting
+        Activities to a user's <a href="#outbox">outbox</a>.
+        To do this, clients MUST discover the URL of the user's outbox from
+	their <a href="#actor-objects">profile</a> and then MUST make an HTTP
+        <code>POST</code> request to to this URL with the Content-Type of
+        <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>.
+        The request MUST be authenticated with the credentials of the user to
+        whom the outbox belongs.
+        The body of the <code>POST</code> request MUST contain a single
+        Activity (which MAY contain embedded objects), or a single non-Activity
+        object which
+        <a href="#object-without-create">will be wrapped in a Create activity
+          by the server</a>.
+      </p>
+      <pre class="example" title="Submitting an Activity to the Outbox">
+POST /outbox/ HTTP/1.1
+Host: dustycloud.org
+Authorization: Bearer XXXXXXXXXXX
+Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystreams"
+
+{
+  "@context": ["https://www.w3.org/ns/activitystreams",
+               {"@language": "en"}],
+  "type": "Like",
+  "actor": "https://dustycloud.org/chris/"
+  "name": "Chris liked 'Minimal ActivityPub update client'",
+  "object": "https://rhiaro.co.uk/2016/05/minimal-activitypub",
+  "to": ["https://rhiaro.co.uk/#amy",
+         "https://dustycloud.org/followers",
+         "https://rhiaro.co.uk/followers/"],
+  "cc": "https://e14n.com/evan"
+}
+      </pre>
 
       <p>
         <strong>Clients</strong> are responsible for addressing new Activites
@@ -1164,39 +1197,6 @@
       to not only the followers of Chris (the liker), but also to Amy, and Amy's
       followers and Evan, both of whom received the original article.</p>
 
-      <p>
-        To submit new Activities to a user's server, clients MUST discover
-        the URL of the user's <strong><a href="#outbox">outbox</a></strong>
-        from their <a href="#actor-objects">profile</a> and then MUST make an
-        HTTP <code>POST</code> request to to this URL with the Content-Type of
-        <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>.
-        The request MUST be authenticated with the credentials of the user to
-        whom the outbox belongs.
-        The body of the <code>POST</code> request MUST contain a single
-        Activity (which MAY contain embedded objects), or a single non-Activity
-        object which
-        <a href="#object-without-create">will be wrapped in a Create activity
-          by the server</a>.
-      </p>
-      <pre class="example" title="Submitting an Activity to the Outbox">
-POST /outbox/ HTTP/1.1
-Host: dustycloud.org
-Authorization: Bearer XXXXXXXXXXX
-Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystreams"
-
-{
-  "@context": ["https://www.w3.org/ns/activitystreams",
-               {"@language": "en"}],
-  "type": "Like",
-  "actor": "https://dustycloud.org/chris/"
-  "name": "Chris liked 'Minimal ActivityPub update client'",
-  "object": "https://rhiaro.co.uk/2016/05/minimal-activitypub",
-  "to": ["https://rhiaro.co.uk/#amy",
-         "https://dustycloud.org/followers",
-         "https://rhiaro.co.uk/followers/"],
-  "cc": "https://e14n.com/evan"
-}
-      </pre>
       <p>
         If an Activity is submitted with a value in the <code>id</code>
         property, servers MUST ignore this and generate a new <code>id</code>
