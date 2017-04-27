@@ -541,13 +541,14 @@
     <section id="actors">
       <h2>Actors</h2>
       <p>
-        Actors are [[!ActivityStreams]] Objects, generally one of the
+        ActivityPub actors are generally one of the
         <a href="https://www.w3.org/TR/activitystreams-vocabulary/#actor-types">
-          ActivityStreams Actor Types</a>
-        or a
+          ActivityStreams Actor Types</a>,
+        but they don't have to be. For example, a 
         <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-profile">
-          Profile</a> object,
-        and are <a href="#retrieving-objects">retrieved</a> like any other
+          Profile</a> object
+        might be used as an actor, or a type from an ActivityStreams extension.
+        Actors are <a href="#retrieving-objects">retrieved</a> like any other
         Object in ActivityPub.
         Like other ActivityStreams objects, actors have an <code>id</code>,
         which is a URI.
