@@ -614,10 +614,10 @@
             A link to an [[!ActivityStreams]] collection of the actors that
             follow this actor; see <a href="#followers"></a>.
           </dd>
-          <dt id="likes-property">likes</dt>
+          <dt id="liked-property">liked</dt>
           <dd>
             A link to an [[!ActivityStreams]] collection of objects this
-            actor has liked; see <a href="#likes"></a>.
+            actor has liked; see <a href="#liked"></a>.
           </dd>
         </dl>
         <pre class="example">
@@ -628,7 +628,7 @@
   "id": "https://kenzoishii.example.com/",
   "following": "https://kenzoishii.example.com/following.json",
   "followers": "https://kenzoishii.example.com/followers.json",
-  "likes": "https://kenzoishii.example.com/likes.json",
+  "liked": "https://kenzoishii.example.com/liked.json",
   "inbox": "https://kenzoishii.example.com/inbox.json",
   "outbox": "https://kenzoishii.example.com/feed.json",
   "preferredUsername": "kenzoishii",
@@ -846,13 +846,13 @@
         </p>
       </section>
 
-      <section id="likes">
-        <h2>Likes Collection</h2>
+      <section id="liked">
+        <h2>Liked Collection</h2>
         <p>
-          Every actor MAY have a <code>likes</code> collection.
+          Every actor MAY have a <code>liked</code> collection.
           This is a list of every object from all of the actor's <code>Like</code>
           activities, added as a <a href="#like-activity-outbox">side effect</a>.
-          The <code>likes</code> collection MUST be either an
+          The <code>liked</code> collection MUST be either an
           <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
             <code>OrderedCollection</code></a>
           or a
@@ -1386,7 +1386,7 @@ Location: https://dustycloud.org/likes/345
         <p>
           The side effect of receiving this in an <strong>outbox</strong>
           is that the server SHOULD add the <code>object</code> to the
-          <code>actor</code>'s <a href="#likes"><code>likes</code> Collection</a>.
+          <code>actor</code>'s <a href="#liked"><code>liked</code> Collection</a>.
         </p>
       </section>
       <section id="block-activity-outbox">
