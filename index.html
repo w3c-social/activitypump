@@ -801,68 +801,6 @@
         should not be used.
       </p>
 
-      <section id="followers">
-        <h2>Followers Collection</h2>
-        <p>
-          Every <a href="#actors">actor</a> SHOULD have a <code>followers</code>
-          collection.
-          This is a list of everyone who has sent a
-          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-follow">Follow</a>
-          activity for the user, added as a
-          <a href="#follow-activity-outbox">side effect</a>.
-          This is where one would find a list of all the users that are
-          following the actor.
-          The <code>followers</code> collection MUST be either an
-          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
-            <code>OrderedCollection</code></a>
-          or a
-          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-collection">
-            <code>Collection</code></a>
-          and MAY be filtered on privileges of an authenticated user
-          or as appropriate when no authentication is given.
-        </p>
-
-        <p class="note" title="Default for notification targeting">
-          The follow activity generally is a request to see the objects a user
-          creates. This makes the Followers collection an appropriate default
-          target for <a href="#delivery">delivery</a> of notifications.
-        </p>
-      </section>
-
-      <section id="following">
-        <h2>Following Collection</h2>
-        <p>
-          Every actor SHOULD have a <code>following</code> collection.
-          This is a list of everybody that the actor has followed, added as a
-          <a href="#follow-activity-outbox">side effect</a>.
-          The <code>following</code> collection MUST be either an
-          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
-            <code>OrderedCollection</code></a>
-          or a
-          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-collection">
-            <code>Collection</code></a>
-          and MAY be filtered on privileges of an authenticated user
-          or as appropriate when no authentication is given.
-        </p>
-      </section>
-
-      <section id="liked">
-        <h2>Liked Collection</h2>
-        <p>
-          Every actor MAY have a <code>liked</code> collection.
-          This is a list of every object from all of the actor's <code>Like</code>
-          activities, added as a <a href="#like-activity-outbox">side effect</a>.
-          The <code>liked</code> collection MUST be either an
-          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
-            <code>OrderedCollection</code></a>
-          or a
-          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-collection">
-            <code>Collection</code></a>
-          and MAY be filtered on privileges of an authenticated user
-          or as appropriate when no authentication is given.
-        </p>
-      </section>
-
       <section id="outbox">
         <h2>Outbox</h2>
         <p>
@@ -931,6 +869,68 @@
           with behaviour described in <a href="#delivery">Delivery</a>.
           Non-federated servers SHOULD return a 405 Method Not Allowed upon
           receipt of a POST request.
+        </p>
+      </section>
+
+      <section id="followers">
+        <h2>Followers Collection</h2>
+        <p>
+          Every <a href="#actors">actor</a> SHOULD have a <code>followers</code>
+          collection.
+          This is a list of everyone who has sent a
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-follow">Follow</a>
+          activity for the user, added as a
+          <a href="#follow-activity-outbox">side effect</a>.
+          This is where one would find a list of all the users that are
+          following the actor.
+          The <code>followers</code> collection MUST be either an
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
+            <code>OrderedCollection</code></a>
+          or a
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-collection">
+            <code>Collection</code></a>
+          and MAY be filtered on privileges of an authenticated user
+          or as appropriate when no authentication is given.
+        </p>
+
+        <p class="note" title="Default for notification targeting">
+          The follow activity generally is a request to see the objects a user
+          creates. This makes the Followers collection an appropriate default
+          target for <a href="#delivery">delivery</a> of notifications.
+        </p>
+      </section>
+
+      <section id="following">
+        <h2>Following Collection</h2>
+        <p>
+          Every actor SHOULD have a <code>following</code> collection.
+          This is a list of everybody that the actor has followed, added as a
+          <a href="#follow-activity-outbox">side effect</a>.
+          The <code>following</code> collection MUST be either an
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
+            <code>OrderedCollection</code></a>
+          or a
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-collection">
+            <code>Collection</code></a>
+          and MAY be filtered on privileges of an authenticated user
+          or as appropriate when no authentication is given.
+        </p>
+      </section>
+
+      <section id="liked">
+        <h2>Liked Collection</h2>
+        <p>
+          Every actor MAY have a <code>liked</code> collection.
+          This is a list of every object from all of the actor's <code>Like</code>
+          activities, added as a <a href="#like-activity-outbox">side effect</a>.
+          The <code>liked</code> collection MUST be either an
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
+            <code>OrderedCollection</code></a>
+          or a
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-collection">
+            <code>Collection</code></a>
+          and MAY be filtered on privileges of an authenticated user
+          or as appropriate when no authentication is given.
         </p>
       </section>
 
