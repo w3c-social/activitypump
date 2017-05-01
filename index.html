@@ -961,6 +961,56 @@
           see <a href="#public-inbox-delivery"></a>.
         </p>
       </section>
+
+      <section id="likes-collection">
+        <h2>Likes Collection</h2>
+        <p>
+          Every object MAY have a <code>likes</code> collection.
+          This is a list of all <code>Like</code> activities with this object
+          as the <code>object</code> property, added as a
+          <a href="#like-activity-inbox">side effect</a>.
+          The <code>likes</code> collection MUST be either an
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
+            <code>OrderedCollection</code></a>
+          or a
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-collection">
+            <code>Collection</code></a>
+          and MAY be filtered on privileges of an authenticated user
+          or as appropriate when no authentication is given.
+        </p>
+
+        <div class="note">
+          <p>
+            Care should be taken to not confuse the the
+            <a href="#likes-collection"><code>likes</code></a>
+            collection with the similarly named but different
+            <a href="#liked-collection"><code>liked</code></a> collection.
+            In sum:
+          </p>
+
+          <ul>
+            <li>
+              <b>liked:</b>
+              Specifically a property of actors.
+              This is a collection of <code>Like</code> activities performed
+              <i>by the actor</i>,
+              added to the collection as a
+              <a href="#like-activity-outbox">
+                side effect of delivery to the outbox</a>.
+            </li>
+
+            <li>
+              <b>likes:</b>
+              May be a property of any object.
+              This is a collection of <code>Like</code> activities referencing
+              this object,
+              added to the collection as a
+              <a href="#like-activity-inbox">
+                side effect of delivery to the inbox</a>.
+            </li>
+          </ul>
+        </div>
+      </section>
     </section>
 
     <section id="uploading-media">
@@ -1801,10 +1851,10 @@ Location: https://dustycloud.org/likes/345
         <h3>Like Activity</h3>
         <p>
           The side effect of receving this in an <strong>inbox</strong> is
-          that the server SHOULD increment the <code>object</code>'s count of
-          likes, or perform other appropriate indication of the like
-          being performed, such as listing the liking <code>actor</code>
-          amongst actors who have liked this <code>object</code>.
+          that the server SHOULD increment the object's count of likes by
+          adding the received activity
+          <a href="#likes-collection"><code>likes</code></a> collection
+          if this collection is present.
         </p>
       </section>
       <section id="undo-activity-inbox">
