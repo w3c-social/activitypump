@@ -1011,6 +1011,24 @@
           </ul>
         </div>
       </section>
+
+      <section id="shares-collection">
+        <h2>Shares Collection</h2>
+        <p>
+          Every object MAY have a <code>shares</code> collection.
+          This is a list of all <code>Announce</code> activities with this object
+          as the <code>object</code> property, added as a
+          <a href="#announce-activity-inbox">side effect</a>.
+          The <code>shares</code> collection MUST be either an
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
+            <code>OrderedCollection</code></a>
+          or a
+          <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-collection">
+            <code>Collection</code></a>
+          and MAY be filtered on privileges of an authenticated user
+          or as appropriate when no authentication is given.
+        </p>
+      </section>
     </section>
 
     <section id="uploading-media">
@@ -1852,10 +1870,25 @@ Location: https://dustycloud.org/likes/345
         <p>
           The side effect of receving this in an <strong>inbox</strong> is
           that the server SHOULD increment the object's count of likes by
-          adding the received activity
+          adding the received activity to the
           <a href="#likes-collection"><code>likes</code></a> collection
           if this collection is present.
         </p>
+      </section>
+      <section id="announce-activity-inbox">
+        <h3>Announce Activity (sharing)</h3>
+        <p>
+          Upon receipt of an <code>Announce</code> activity in an
+          <strong>inbox</strong>, a server SHOULD increment the object's count
+          of likes by adding the received activity to the
+          <a href="#shares-collection"><code>shares</code></a> collection
+          if this collection is present.
+        </p>
+        <div class="note">
+          The <code>Announce</code> activity is effectively what is known as
+          "sharing", "reposting", "boosting", or "forwarding" in other social
+          networks.
+        </div>
       </section>
       <section id="undo-activity-inbox">
         <h3>Undo Activity</h3>
