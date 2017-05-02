@@ -1298,188 +1298,6 @@
       </section>
     </section>
 
-    <section id="uploading-media">
-      <h2>Uploading Media</h2>
-      <p>
-        ActivityPub supports uploading document types to be referenced in
-        activites, such as images, video or other binary data, and servers
-        MAY implement this feature.
-        To accomplish this, a client MUST submit a
-        <code>multipart/form-data</code> message to the user's
-        <a href="#uploadMedia"><code>uploadMedia</code></a> endpoint on their
-        ActivityStreams profile object.
-        A client should expect that it must be properly authenticated in order
-        to be able to upload media.
-      </p>
-
-      <p>
-        The submitted form data should contain two parts / fields:
-      </p>
-
-      <dl>
-        <dt id="uploading-media-file">file</dt>
-        <dd>
-          The media file file being uploaded.
-        </dd>
-        <dt id="uploading-media-object">object</dt>
-        <dd>
-          A shell of an ActivityStreams object, which will be finalized by the
-          server.
-        </dd>
-      </dl>
-
-      <p>
-        Assuming that the server accepts the request and that the user was
-        appropriately authorized to upload media, servers MUST respond with a
-        <code>201 Created</code> if the object is immediately available or a
-        <code>202 Accepted</code> if the server is still processing the
-        submitted media.
-        The response MUST contain a <code>Location</code> header pointing
-        to the new or to-be-created object's <code>id</code>.
-      </p>
-
-      <p>
-        The server, having done any appropriate processing on the received
-        <code>file</code> and putting it in place, transforms the
-        <code>object</code> that will be retrievable by the <code>id</code>.
-        In particular, servers MUST append an <code>id</code> property to the
-        object, and SHOULD include the uploaded and/or processed file paths in
-        the object's <code>url</code> property.
-        The server MAY wrap the shell object submitted by the user in a
-        <code>Create</code> via <a href="#object-without-create"></a> if
-        appropriate and present this as the object pointed to by the
-        forementioned <code>Location</code> header in the post-media-upload
-        response.
-      </p>
-
-      <div class="note"
-           title="An example media uploading session">
-        <p>
-          Ben Bitdiddle just recorded a video of his friend's latest invention
-          and wants to upload it to his ActivityPub-compatible social network
-          to show it off.
-          He wants to post a <code>Create</code> of a new <code>Video</code>
-          object, but first he has to upload the video somewhere.
-          Luckily the ActivityPub instance he is on supports the
-          <code>uploadMedia</code> endpoint!
-          In his client, he selects the video for upload and adds a title
-          and a description and presses submit.
-        </p>
-
-        <p>
-          Ben's client takes a look at Ben's
-          <a href="#actors">actor</a> profile and finds the
-          <code>uploadMedia</code> endpoint there.
-        </p>
-
-        <pre class="example highlight json">
-          {"@context": "https://www.w3.org/ns/activitystreams",
-           "type": "Person",
-           "id": "https://chatty.example/ben/",
-           "name": "Ben Bitdiddle",
-           "preferredUsername": "ben",
-           "summary": "Constantly fidgeting with ones and zeroes.",
-           "inbox": "https://chatty.example/ben/inbox/",
-           "outbox": "https://chatty.example/ben/collections/outbox/",
-           "followers": "https://chatty.example/ben/collections/followers/",
-           "following": "https://chatty.example/ben/collections/following/",
-           "likes": "https://chatty.example/ben/collections/likes/",
-           "endpoints": {
-             "id": "https://chatty.example/ben/#endpoints",
-             "uploadMedia": "https://chatty.example/ben/endpoints/uploadMedia/"}}
-        </pre>
-
-        <p>
-          Ben's client then constructs a shell ActivityPub object (this doesn't
-          have the url for the video itself yet, but that's okay, because that
-          will be added by the server) and submits it (as the
-          <code>object</code>) along with the video (as the <code>file</code>)
-          by <code>POST</code>'ing to the <code>uploadMedia</code> endpoint.
-        </p>
-
-        <pre class="example">
-          POST /ben/endpoints/uploadMedia/ HTTP/1.1
-          Host: chatty.example
-          Content-Type: multipart/form-data; boundary=bfe40faf4ef
-          Authorization: Bearer XXXXXXXXXXX
-
-          --bfe40faf4ef
-          Content-Disposition: form-data; name="object"
-          Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystreams"
-
-          {"@context": "https://www.w3.org/ns/activitystreams",
-           "type": "Create",
-           "actor": "https://chatty.example/ben/",
-           "to": ["https://chatty.example/ben/collections/followers/",
-                  "https://www.w3.org/ns/activitystreams#Public"],
-           "object": {
-             "type": "Video",
-             "name": "A wireworld computer!",
-             "attributedTo": "https://chatty.example/ben/",
-             "to": ["https://chatty.example/ben/collections/followers/",
-                    "https://www.w3.org/ns/activitystreams#Public"],
-             "summary": "&lt;p&gt;My friend Conway and I went over to our friend
-                            Silverman's place and saw the wireworld computer
-                            he's been constructing.  Pretty crazy!&lt;/p&gt;
-                         &lt;p&gt;Tomorrow we're going over to our friend Langton's
-                            place and see that ant farm he's been working
-                            on...&lt;/p&gt;"}}
-
-          --bfe40faf4ef
-          Content-Disposition: form-data; name="file"; filename="wireworld.webm"
-          Content-Type: video/webm
-
-          ... (binary data) ...
-          --bfe40faf4ef
-        </pre>
-
-        <p>
-          Ben's client receives an HTTP response from the server with the
-          status code <code>202 Accepted</code> since the video is still
-          being transcoded.
-          The response contains a <code>Location</code> header pointing
-          at the url <code>https://chatty.example/ben/posts/d4152a7c/</code>.
-          Sure enough, a few minutes later Ben's video shows up in his
-          <code>outbox</code> with the rest of the fields filled in:
-        </p>
-
-        <pre class="example highlight json">
-          {"@context": "https://www.w3.org/ns/activitystreams",
-           "type": "Create",
-           "id": "https://chatty.example/ben/posts/d4152a7c/",
-           "actor": "https://chatty.example/ben/",
-           "to": ["https://chatty.example/ben/collections/followers/",
-                  "https://www.w3.org/ns/activitystreams#Public"],
-           "object": {
-             "type": "Video",
-             "id": "https://chatty.example/ben/posts/6e69f564/",
-             "url": [
-               {"type": "Link",
-                "href": "https://chatty.example/media/6e69f564/wireworld-small.webm",
-                "mediaType": "video/webm; codecs=\"vp8, vorbis\"",
-                "name": "A wireworld computer! (small)",
-                "width": 640,
-                "height": 480},
-               {"type": "Link",
-                "href": "https://chatty.example/media/6e69f564/wireworld-large.webm",
-                "mediaType": "video/webm; codecs=\"vp8, vorbis\"",
-                "name": "A wireworld computer! (large)",
-                "width": 1280,
-                "height": 720},
-             "name": "A wireworld computer!",
-             "attributedTo": "https://chatty.example/ben/",
-             "to": ["https://chatty.example/ben/collections/followers/",
-                    "https://www.w3.org/ns/activitystreams#Public"],
-             "summary": "&lt;p&gt;My friend Conway and I went over to our friend
-                            Silverman's place and saw the wireworld computer
-                            he's been constructing.  Pretty crazy!&lt;/p&gt;
-                         &lt;p&gt;Tomorrow we're going over to our friend Langton's
-                            place and see that ant farm he's been working
-                            on...&lt;/p&gt;"}}
-        </pre>
-      </div>
-    </section>
-
     <section id="client-to-server-interactions">
       <h2>Client to Server Interactions</h2>
       <p>
@@ -1906,6 +1724,190 @@ Location: https://dustycloud.org/likes/345
           outbox delivery</a>.
         </p>
       </section>
+
+      <section id="uploading-media">
+        <h2>Uploading Media</h2>
+        <p>
+          ActivityPub supports uploading document types to be referenced in
+          activites, such as images, video or other binary data, and servers
+          MAY implement this feature.
+          To accomplish this, a client MUST submit a
+          <code>multipart/form-data</code> message to the user's
+          <a href="#uploadMedia"><code>uploadMedia</code></a> endpoint on their
+          ActivityStreams profile object.
+          A client should expect that it must be properly authenticated in order
+          to be able to upload media.
+        </p>
+  
+        <p>
+          The submitted form data should contain two parts / fields:
+        </p>
+  
+        <dl>
+          <dt id="uploading-media-file">file</dt>
+          <dd>
+            The media file file being uploaded.
+          </dd>
+          <dt id="uploading-media-object">object</dt>
+          <dd>
+            A shell of an ActivityStreams object, which will be finalized by the
+            server.
+          </dd>
+        </dl>
+  
+        <p>
+          Assuming that the server accepts the request and that the user was
+          appropriately authorized to upload media, servers MUST respond with a
+          <code>201 Created</code> if the object is immediately available or a
+          <code>202 Accepted</code> if the server is still processing the
+          submitted media.
+          The response MUST contain a <code>Location</code> header pointing
+          to the new or to-be-created object's <code>id</code>.
+        </p>
+  
+        <p>
+          The server, having done any appropriate processing on the received
+          <code>file</code> and putting it in place, transforms the
+          <code>object</code> that will be retrievable by the <code>id</code>.
+          In particular, servers MUST append an <code>id</code> property to the
+          object, and SHOULD include the uploaded and/or processed file paths in
+          the object's <code>url</code> property.
+          The server MAY wrap the shell object submitted by the user in a
+          <code>Create</code> via <a href="#object-without-create"></a> if
+          appropriate and present this as the object pointed to by the
+          forementioned <code>Location</code> header in the post-media-upload
+          response.
+        </p>
+  
+        <div class="note"
+             title="An example media uploading session">
+          <p>
+            Ben Bitdiddle just recorded a video of his friend's latest invention
+            and wants to upload it to his ActivityPub-compatible social network
+            to show it off.
+            He wants to post a <code>Create</code> of a new <code>Video</code>
+            object, but first he has to upload the video somewhere.
+            Luckily the ActivityPub instance he is on supports the
+            <code>uploadMedia</code> endpoint!
+            In his client, he selects the video for upload and adds a title
+            and a description and presses submit.
+          </p>
+  
+          <p>
+            Ben's client takes a look at Ben's
+            <a href="#actors">actor</a> profile and finds the
+            <code>uploadMedia</code> endpoint there.
+          </p>
+  
+          <pre class="example highlight json">
+            {"@context": "https://www.w3.org/ns/activitystreams",
+             "type": "Person",
+             "id": "https://chatty.example/ben/",
+             "name": "Ben Bitdiddle",
+             "preferredUsername": "ben",
+             "summary": "Constantly fidgeting with ones and zeroes.",
+             "inbox": "https://chatty.example/ben/inbox/",
+             "outbox": "https://chatty.example/ben/collections/outbox/",
+             "followers": "https://chatty.example/ben/collections/followers/",
+             "following": "https://chatty.example/ben/collections/following/",
+             "likes": "https://chatty.example/ben/collections/likes/",
+             "endpoints": {
+               "id": "https://chatty.example/ben/#endpoints",
+               "uploadMedia": "https://chatty.example/ben/endpoints/uploadMedia/"}}
+          </pre>
+  
+          <p>
+            Ben's client then constructs a shell ActivityPub object (this doesn't
+            have the url for the video itself yet, but that's okay, because that
+            will be added by the server) and submits it (as the
+            <code>object</code>) along with the video (as the <code>file</code>)
+            by <code>POST</code>'ing to the <code>uploadMedia</code> endpoint.
+          </p>
+  
+          <pre class="example">
+            POST /ben/endpoints/uploadMedia/ HTTP/1.1
+            Host: chatty.example
+            Content-Type: multipart/form-data; boundary=bfe40faf4ef
+            Authorization: Bearer XXXXXXXXXXX
+  
+            --bfe40faf4ef
+            Content-Disposition: form-data; name="object"
+            Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystreams"
+  
+            {"@context": "https://www.w3.org/ns/activitystreams",
+             "type": "Create",
+             "actor": "https://chatty.example/ben/",
+             "to": ["https://chatty.example/ben/collections/followers/",
+                    "https://www.w3.org/ns/activitystreams#Public"],
+             "object": {
+               "type": "Video",
+               "name": "A wireworld computer!",
+               "attributedTo": "https://chatty.example/ben/",
+               "to": ["https://chatty.example/ben/collections/followers/",
+                      "https://www.w3.org/ns/activitystreams#Public"],
+               "summary": "&lt;p&gt;My friend Conway and I went over to our friend
+                              Silverman's place and saw the wireworld computer
+                              he's been constructing.  Pretty crazy!&lt;/p&gt;
+                           &lt;p&gt;Tomorrow we're going over to our friend Langton's
+                              place and see that ant farm he's been working
+                              on...&lt;/p&gt;"}}
+  
+            --bfe40faf4ef
+            Content-Disposition: form-data; name="file"; filename="wireworld.webm"
+            Content-Type: video/webm
+  
+            ... (binary data) ...
+            --bfe40faf4ef
+          </pre>
+  
+          <p>
+            Ben's client receives an HTTP response from the server with the
+            status code <code>202 Accepted</code> since the video is still
+            being transcoded.
+            The response contains a <code>Location</code> header pointing
+            at the url <code>https://chatty.example/ben/posts/d4152a7c/</code>.
+            Sure enough, a few minutes later Ben's video shows up in his
+            <code>outbox</code> with the rest of the fields filled in:
+          </p>
+  
+          <pre class="example highlight json">
+            {"@context": "https://www.w3.org/ns/activitystreams",
+             "type": "Create",
+             "id": "https://chatty.example/ben/posts/d4152a7c/",
+             "actor": "https://chatty.example/ben/",
+             "to": ["https://chatty.example/ben/collections/followers/",
+                    "https://www.w3.org/ns/activitystreams#Public"],
+             "object": {
+               "type": "Video",
+               "id": "https://chatty.example/ben/posts/6e69f564/",
+               "url": [
+                 {"type": "Link",
+                  "href": "https://chatty.example/media/6e69f564/wireworld-small.webm",
+                  "mediaType": "video/webm; codecs=\"vp8, vorbis\"",
+                  "name": "A wireworld computer! (small)",
+                  "width": 640,
+                  "height": 480},
+                 {"type": "Link",
+                  "href": "https://chatty.example/media/6e69f564/wireworld-large.webm",
+                  "mediaType": "video/webm; codecs=\"vp8, vorbis\"",
+                  "name": "A wireworld computer! (large)",
+                  "width": 1280,
+                  "height": 720},
+               "name": "A wireworld computer!",
+               "attributedTo": "https://chatty.example/ben/",
+               "to": ["https://chatty.example/ben/collections/followers/",
+                      "https://www.w3.org/ns/activitystreams#Public"],
+               "summary": "&lt;p&gt;My friend Conway and I went over to our friend
+                              Silverman's place and saw the wireworld computer
+                              he's been constructing.  Pretty crazy!&lt;/p&gt;
+                           &lt;p&gt;Tomorrow we're going over to our friend Langton's
+                              place and see that ant farm he's been working
+                              on...&lt;/p&gt;"}}
+          </pre>
+        </div>
+      </section>
+
+
     </section>
 
     <section id="server-to-server-interactions">
