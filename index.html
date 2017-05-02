@@ -1400,6 +1400,7 @@
           POST /ben/endpoints/uploadMedia/ HTTP/1.1
           Host: chatty.example
           Content-Type: multipart/form-data; boundary=bfe40faf4ef
+          Authorization: Bearer XXXXXXXXXXX
 
           --bfe40faf4ef
           Content-Disposition: form-data; name="object"
@@ -1426,7 +1427,7 @@
           --bfe40faf4ef
           Content-Disposition: form-data; name="file"; filename="wireworld.webm"
           Content-Type: video/webm
-          
+
           ... (binary data) ...
           --bfe40faf4ef
         </pre>
