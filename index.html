@@ -1621,6 +1621,12 @@ Location: https://dustycloud.org/likes/345
       </p>
 
       <p>
+        Attempts to submit objects to servers not implementing client to server
+        support SHOULD result in a <code>405 Method Not Allowed</code> response.
+      </p>
+
+
+      <p>
         Clients submitting the following activities to an <code>outbox</code>
         MUST provide the <code>object</code> property in the activity:
         <code>Create</code>, <code>Update</code>, <code>Delete</code>,
@@ -2027,7 +2033,7 @@ Location: https://dustycloud.org/likes/345
           This Activity is added by the receiver as an <code>item</code> in the
           <a href="#inbox">inbox</a> OrderedCollection.
           Attempts to deliver to an inbox on a non-federated server SHOULD
-          result in a 405 Method Not Allowed response.
+          result in a <code>405 Method Not Allowed</code> response.
         </p>
 
         <p>
