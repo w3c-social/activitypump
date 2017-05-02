@@ -1735,6 +1735,8 @@ Location: https://dustycloud.org/likes/345
           <code>multipart/form-data</code> message to the user's
           <a href="#uploadMedia"><code>uploadMedia</code></a> endpoint on their
           ActivityStreams profile object.
+          (Unlike most client to server interactions, using this endpoint does not
+          involve submitting to the <a href="#outbox"><code>outbox</code></a>.)
           A client should expect that it must be properly authenticated in order
           to be able to upload media.
         </p>
