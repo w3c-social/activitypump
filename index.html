@@ -1431,10 +1431,13 @@ Location: https://dustycloud.org/likes/345
       </p>
 
       <p>
-        The server adds this new Activity to the <a href="#outbox">outbox</a>
-        collection.
+        The server MUST then add this new Activity to the
+        <a href="#outbox">outbox</a> collection.
         Depending on the type of Activity, servers may then be required to
         carry out further side effects.
+        (However, there is no guarantee that time the Activity may appear in
+        the outbox.
+        The Activity might appear after a delay or disappear at any period.)
         These are described per individual Activity below.
       </p>
 
@@ -1442,7 +1445,6 @@ Location: https://dustycloud.org/likes/345
         Attempts to submit objects to servers not implementing client to server
         support SHOULD result in a <code>405 Method Not Allowed</code> response.
       </p>
-
 
       <p>
         Clients submitting the following activities to an <code>outbox</code>
