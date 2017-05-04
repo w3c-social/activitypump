@@ -151,16 +151,10 @@
         <li><b>An <code>outbox</code>:</b> How they send messages to others</li>
       </ul>
 
-      <pre>
-             .--------.
-     .--.    | INBOX  |  <- receive messages
-    ; o o;   '--------'
-    '.  .'
-    /    \
-    |    |   .--------.
-    '----'   | OUTBOX |  -> send messages
-             '--------'
-      </pre>
+      <p>
+        <img src="illustration/tutorial-1.png"
+             alt="Actor with inbox and outbox" />
+      </p>
 
       <p>
         These are endpoints, or really, just URLs which are listed in the
@@ -211,26 +205,10 @@
         Let's see how that works:
       </p>
 
-      <pre>
-               actor               send messages
-           reads incoming            to actor
-              messages             (federation!)
-                 |                      |          
-                 V                      V                   .---.
-                        .--------.                   .-.  .'     '.
-     .--.    .-[GET]--- | INBOX  | &lt;--[POST]---    .'   '-         ;
-    ; o o; &lt;-'          '--------'                .'               '.
-    '.  .'                                       ;    REST OF THE    ;
-    /    \                                       '.       WORLD    .-'
-    |    | --.          .--------.                 '._           .'
-    '----'   '-[POST]-&gt; | OUTBOX | ---[GET]---&gt;       '-__---_---'
-                        '--------'
-                 ^                      ^
-                 |                      |
-             actor sends             outside
-          messages / posts         world can read
-              content           messages from actor
-      </pre>
+      <p>
+        <img src="illustration/tutorial-2.png"
+             alt="Actor with messages flowing from rest of world to inbox and from outbox to rest of world" />
+      </p>
 
       <p>
         Hey nice, so just as a recap:
@@ -286,14 +264,10 @@
         She POSTs it to her outbox.
       </p>
 
-      <pre>
-     .--.  
-    ; o o;               .---------.
-    '.  .'               | ALYSSA'S|
-    /    \  ---[POST]--&gt; |  OUTBOX |
-    |  A |               '---------'
-    '----'
-      </pre>
+      <p>
+        <img src="illustration/tutorial-3.png"
+             alt="Actor posting message to outbox" />
+      </p>
 
       <p>
         Since this is a non-activity object, the server recognizes that this is
@@ -324,18 +298,10 @@
         inbox endpoint, and POST's her object to his inbox.
       </p>
 
-
-      <pre>
-   .----------.
-   | ALYSSA'S |'.                              .--. 
-   |  SERVER  | |                  .-------.  ;o o ;
-   |----------|.|                  | BEN'S |  '.  .'
-   | ======== | |  ---[POST]-----&gt; | INBOX |  /    \
-   | ======== | |                  '-------'  | B  |
-   | ======== | |                             '----'
-   |          |.;
-   '----------'
-      </pre>
+      <p>
+        <img src="illustration/tutorial-4.png"
+             alt="Server posting to remote actor's inbox" />
+      </p>
 
       <p>
         Technically these are two separate steps... one is client to server
@@ -344,14 +310,10 @@
         think of this as being a streamlined submission from outbox to inbox:
       </p>
 
-      <pre>
-     .--.                                     .--. 
-    ; o o;  .---------.           .-------.  ;o o ;
-    '.  .'  | ALYSSA'S|           | BEN'S |  '.  .'
-    /    \  |  OUTBOX | --------&gt; | INBOX |  /    \
-    |  A |  '---------'           '-------'  | B  |
-    '----'                                   '----'
-      </pre>
+      <p>
+        <img src="illustration/tutorial-5.png"
+             alt="Note flowing from one actor's outbox to other actor's inbox" />
+      </p>
 
       <p>
         Cool!
@@ -2591,6 +2553,9 @@ Location: https://dustycloud.org/likes/345
         to [[!LDN]], among many other improvements.
         Special thanks also goes to Benjamin Goering for putting together the
         implementation report template.
+        We also thank mray for producing the spectacular tutorial illustrations
+        (which are licensed under the same license as the rest of this
+        document).
       </p>
     </section>
 
