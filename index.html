@@ -2492,8 +2492,9 @@ Location: https://dustycloud.org/likes/345
       <section id="security-recursive-objects">
         <h2>Recursive Objects</h2>
         <p>
-	  Servers should take care to properly handle recursive ActivityStreams
-	  objects.
+          Servers should set a limit on how deep to recurse while resolving objects,
+          or otherwise specially handle ActivityStreams objects with recursive
+          references.
 	  Failure to properly do so may result in denial-of-service security
 	  vulnerabilities.
         </p>
