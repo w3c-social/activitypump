@@ -159,7 +159,7 @@ If the above, is true, the Server...
 
 MUST
 
-* [x] Respond with the ActivityStreams object representation in response to requests that primarily Accept the media type `application/ld+json; profile="https://www.w3.org/ns/activitystreams#"`
+* [x] Respond with the ActivityStreams object representation in response to requests that primarily Accept the media type `application/ld+json; profile="https://www.w3.org/ns/activitystreams"`
 
 SHOULD
 
