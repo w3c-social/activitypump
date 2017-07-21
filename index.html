@@ -2513,6 +2513,25 @@ Location: https://dustycloud.org/likes/345
           </p>
       </section>
 
+      <section id="security-c2s-ratelimiting">
+        <h2>Client-to-server ratelimiting</h2>
+          <p>
+            Servers should ratelimit API client submissions.
+            This serves two purposes:
+            <ol>
+              <li>
+                It prevents malicious clients from conducting
+                denial-of-service attacks on the server.
+              </li>
+              <li>
+                It ensures that the server will not distribute so many
+                activities that it triggers another
+                server's <a href="#security-federation-dos">denial-of-service
+                protections</a>.
+              </li>
+          </p>
+      </section>
+
       <section id="security-sanitizing-content">
         <h2>Sanitizing Content</h2>
         <p>
