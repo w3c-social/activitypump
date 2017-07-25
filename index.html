@@ -2501,6 +2501,37 @@ Location: https://dustycloud.org/likes/345
         </p>
       </section>
 
+      <section id="security-federation-dos">
+        <h2>Federation denial-of-service</h2>
+          <p>
+            Servers should implement protections against denial-of-service
+            attacks from other, federated servers.
+            This can be done using, for example, some kind of ratelimiting
+            mechanism.
+            Servers should be especially careful to implement this protection
+            around activities that involve side effects.
+          </p>
+      </section>
+
+      <section id="security-c2s-ratelimiting">
+        <h2>Client-to-server ratelimiting</h2>
+          <p>
+            Servers should ratelimit API client submissions.
+            This serves two purposes:
+            <ol>
+              <li>
+                It prevents malicious clients from conducting
+                denial-of-service attacks on the server.
+              </li>
+              <li>
+                It ensures that the server will not distribute so many
+                activities that it triggers another
+                server's <a href="#security-federation-dos">denial-of-service
+                protections</a>.
+              </li>
+          </p>
+      </section>
+
       <section id="security-sanitizing-content">
         <h2>Sanitizing Content</h2>
         <p>
