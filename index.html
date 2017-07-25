@@ -274,7 +274,7 @@
         an object being newly created, and does the courtesy of wrapping it in
         a Create activity.
         (Activities sent around in ActivityPub generally follow the pattern of
-        some activity by some author being taken on some object.
+        some activity by some actor being taken on some object.
         In this case the activity is a Create of a Note object, posted by a
         Person.)
       </p>
@@ -1665,7 +1665,7 @@ Location: https://dustycloud.org/likes/345
           For example, <code>Undo</code> may be used to undo a previous
           <code>Like</code> or <code>Follow</code>.
           The undo activity and the activity being undone MUST both have the
-          same author.
+          same actor.
           Side effects should be undone, to the extent possible.
           For example, if undoing a <code>Like</code>, any counter that had
           been incremented previously should be decremented appropriately.
@@ -2450,7 +2450,7 @@ Location: https://dustycloud.org/likes/345
         <h2>Verification and authorization</h2>
         <p>
           Servers should be careful to verify that new content is really posted
-          by the author that claims to be posting it, and that the author has
+          by the actor that claims to be posting it, and that the actor has
           permission to update the resources it claims to.
           Discussion of how to accomplish this is laid out in the
           <a href="#obj"></a> and <a href="#authorization"></a> sections.
