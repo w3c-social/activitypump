@@ -49,7 +49,7 @@ According to [Section 7](https://w3c.github.io/activitypub/#client-to-server-int
 MUST
 
 * [ ] Client discovers the URL of a user's outbox from their profile
-* [ ] Client submits activity by sending an HTTP post request to the outbox URL with the Content-Type of application/ld+json; profile="https://www.w3.org/ns/activitystreams#"
+* [ ] Client submits activity by sending an HTTP post request to the outbox URL with the Content-Type of application/ld+json; profile="https://www.w3.org/ns/activitystreams"
 * [ ] Client submission request body is either a single Activity or a single non-Activity Object
   * [ ] Clients provide the object property when submitting the following activity types to an outbox: Create, Update, Delete, Follow, Add, Remove, Like, Block, Undo.
   * [ ] Clients provide the target property when submitting the following activity types to an outbox: Add, Remove.
@@ -65,7 +65,7 @@ SHOULD
 
 MUST
 
-* [ ] When retrieving objects, Client specifies an Accept header with the `application/ld+json; profile="https://www.w3.org/ns/activitystreams#"` media type ([3.2](https://w3c.github.io/activitypub/#retrieving-objects))
+* [ ] When retrieving objects, Client specifies an Accept header with the `application/ld+json; profile="https://www.w3.org/ns/activitystreams"` media type ([3.2](https://w3c.github.io/activitypub/#retrieving-objects))
 
 ## Server
 
@@ -203,7 +203,7 @@ If the above, is true, the Server...
 
 MUST
 
-* [ ] Respond with the ActivityStreams object representation in response to requests that primarily Accept the media type `application/ld+json; profile="https://www.w3.org/ns/activitystreams#"`
+* [ ] Respond with the ActivityStreams object representation in response to requests that primarily Accept the media type `application/ld+json; profile="https://www.w3.org/ns/activitystreams"`
 
 SHOULD
 
