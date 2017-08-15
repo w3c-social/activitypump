@@ -1564,19 +1564,17 @@ Location: https://dustycloud.org/likes/345
           HTTP 404 Not Found.
         </p>
 
-        <p>
-          A deleted object:
-          <pre class="example">
-            {
-              "@context": "https://www.w3.org/ns/activitystreams",
-              "id": "https://example.com/~alice/note/72",
-              "type": "Tombstone",
-              "published": "2015-02-10T15:04:55Z",
-              "updated": "2015-02-10T15:04:55Z",
-              "deleted": "2015-02-10T15:04:55Z"
-            }
-          </pre>
-        </p>
+        <p>A deleted object:</p>
+        <pre class="example">
+          {
+            "@context": "https://www.w3.org/ns/activitystreams",
+            "id": "https://example.com/~alice/note/72",
+            "type": "Tombstone",
+            "published": "2015-02-10T15:04:55Z",
+            "updated": "2015-02-10T15:04:55Z",
+            "deleted": "2015-02-10T15:04:55Z"
+          }
+        </pre>
       </section>
       <section id="follow-activity-outbox">
         <h3>Follow Activity</h3>
