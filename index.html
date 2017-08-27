@@ -537,9 +537,9 @@
             property.
           </li>
           <li>
-            <a href="#public-inbox-delivery"></a> section
+            <a href="#shared-inbox-delivery"></a> section
             and its associated
-            <a href="#publicInbox"><code>publicInbox</code></a>
+            <a href="#sharedInbox"><code>sharedInbox</code></a>
             endpoint.
           </li>
           <li>
@@ -942,13 +942,19 @@
             window to act on behalf of the actor in interacting with foreign
             servers.
           </dd>
-          <dt id="publicInbox">publicInbox</dt>
+          <dt id="sharedInbox">sharedInbox</dt>
           <dd>
             An optional endpoint
-            <a href="#public-inbox-delivery">
-              used for wide delivery of publicly addressed activities</a>.
-            <code>publicInbox</code> endpoints SHOULD also be publicly
-            readable <code>OrderedCollection</code> objects.
+            <a href="#shared-inbox-delivery">
+              used for wide delivery of publicly addressed activities
+              and activities sent to followers</a>.
+            <code>sharedInbox</code> endpoints SHOULD also be publicly
+            readable <code>OrderedCollection</code> objects containing
+            objects addressed to the <a href="#public-addressing">Public</a>
+            special collection.
+            Reading from the <code>sharedInbox</code> endpoint MUST NOT present
+            objects which are not addressed to the <code>Public</code>
+            endpoint.
           </dd>
         </dl>
 
@@ -1184,10 +1190,11 @@
           users, without authentication.
           Implementations MUST NOT deliver to the "public" special collection;
           it is not capable of receiving actual activities.
-          However, actor has a
-          <a href="#publicInbox"><code>publicInbox</code></a>
-          endpoint is available for efficient shared delivery of public posts;
-          see <a href="#public-inbox-delivery"></a>.
+          However, actors MAY have a
+          <a href="#sharedInbox"><code>sharedInbox</code></a>
+          endpoint which is available for efficient shared delivery of public
+          posts (as well as posts to followers-only); see
+          <a href="#shared-inbox-delivery"></a>.
         </p>
       </section>
 
@@ -1930,7 +1937,7 @@ Location: https://dustycloud.org/likes/345
 
       <p>
         Servers performing delivery to the <code>inbox</code> or
-        <code>publicInbox</code> properties of actors on other servers MUST
+        <code>sharedInbox</code> properties of actors on other servers MUST
         provide the <code>object</code> property in the activity:
         <code>Create</code>, <code>Update</code>, <code>Delete</code>,
         <code>Follow</code>, <code>Add</code>, <code>Remove</code>,
@@ -2097,10 +2104,10 @@ Location: https://dustycloud.org/likes/345
           </p>
         </section>
 
-        <section id="public-inbox-delivery">
-          <h2>Public Inbox Delivery</h2>
+        <section id="shared-inbox-delivery">
+          <h2>Shared Inbox Delivery</h2>
           <p>
-            For servers hosting many actors, delivery to all participants can
+            For servers hosting many actors, delivery to all followers can
             result in an overwhelming number of messages sent.
             Some servers would also like to display a list of all messages
             posted publicly to the "known network".
@@ -2108,32 +2115,30 @@ Location: https://dustycloud.org/likes/345
             two use cases.
           </p>
           <p>
-            When an origin server is sending an activity to a remote server
-            which is addressed with the special
-            <a href="#public-addressing">Public</a>
-            recipient, the origin server MAY reduce the number of actors
-            delivered to by identifying all actors which would be recipients
-            who share a
-            <a href="#publicInbox">publicInbox</a>
+            When an object is being delivered from to the originating actor's
+            followers, a server MAY reduce the number of receiving actors
+            delivered to by identifying all followers which share the same
+            <a href="#sharedInbox">sharedInbox</a>
             who would otherwise be individual recipients and instead deliver
-            to only <code>publicInbox</code> objects.
-            (An origin server MAY alternately decide to publish all posts
-            to all <code>publicInbox</code> endpoints known.)
-            The server with the receiving <code>publicInbox</code> should
-            use its own <a href="#following">following lists</a> to determine
-            which actors should have the post delivered to their inbox.
+            to only <code>sharedInbox</code> objects.
             Thus in this scenario, the remote/receiving server participates
             in determining targeting and performing delivery to specific
             inboxes.
           </p>
           <p>
+            Additionally, if an object is addressed to the
+            <a href="#public-addressing">Public</a> special collection, a
+            server MAY deliver that object to all known
+            <code>sharedInbox</code> endpoints on the network.
+          </p>
+          <p>
             Origin servers sending publicly addressed activities to
-            <code>publicInbox</code> endpoints MUST still deliver to actors
+            <code>sharedInbox</code> endpoints MUST still deliver to actors
             and collections otherwise addressed (through <code>to</code>,
             <code>bto</code>, <code>cc</code>, <code>bcc</code>, and
-            <code>audience</code>) which do not have a <code>publicInbox</code>
+            <code>audience</code>) which do not have a <code>sharedInbox</code>
             and would not otherwise receive the activity through the
-            <code>publicInbox</code> mechanism.
+            <code>sharedInbox</code> mechanism.
           </p>
         </section>
       </section>
