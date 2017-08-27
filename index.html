@@ -1585,7 +1585,9 @@ Location: https://dustycloud.org/likes/345
         <p>
           The side effect of receiving this in an <strong>outbox</strong>
           is that the server SHOULD add the <code>object</code> to the
-          <code>actor</code>'s <a href="#following"><code>following</code> Collection</a>.
+          <code>actor</code>'s <a href="#following"><code>following</code> Collection</a>
+          when and only if an <code>Accept</code> activity is subsequently
+          received with this <code>Follow</code> activity as its object.
         </p>
       </section>
       <section id="add-activity-outbox">
@@ -2188,12 +2190,70 @@ Location: https://dustycloud.org/likes/345
 
       <section id="follow-activity-inbox">
         <h3>Follow Activity</h3>
+
         <p>
-          The side effect of receving this in an <strong>inbox</strong> is
-          that the server SHOULD add the <code>actor</code> to the <code>object</code>
-          user's <a href="#followers">Followers Collection</a>.
+          The side effect of receiving this in an <strong>inbox</strong> is
+          that the server SHOULD generate either an <code>Accept</code> or
+          <code>Reject</code> activity with the Follow as the
+          <code>object</code> and deliver it to the <code>actor</code> of the
+          Follow.
+          The <code>Accept</code> or <code>Reject</code> MAY be generated
+          automatically, or MAY be the result of user input (possibly after
+          some delay in which the user reviews).
+          Servers MAY choose to not explicitly send a <code>Reject</code>
+          in response to a <code>Follow</code> if there is a good privacy
+          reason not to do so, though implementors ought to be aware that the
+          server sending the request may be left in an intermediate state.
+        </p>
+
+        <p>
+          In the case of receiving an <code>Accept</code> referencing this
+          <code>Follow</code> as the object, the server SHOULD add the
+          <code>actor</code> to the object user's
+          <a href="#followers">Followers Collection</a>.
+          In the case of a <code>Reject</code>, the server MUST NOT add the
+          actor to the object user's
+          <a href="#followers">Followers Collection</a>.
         </p>
       </section>
+
+      <section id="accept-activity-inbox">
+        <h3>Accept Activity</h3>
+        <p>
+          The side effect of receiving this in an <strong>inbox</strong> is
+          determined by the type of the <code>object</code> received,
+          and it is possible to accept types not described in this document
+          (for example, an <code>Offer</code>).
+        </p>
+
+        <p>
+          If the <code>object</code> of an <code>Accept</code> received to an
+          <strong>inbox</strong> is a <code>Follow</code> activity
+          previously sent by the receiver, the server SHOULD add the
+          <code>actor</code> to the receiver's
+          <a href="#following">Following Collection</a>.
+        </p>
+      </section>
+      
+      <section id="reject-activity-inbox">
+        <h3>Reject Activity</h3>
+        <p>
+          The side effect of receiving this in an <strong>inbox</strong> is
+          determined by the type of the <code>object</code> received,
+          and it is possible to reject types not described in this document
+          (for example, an <code>Offer</code>).
+        </p>
+
+        <p>
+          If the <code>object</code> of a <code>Reject</code> received to an
+          <strong>inbox</strong> is a <code>Follow</code> activity
+          previously sent by the receiver, this means the recipient did not
+          approve the <code>Follow</code> request. The server MUST NOT add the
+          <code>actor</code> to the receiver's
+          <a href="#following">Following Collection</a>.
+        </p>
+      </section>
+
       <section id="add-activity-inbox">
         <h3>Add Activity</h3>
         <p>
