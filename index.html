@@ -2200,9 +2200,11 @@ Location: https://dustycloud.org/likes/345
           automatically, or MAY be the result of user input (possibly after
           some delay in which the user reviews).
           Servers MAY choose to not explicitly send a <code>Reject</code>
-          in response to a <code>Follow</code> if there is a good privacy
-          reason not to do so, though implementors ought to be aware that the
-          server sending the request may be left in an intermediate state.
+          in response to a <code>Follow</code>, though implementors ought to
+          be aware that the server sending the request could be left in an
+          intermediate state.
+          For example, a server might not send a <code>Reject</code> to protect
+          a user's privacy.
         </p>
 
         <p>
