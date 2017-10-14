@@ -126,9 +126,9 @@ SHOULD
 * Follow
   * [x] Add the actor to the object user's Followers Collection.
 * Add
-  * [x] Add the object to the Collection specified in the target property, unless not allowed to per requirements in 7.6
+  * [x] Add the object to the Collection specified in the target property, unless not allowed to per requirements in 7.8
 * Remove
-  * [x] Remove the object from the Collection specified in the target property, unless not allowed per requirements in 7.6
+  * [x] Remove the object from the Collection specified in the target property, unless not allowed per requirements in 7.9
 * Like
   * [x] Perform appropriate indication of the like being performed (See 7.10 for examples)
 * [x] Validate the content they receive to avoid content spoofing attacks.
