@@ -112,25 +112,25 @@ When receiving notifications in an inbox, a Server...
 MUST
 
 * [x] Deduplicates activities returned by the inbox by comparing activity `id`s
-* [x] Forwards incoming activities to the values of to, bto, cc, bcc, audience if and only if criteria in 8.1.2 are met.
+* [x] Forwards incoming activities to the values of to, bto, cc, bcc, audience if and only if criteria in 7.1.2 are met.
 * Update
   * [x] Take care to be sure that the Update is authorized to modify its object
 
 SHOULD
 
 * [x] Don't trust content received from a server other than the content's origin without some form of verification.
-* [x] Recurse through to, bto, cc, bcc, audience object values to determine whether/where to forward according to criteria in 8.1.2
+* [x] Recurse through to, bto, cc, bcc, audience object values to determine whether/where to forward according to criteria in 7.1.2
   * [x] Limit recursion in this process
 * Update
   * [x] Completely replace its copy of the activity with the newly received value
 * Follow
   * [x] Add the actor to the object user's Followers Collection.
 * Add
-  * [x] Add the object to the Collection specified in the target property, unless not allowed to per requirements in 8.6
+  * [x] Add the object to the Collection specified in the target property, unless not allowed to per requirements in 7.6
 * Remove
-  * [x] Remove the object from the Collection specified in the target property, unless not allowed per requirements in 8.6
+  * [x] Remove the object from the Collection specified in the target property, unless not allowed per requirements in 7.6
 * Like
-  * [x] Perform appropriate indication of the like being performed (See 8.8 for examples)
+  * [x] Perform appropriate indication of the like being performed (See 7.10 for examples)
 * [x] Validate the content they receive to avoid content spoofing attacks.
 
 ##### Inbox Retrieval
