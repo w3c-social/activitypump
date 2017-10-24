@@ -1893,6 +1893,12 @@ Location: https://dustycloud.org/likes/345
         An Activity sent over the network SHOULD have an <code>id</code>,
         unless it is intended to be transient (in which case it MAY omit the
         <code>id</code>).
+      <p>
+        <code>POST</code> requests (eg. to the inbox) MUST be made with a Content-Type of
+        <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>
+        and <code>GET</code> requests (see also <a href="#retrieving-objects"></a>) 
+        with an Accept header of 
+        <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>.
       </p>
       <p>
         In order to propagate updates throughout the social graph, Activities
