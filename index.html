@@ -2614,16 +2614,15 @@ Location: https://dustycloud.org/likes/345
       </section>
 
       <section id="security-c2s-response-dos">
-        <h2>C2S response denial-of-service</h2>
+        <h2>Client-to-server response denial-of-service</h2>
         <p>
-          Technically, [[ActivityStreams]] allows the server to return
-          Collections of any size.
-          In order to prevent a client from being overloaded, servers
-          should take care to limit the size of Collection pages they
-          return to clients.
-          Clients should still be prepared to handle overly-large
-          responses in some way in case they connect to malicious or
-          compromised servers, even if they simply generate an error.
+          In order to prevent a client from being overloaded by oversized
+          Collections, servers should take care to limit the size of Collection 
+          pages they return to clients.
+          Clients should still be prepared to limit the size of
+          responses they are willing to handle in case they connect to malicious or
+          compromised servers, for example by timing out and generating
+          an error.
         </p>
       </section>
 
