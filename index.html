@@ -2341,25 +2341,6 @@ Location: https://dustycloud.org/likes/345
       </section>
     </section>
 
-    <section id="authorization" class="informative">
-      <h2>Authentication and Authorization</h2>
-      <p>
-        ActivityPub uses authentication for two purposes; first, to
-        authenticate clients to servers, and secondly in federated
-        implementations to authenticate servers to each other.
-      </p>
-
-      <p>
-        Unfortunately at the time of standardization, there are no strongly
-        agreed upon mechanisms for authentication.
-        Some possible directions for authentication are laid out 
-        <a href="">in the Social Web Community Group Authentication and 
-        Authorization best practices report</a>.
-      </p>
-
-      </section>
-    </section>
-
     <section id="i18n-concerns" class="appendix informative">
       <h2>Internationalization</h2>
       <p>
@@ -2382,8 +2363,27 @@ Location: https://dustycloud.org/likes/345
 
     <section id="security-considerations" class="appendix informative">
       <h2>Security Considerations</h2>
+      
+      <section id="authorization" class="informative">
+        <h3>Authentication and Authorization</h2>
+        <p>
+          ActivityPub uses authentication for two purposes; first, to
+          authenticate clients to servers, and secondly in federated
+          implementations to authenticate servers to each other.
+        </p>
+
+        <p>
+          Unfortunately at the time of standardization, there are no strongly
+          agreed upon mechanisms for authentication.
+          Some possible directions for authentication are laid out 
+          <a href="">in the Social Web Community Group Authentication and 
+          Authorization best practices report</a>.
+        </p>
+
+      </section>
+
       <section id="security-verification">
-        <h2>Verification and authorization</h2>
+        <h2>Verification</h2>
         <p>
           Servers should not trust client submitted content, and
           federated servers also should not trust content received from a server
