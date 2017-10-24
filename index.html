@@ -588,15 +588,12 @@
       <p>
         Servers SHOULD validate the content they receive to avoid content
         spoofing attacks.
-        In particular, servers SHOULD NOT trust client submitted content, and
-        federated servers also SHOULD NOT trust content received from a server
-        other than the content's origin without some form of verification.
-        No particular mechanism for verification is authoritively specified by
-        this document, though some possible directions are discussed in
-        <a href="#authorization"></a>.
         (A server should do something at least as robust as checking that
-        the object appears as received at its origin, but better mechanisms
-        such as checking signatures would be better if available.)
+        the object appears as received at its origin, but mechanisms
+        such as checking signatures would be better if available).
+        No particular mechanism for verification is authoritively specified by
+        this document, but please see <a href="#security-considerations">Security 
+        Considerations</a> for some suggestions and good practices.
       </p>
       <div class="informative">
         As an example, if example.com receives the activity
@@ -2019,8 +2016,6 @@ Location: https://dustycloud.org/likes/345
           For federated servers performing delivery to a third party server,
           delivery SHOULD be performed asynchronously, and SHOULD additionally
           retry delivery to recipients if it fails due to network error.
-          Servers SHOULD also take care not to overload servers with
-          submissions, for example by using an exponential backoff strategy.
         </p>
 
         <p>
@@ -2520,11 +2515,16 @@ Location: https://dustycloud.org/likes/345
       <section id="security-verification">
         <h2>Verification and authorization</h2>
         <p>
+          Servers should not trust client submitted content, and
+          federated servers also should not trust content received from a server
+          other than the content's origin without some form of verification.
+        </p>
+        <p>
           Servers should be careful to verify that new content is really posted
           by the actor that claims to be posting it, and that the actor has
           permission to update the resources it claims to.
-          Discussion of how to accomplish this is laid out in the
-          <a href="#obj"></a> and <a href="#authorization"></a> sections.
+          See also
+          <a href="#obj"></a> and <a href="#authorization"></a>.
         </p>
       </section>
 
@@ -2592,6 +2592,8 @@ Location: https://dustycloud.org/likes/345
             mechanism.
             Servers should be especially careful to implement this protection
             around activities that involve side effects.
+            Servers SHOULD also take care not to overload servers with
+            submissions, for example by using an exponential backoff strategy.
           </p>
       </section>
 
