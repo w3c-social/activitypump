@@ -162,7 +162,7 @@
       <p>
         These are endpoints, or really, just URLs which are listed in the
         ActivityPub actor's ActivityStreams description.
-        (More on ActivityStreams later.)
+        (More on ActivityStreams later).
       </p>
 
       <p>
@@ -196,7 +196,7 @@
         If you don't, don't worry, JSON-LD documents and ActivityStreams can be
         understood as plain old simple JSON.
         (If you're going to add extensions, that's the point at which JSON-LD
-        really helps you out.)
+        really helps you out).
       </p>
 
       <p>
@@ -279,7 +279,7 @@
         (Activities sent around in ActivityPub generally follow the pattern of
         some activity by some actor being taken on some object.
         In this case the activity is a Create of a Note object, posted by a
-        Person.)
+        Person).
       </p>
 
 
@@ -356,7 +356,7 @@
       <p>
         She POSTs this message to her outbox.
         (Since it's an activity, her server knows it doesn't need to wrap it in
-        a Create object.)
+        a Create object).
       </p>
 
       <p>
@@ -616,7 +616,7 @@
         it should dereference the <code>id</code> both to ensure that it exists
         and is a valid object, and that it is not misrepresenting the object.
         (In this example, Mallory could be spoofing an object allegedly posted
-        by Alice.)
+        by Alice).
       </div>
       <section id="obj-id">
         <h2>Object Identifiers</h2>
@@ -634,7 +634,7 @@
           <li>
             Publicly dereferencable URIs, such as HTTPS URIs, with their
             authority belonging to that of their originating server.
-            (Publicly facing content SHOULD use HTTPS URIs.)
+            (Publicly facing content SHOULD use HTTPS URIs).
           </li>
           <li>
             An ID explicitly specified as the JSON <code>null</code> object,
@@ -1334,7 +1334,7 @@ Content-Type: application/ld+json; profile="https://www.w3.org/ns/activitystream
         Clients MAY recurse through attached objects, but if doing so, SHOULD
         set a limit for this recursion.
         (Note that this does not suggest that the client should "unpack"
-        collections of actors being addressed as individual recipients.)
+        collections of actors being addressed as individual recipients).
       </p>
       <p>
         Clients MAY give the user the chance to amend this addressing in the
@@ -1407,7 +1407,7 @@ Location: https://dustycloud.org/likes/345
         carry out further side effects.
         (However, there is no guarantee that time the Activity may appear in
         the outbox.
-        The Activity might appear after a delay or disappear at any period.)
+        The Activity might appear after a delay or disappear at any period).
         These are described per individual Activity below.
       </p>
 
@@ -1708,7 +1708,7 @@ Location: https://dustycloud.org/likes/345
           <a href="#uploadMedia"><code>uploadMedia</code></a> endpoint on their
           ActivityStreams profile object.
           (Unlike most client to server interactions, using this endpoint does not
-          involve submitting to the <a href="#outbox"><code>outbox</code></a>.)
+          involve submitting to the <a href="#outbox"><code>outbox</code></a>).
           A client should expect that it must be properly authenticated in order
           to be able to upload media.
         </p>
@@ -2188,7 +2188,7 @@ Location: https://dustycloud.org/likes/345
           (Note that after an activity has been transmitted from an origin
           server to a remote server, there is nothing in the ActivityPub
           protocol that can <em>enforce</em> remote deletion of an object's
-          representation.)
+          representation).
         </p>
       </section>
 
@@ -2364,7 +2364,7 @@ Location: https://dustycloud.org/likes/345
     <section id="security-considerations" class="appendix informative">
       <h2>Security Considerations</h2>
       
-      <section id="authorization" class="informative">
+      <section id="authorization">
         <h3>Authentication and Authorization</h2>
         <p>
           ActivityPub uses authentication for two purposes; first, to
@@ -2665,7 +2665,7 @@ Location: https://dustycloud.org/likes/345
         <dd>
           No.
           (Or at least, not as far as the person filling out this section can
-          tell.)
+          tell).
         </dd>
 
         <dt><a href="https://www.w3.org/TR/2015/NOTE-security-privacy-questionnaire-20151210/#string-to-script">
