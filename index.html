@@ -1203,9 +1203,8 @@
             Compacting an ActivityStreams object using the ActivityStreams
             JSON-LD context might result in
             <code>https://www.w3.org/ns/activitystreams#Public</code>
-            being represented as simply <code>as:Public</code>, and
-            <code>Public</code> is also a valid representation of the
-            Public collection.
+            being represented as simply <code>Public</code> or <code>as:Public</code>
+            which are valid representations of the Public collection.
             Implementations which treat ActivityStreams objects as simply
             JSON rather than converting an incoming activity over to a
             local context using JSON-LD tooling should be aware of this
