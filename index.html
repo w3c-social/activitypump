@@ -144,9 +144,7 @@
       </p>
 
       <p>
-        In ActivityPub, every <a href="#actors">actor</a>
-        (users are represented as "actors" here)
-        has:
+        In ActivityPub, every <a href="#actors">actor</a> has:
       </p>
 
       <ul>
@@ -409,11 +407,11 @@
           <dd>
             This protocol permits a client to act <i>on behalf</i> of a user.
             For example, this protocol is used by a mobile phone application to
-            interact with the user's social stream.
+            interact with the actor's social stream.
           </dd>
           <dt>A server to server protocol, or "Federation Protocol"</dt>
           <dd>
-            This protocol is used to distribute activities between users on
+            This protocol is used to distribute activities between actors on
             different servers, tying them into the same social graph.
           </dd>
         </dl>
@@ -646,7 +644,7 @@
           server communication, unless the activity is intentionally transient.
           However, for client to server communication, a server receiving an
           object posted to the outbox with no specified <code>id</code> SHOULD
-          allocate an object ID in the user's namespace and attach it to the
+          allocate an object ID in the actor's namespace and attach it to the
           posted object.
         </p>
         <p>All objects have the following properties:</p>
@@ -803,6 +801,14 @@
       <p>
         Once the actor's URI has been identified, it should be dereferenced.
       </p>
+
+      <div class="note">
+        ActivityPub does not dictate a specific relationship between
+        "users" and Actors; many configurations are possible.
+        There may be multiple human users or organizations controlling an
+        Actor, or likewise one human or organization may control multiple
+        Actors.
+      </div>
 
       <section id="actor-objects">
         <h2><i>Actor</i> objects</h2>
