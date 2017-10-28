@@ -2068,6 +2068,24 @@ Location: https://dustycloud.org/likes/345
           actor to the object user's
           <a href="#followers">Followers Collection</a>.
         </p>
+
+        <div class="note">
+          <p>
+            Sometimes a successful <code>Follow</code> subscription may
+            occur but at some future point delivery to the follower fails
+            for an extended period of time.
+            Implementations should be aware that there is no guarantee
+            that actors on the network will remain reachable and should
+            implement accordingly.
+            For instance, if attempting to deliver to an actor for perhaps
+            six months while the follower remains unreachable, it is
+            reasonable that the delivering server remove the subscriber
+            from the <code>followers</code> list.
+            Timeframes and behavior for dealing with unreachable actors are
+            left to the discretion of the delivering server.
+          </p>
+        </div>
+        
       </section>
 
       <section id="accept-activity-inbox">
