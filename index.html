@@ -1192,6 +1192,19 @@
           posts (as well as posts to followers-only); see
           <a href="#shared-inbox-delivery"></a>.
         </p>
+        <div class="note">
+          <p>
+            Compacting an ActivityStreams object using the ActivityStreams
+            JSON-LD context might result in
+            <code>https://www.w3.org/ns/activitystreams#Public</code>
+            being represented as simply <code>as:Public</code>.
+            These are both valid representations of the Public collection;
+            implementations which treat ActivityStreams objects as simply
+            JSON rather than converting an incoming activity over to a
+            local context using JSON-LD tooling should be aware of this
+            and should be prepared to accept both representations.
+          </p>
+        </div>
       </section>
 
       <section id="likes">
