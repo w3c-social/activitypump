@@ -144,8 +144,9 @@
       </p>
 
       <p>
-        In ActivityPub, accounts (including those of real-world users, bots,
+        In ActivityPub, accounts on a server (including those of real-world users, bots,
         and other automated processes) are represented by "<a href="#actors">actors</a>". 
+        "<a href="#actors">actors</a>". 
         Every Actor has:
       </p>
 
@@ -809,7 +810,12 @@
         "users" and Actors; many configurations are possible.
         There may be multiple human users or organizations controlling an
         Actor, or likewise one human or organization may control multiple
-        Actors.
+        Actors. Similarly, an Actor may be a piece of software, like a bot, or
+        automated proccess.
+        More detailed "user" modelling, for example linking together of Actors which
+        are controlled by the same entity, or allowing one Actor to be presented
+        through multiple alternate profiles or aspects, are at the discretion
+        of the implementation.
       </div>
 
       <section id="actor-objects">
