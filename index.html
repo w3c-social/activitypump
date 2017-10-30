@@ -1746,6 +1746,10 @@ Location: https://dustycloud.org/likes/345
         and <code>GET</code> requests (see also <a href="#retrieving-objects"></a>) 
         with an Accept header of 
         <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>.
+        Servers SHOULD interpret a Content-Type or Accept
+        header of <code>application/activity+json</code> as equivalent
+        to <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>
+        for server-to-server interactions.
       </p>
       <p>
         In order to propagate updates throughout the social graph, Activities
