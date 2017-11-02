@@ -139,7 +139,8 @@
         </li>
         <li>
           <b>A client to server protocol</b>
-          (so users can communicate with ActivityPub using servers,
+          (so users, including real-world users, bots, and other automated processes,
+          can communicate with ActivityPub using their accounts on servers,
           from a phone or desktop or web application or whatever)
         </li>
       </ul>
@@ -155,8 +156,9 @@
       </p>
 
       <p>
-        In ActivityPub, accounts on a server (including those of real-world users, bots,
-        and other automated processes) are represented by "<a href="#actors">actors</a>". 
+        In ActivityPub, a user is represented by "<a href="#actors">actors</a>"
+        via the user's accounts on servers. In this version of ActivityPub
+        each account corresponds to exactly one actor.
         Every Actor has:
       </p>
 
@@ -816,8 +818,8 @@
         "users" and Actors; many configurations are possible.
         There may be multiple human users or organizations controlling an
         Actor, or likewise one human or organization may control multiple
-        Actors. Similarly, an Actor may be a piece of software, like a bot, or
-        automated proccess.
+        Actors. Similarly, an Actor may represent a piece of software,
+        like a bot, or an automated process.
         More detailed "user" modelling, for example linking together of Actors which
         are controlled by the same entity, or allowing one Actor to be presented
         through multiple alternate profiles or aspects, are at the discretion
