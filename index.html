@@ -139,7 +139,8 @@
         </li>
         <li>
           <b>A client to server protocol</b>
-          (so users can communicate with ActivityPub using servers,
+          (so users, including real-world users, bots, and other automated processes,
+          can communicate with ActivityPub using their accounts on servers,
           from a phone or desktop or web application or whatever)
         </li>
       </ul>
@@ -155,8 +156,9 @@
       </p>
 
       <p>
-        In ActivityPub, accounts on a server (including those of real-world users, bots,
-        and other automated processes) are represented by "<a href="#actors">actors</a>". 
+        In ActivityPub, a user is represented by "<a href="#actors">actors</a>"
+        via the user's accounts on servers.
+        User's accounts on different servers correspond to different actors.
         Every Actor has:
       </p>
 
@@ -420,7 +422,7 @@
           <dd>
             This protocol permits a client to act <i>on behalf</i> of a user.
             For example, this protocol is used by a mobile phone application to
-            interact with the actor's social stream.
+            interact with a social stream of the user's actor.
           </dd>
           <dt>A server to server protocol, or "Federation Protocol"</dt>
           <dd>
@@ -816,8 +818,8 @@
         "users" and Actors; many configurations are possible.
         There may be multiple human users or organizations controlling an
         Actor, or likewise one human or organization may control multiple
-        Actors. Similarly, an Actor may be a piece of software, like a bot, or
-        automated proccess.
+        Actors. Similarly, an Actor may represent a piece of software,
+        like a bot, or an automated process.
         More detailed "user" modelling, for example linking together of Actors which
         are controlled by the same entity, or allowing one Actor to be presented
         through multiple alternate profiles or aspects, are at the discretion
@@ -1094,7 +1096,7 @@
 
         <p>
           The inbox stream contains all objects received by the
-          user.
+          actor.
           The server SHOULD filter content according to the requester's
           permission.
           In general, the owner of an inbox is likely to be able to access
@@ -1107,8 +1109,8 @@
         <p>
           The server MUST perform de-duplication of activities returned by
           the inbox. Duplication can occur if an activity is addressed both
-          to a user's followers, and a specific
-          user who also follows the recipient user, and the server has failed
+          to an actor's followers, and a specific
+          actor who also follows the recipient actor, and the server has failed
           to de-duplicate the recipients list.
           Such deduplication MUST be performed by comparing the
           <code>id</code> of the activities and dropping any activities
@@ -1130,9 +1132,9 @@
           collection.
           This is a list of everyone who has sent a
           <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-follow">Follow</a>
-          activity for the user, added as a
+          activity for the actor, added as a
           <a href="#follow-activity-outbox">side effect</a>.
-          This is where one would find a list of all the users that are
+          This is where one would find a list of all the actors that are
           following the actor.
           The <code>followers</code> collection MUST be either an
           <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
@@ -1145,7 +1147,7 @@
         </p>
 
         <p class="note" title="Default for notification targeting">
-          The follow activity generally is a request to see the objects a user
+          The follow activity generally is a request to see the objects an actor
           creates. This makes the Followers collection an appropriate default
           target for <a href="#delivery">delivery</a> of notifications.
         </p>
@@ -1305,10 +1307,10 @@
 
       <p>
         Client to server interaction takes place through clients posting
-        Activities to a user's <a href="#outbox">outbox</a>.
-        To do this, clients MUST discover the URL of the user's outbox from
+        Activities to an actor's <a href="#outbox">outbox</a>.
+        To do this, clients MUST discover the URL of the actor's outbox from
 	their <a href="#actor-objects">profile</a> and then MUST make an HTTP
-        <code>POST</code> request to to this URL with the Content-Type of
+        <code>POST</code> request to this URL with the Content-Type of
         <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>.
         The request MUST be authenticated with the credentials of the user to
         whom the outbox belongs.
@@ -1622,7 +1624,7 @@ Location: https://dustycloud.org/likes/345
         <h3>Follow Activity</h3>
         <p>
           The <code>Follow</code> activity is used to subscribe to the
-          activities of another user.
+          activities of another actor.
         </p>
         <p>
           The side effect of receiving this in an <strong>outbox</strong>
@@ -1777,7 +1779,7 @@ Location: https://dustycloud.org/likes/345
       <ul>
         <li>
           conduct any side effects related to the Activity (for example,
-          notification that a user has liked an object is used to update the
+          notification that an actor has liked an object is used to update the
           object's like count);
         </li>
         <li>
@@ -1789,20 +1791,20 @@ Location: https://dustycloud.org/likes/345
       <p>Delivery is usually triggered by, for example:</p>
       <ul>
         <li>
-          an Activity being created in a user's <a href="#outbox">outbox</a>
+          an Activity being created in an actor's <a href="#outbox">outbox</a>
           with their <a href="#followers">Followers Collection</a> as the
           recipient.
         </li>
         <li>
-          an Activity being created in a user's <a href="#outbox">outbox</a>
+          an Activity being created in an actor's <a href="#outbox">outbox</a>
           with directly addressed recipients.
         </li>
         <li>
-          an Activity being created in a user's <a href="#outbox">outbox</a>
+          an Activity being created in an actors's <a href="#outbox">outbox</a>
           with user-curated collections as recipients.
         </li>
         <li>
-          an Activity being created in a user's <a href="#outbox">outbox</a> or
+          an Activity being created in an actor's <a href="#outbox">outbox</a> or
           <a href="#inbox">inbox</a> which references another object.
         </li>
       </ul>
@@ -1859,7 +1861,7 @@ Location: https://dustycloud.org/likes/345
         <p>
           Servers MUST de-duplicate the final recipient list. Servers MUST also
           exclude actors from the list which are the same as the <code>actor</code>
-          of the Activity being notified about. That is, users shouldn't have their
+          of the Activity being notified about. That is, actors shouldn't have their
           own activities delivered to themselves.
         </p>
 
@@ -1869,7 +1871,7 @@ Location: https://dustycloud.org/likes/345
           object remains completely private and access controls restrict the
           access to object.
           If the object is just sent to the "public" collection the object is
-          not delivered to any users but is publicly viewable in the actor's
+          not delivered to any actors but is publicly viewable in the actor's
           outbox.
         </p>
 
@@ -1890,7 +1892,7 @@ Location: https://dustycloud.org/likes/345
         </p>
 
         <p>
-          <strong>Note:</strong> Activities being distributed between users on
+          <strong>Note:</strong> Activities being distributed between actors on
           the same origin may use any internal mechanism, and are not required
           to use HTTP.
         </p>
@@ -2086,10 +2088,10 @@ Location: https://dustycloud.org/likes/345
         <p>
           In the case of receiving an <code>Accept</code> referencing this
           <code>Follow</code> as the object, the server SHOULD add the
-          <code>actor</code> to the object user's
+          <code>actor</code> to the object actor's
           <a href="#followers">Followers Collection</a>.
           In the case of a <code>Reject</code>, the server MUST NOT add the
-          actor to the object user's
+          actor to the object actor's
           <a href="#followers">Followers Collection</a>.
         </p>
 
@@ -2501,7 +2503,7 @@ Location: https://dustycloud.org/likes/345
           ActivityPub's actors may contain information about the associated
           user.
           At minimum, the actor profile contains an identifier which also
-          provides a mechanism for contacting the actor, through the exposed
+          provides a mechanism for contacting the user, through the exposed
           actor's inbox.
           Aside from this, ActivityPub does not mandate any personally
           identifiable information to operate, though depending on the
