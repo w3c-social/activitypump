@@ -1,0 +1,15 @@
+#+TITLE: ActivityPub: powering the decentralized social web!
+
+[[file:./illustration/tutorial-2.png]]
+
+[[https://www.w3.org/TR/activitypub/][ActivityPub]] is a decentralized social networking protocol based on the
+[[https://www.w3.org/TR/activitystreams-core/][ActivityStreams 2.0]] data format and is being developed as part of the
+[[https://www.w3.org/wiki/Socialwg][W3C Social Web Working Group]]. It provides a client to server API for
+creating, updating and deleting content, as well as a federated server
+to server API for delivering notifications and subscribing to content.
+
+ - [[https://www.w3.org/TR/activitypub/][ActivityPub's standard]]
+ - [[https://activitypub.rocks/][Main website]]
+ - [[https://test.activitypub.rocks/][Test suite]]
+ - [[https://activitypub.rocks/implementation-report/][Implementation Reports]] (you can generate your own using the [[https://test.activitypub.rocks/][test suite]]
+   and then file to the [[https://github.com/w3c/activitypub/issues][issue tracker]])
