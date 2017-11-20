@@ -1922,10 +1922,14 @@ Location: https://dustycloud.org/likes/345
         </p>
 
         <section id="outbox-delivery">
-          <h3>Outbox Delivery</h3>
+          <h3>Outbox Delivery Requirements for Server to Server</h3>
           <p>
-            When objects are received in the <a href="#outbox">outbox</a>, the
-            server MUST target and deliver to:
+            When objects are received in the <a href="#outbox">outbox</a>
+            (for servers which support both
+            <a href="#client-to-server-interactions">Client to Server interactions</a>
+            and
+            <a href="#server-to-server-interactions">Server to Server Interactions</a>),
+            the server MUST target and deliver to:
           </p>
           <ul>
             <li>
