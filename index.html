@@ -1980,16 +1980,14 @@ Location: https://dustycloud.org/likes/345
             server needs to forward these to recipients that the origin was unable
             to deliver them to. To do this, the server MUST target and
             <a href="#delivery">deliver</a>
-            to the values of <code>to</code>, <code>bto</code>, <code>cc</code>,
-            <code>bcc</code>, and/or <code>audience</code>
+            to the values of <code>to</code>, <code>cc</code>, and/or <code>audience</code>
             if and only if all of the following are true:
           </p>
           <ul>
             <li>This is the first time the server has seen this Activity.</li>
             <li>
-              The values of <code>to</code>, <code>bto</code>, <code>cc</code>,
-              <code>bcc</code>, and/or <code>audience</code> contain a
-              Collection owned by the server.
+              The values of <code>to</code>, <code>cc</code>, and/or
+              <code>audience</code> contain a Collection owned by the server.
             </li>
             <li>
               The values of <code>inReplyTo</code>, <code>object</code>,
@@ -2000,8 +1998,8 @@ Location: https://dustycloud.org/likes/345
               point at which the thread is so deep the recipients followers may not mind
               if they are no longer getting updates that don't directly involve the
               recipient).
-              The server MUST only target the values of <code>to</code>, <code>bto</code>,
-              <code>cc</code>, <code>bcc</code>, and/or <code>audience</code>
+              The server MUST only target the values of <code>to</code>,
+              <code>cc</code>, and/or <code>audience</code>
               on the original object being forwarded, and not pick up any new
               addressees whilst recursing through the linked objects
               (in case these addressees were purposefully amended by or via the client).
