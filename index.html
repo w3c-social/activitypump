@@ -1947,6 +1947,30 @@ Location: https://dustycloud.org/likes/345
 
         <section id="inbox-forwarding">
           <h3>Forwarding from Inbox</h3>
+
+          <div class="note" title="Forwarding to avoid the ghost replies problem">
+            <p>
+              The following section is to mitigate the "ghost replies" problem
+              which occasionally causes problems on federated networks.
+              This problem isn't best demonstrated with an example.
+            </p>
+
+            <p>
+              Alyssa makes a post about her having successfully presented a
+              paper at a conference and sends it to her followers collection,
+              which includes her friend Ben.
+              Ben replies to Alyssa's message congratulating her and includes
+              her followers collection on the recipients.
+              However, Ben has no access to see the members of Alyssa's
+              followers collection, so his server does not forward his messages
+              to their inbox.
+              Without the following mechanism, if Alyssa were then to reply to
+              Ben, her followers would see Alyssa replying to Ben without having
+              ever seen Ben interacting.
+              This would be very confusing!
+            </p>
+          </div>
+
           <p>
             When Activities are received in the <a href="#inbox">inbox</a>, the
             server needs to forward these to recipients that the origin was unable
