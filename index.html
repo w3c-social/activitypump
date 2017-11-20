@@ -1317,6 +1317,10 @@
 	their <a href="#actor-objects">profile</a> and then MUST make an HTTP
         <code>POST</code> request to this URL with the Content-Type of
         <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>.
+        Servers MAY interpret a Content-Type or Accept header of
+        <code>application/activity+json</code> as equivalent
+        to <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>
+        for client-to-server interactions.
         The request MUST be authenticated with the credentials of the user to
         whom the outbox belongs.
         The body of the <code>POST</code> request MUST contain a single
