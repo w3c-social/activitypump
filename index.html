@@ -2705,11 +2705,46 @@ Location: https://dustycloud.org/likes/345
       <section id="changes-31-october-14-november">
         <h3>Changes from 31 October 2017 to this version</h3>
         <ul>
+          <li>
+            Removed at-risk note for media upload, since that was removed in
+            the last iteration.
+          </li>
+          <li>
+            Updates to the tutorial and a few other non-normative sections clarifying
+            relationships between users, actors, and accounts.
+          </li>
+          <li>
+            Various typo fixes.
+          </li>
+          <li>
+            Relaxed <code>liked</code> property to a MAY.
+          </li>
+          <li>
+            Clarified that the <a href="#outbox-delivery">outbox delivery</a> section
+            is for the union of client-to-server and server-to-server implementations.
+          </li>
+          <li>
+            Added a note explaining what the forwarding mechanism is for.
+          </li>
+          <li>
+            Add a MAY for servers accepting application/activity+json to outbox.
+          </li>
+          <li>
+            Don't require forwarding to bto/bcc properties that will never be seen.
+          </li>
+          <li>
+            Note that bto/bcc should be removed for display, but don't dictate for store.
+            The new display bit was noted in the security considerations section.
+          </li>
+          <li>
+            Replace "objects" word with "activities" in inbox/outbox stream sections,
+            which is a more accurate explanation.
+          </li>
         </ul>
       </section>
 
       <section id="changes-07-september-31-october">
-        <h3>Changes from 7 September 2017 to this version</h3>
+        <h3>Changes from 7 September 2017 to 31 October 2017</h3>
         <ul>
           <li>Restructure author section, adding Amy Guy and Evan Prodromou.</li>
           <li>Move the bulk of the (informative) Authentication and Authorization section to 
