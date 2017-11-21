@@ -1069,9 +1069,9 @@
             <code>OrderedCollection</code></a>.
         </p>
         <p>
-          The outbox stream contains objects the user has
+          The outbox stream contains activities the user has
           published, subject to the ability of the requestor to retrieve the
-          object (that is, the contents of the outbox are filtered by the
+          activity (that is, the contents of the outbox are filtered by the
           permissions of the person reading it).
           If a user submits a request without
           <a href="#authorization">Authorization</a> the server should
@@ -1100,7 +1100,7 @@
         </p>
 
         <p>
-          The inbox stream contains all objects received by the
+          The inbox stream contains all activities received by the
           actor.
           The server SHOULD filter content according to the requester's
           permission.
