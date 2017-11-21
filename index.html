@@ -1362,10 +1362,10 @@ HTTP/1.1 201 Created
 Location: https://dustycloud.org/likes/345
       </pre>
 
-      <p>
+      <p id="remove-bto-bcc-before-delivery">
         The server MUST remove the <code>bto</code> and/or <code>bcc</code>
         properties, if they exist, from the ActivityStreams object before
-        storage and delivery, but MUST utilize the addressing originally stored
+        delivery, but MUST utilize the addressing originally stored
         on the <code>bto</code> / <code>bcc</code> properties for determining
         recipients in <a href="#delivery">delivery</a>.
       </p>
@@ -2435,6 +2435,21 @@ Location: https://dustycloud.org/likes/345
           containing markup to prevent cross site scripting attacks.
         </p>
       </section>
+
+      <section id="security-not-displaying-bto-bcc">
+        <h2>Not displaying bto and bcc properties</h2>
+        <p>
+          <code>bto</code> and <code>bcc</code> already
+          <a href="#remove-bto-bcc-before-delivery">must be removed for delivery</a>,
+          but servers are free to decide how to represent the object
+          in their own storage systems.
+          However, since <code>bto</code> and <code>bcc</code> are only intended
+          to be known/seen by the original author of the object/activity,
+          servers should omit these properties during display as well.
+        </p>
+      </section>
+
+
     </section>
 
     <section class="appendix informative" id="acknowledgements">
