@@ -1,3 +1,7 @@
+NOTE!  The ActivityPub spec now contains all the stuff from this tutorial
+and some more!  This is the old version.  Check out the new version here:
+  https://www.w3.org/TR/activitypub/#Overview
+
 ActivityPub tutorial
 ====================
 
