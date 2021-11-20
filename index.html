@@ -113,16 +113,11 @@
       }
     </style>
   </head>
-  <!-- STYLISTIC NOTE: This document wraps on column 79 and at the end of every
-       sentence. -->
   <body>
     <section id="abstract">
       <p>
-        The ActivityPub protocol is a decentralized social networking protocol
-        based upon the [[!ActivityStreams]] 2.0 data format.
-        It provides a client to server API for creating, updating and deleting
-        content, as well as a federated server to server API for delivering
-        notifications and content.
+        ActivityPub プロトコルは、[[!ActivityStreams]] 2.0 データフォーマットに基いた非中央集権的なソーシャルネットワーキングプロトコルです。
+        内容の作成、更新、削除を行うためにクライアントから呼び出すサーバーの API と、通知や内容を伝達するために連合したサーバーが呼び出すサーバーの API を提供します。
       </p>
     </section>
 
@@ -130,58 +125,47 @@
     </section>
 
     <section id="Overview">
-      <h2>Overview</h2>
+      <h2>概要</h2>
 
-      <p>ActivityPub provides two layers:</p>
+      <p>ActivityPub は次の2つのレイヤーを提供します：</p>
 
       <ul>
         <li>
-          <b>A server to server federation protocol</b>
-          (so decentralized websites can share information)
+          <b>サーバー間での連合のプロトコル</b>
+          (非中央集権的なウェブサイトが情報を共有することを可能にする)
         </li>
         <li>
-          <b>A client to server protocol</b>
-          (so users, including real-world users, bots, and other automated processes,
-          can communicate with ActivityPub using their accounts on servers,
-          from a phone or desktop or web application or whatever)
+          <b>クライアント-サーバー間でのプロトコル</b>
+          (実世界の利用者、ボット、その他の自動化された処理などのユーザーが、携帯電話やデスクトップ、Web アプリケーション等からサーバー上のアカウントで ActivityPub を用いた伝達を可能にする)
         </li>
       </ul>
 
       <p>
-        ActivityPub implementations can implement just one of these things or
-        both of them.
-        However, once you've implemented one, it isn't too many steps to
-        implement the other, and there are a lot of benefits to both (making
-        your website part of the decentralized social web, and being able to
-        use clients and client libraries that work across a wide variety of
-        social websites).
+        ActivityPub を実装するにあたっては、これらのどちらか一方のみ、または両方を実装することが可能です。
+        しかしながら、片方が実装できていれば、もう片方を実装するのに多くの手間はかからず、両者によるメリットを得ることができます（ウェブサイトを非中央集権的なソーシャルウェブの一部にしたり、幅広いソーシャルウェブサイトで動作するクライアントやそのライブラリを使えるようになる）。
       </p>
 
       <p>
-        In ActivityPub, a user is represented by "<a href="#actors">actors</a>"
-        via the user's accounts on servers.
-        User's accounts on different servers correspond to different actors.
-        Every Actor has:
+        ActivityPub では、ユーザーのことを、サーバー上のユーザーを介して「<a href="#actors">actor</a>」で表現されます。異なるサーバー上のユーザーのアカウントは、異なる actor に対応します。
+        それぞれの actor は次の要素を持ちます：
       </p>
 
       <ul>
-        <li><b>An <code>inbox</code>:</b>  How they get messages from the world</li>
-        <li><b>An <code>outbox</code>:</b> How they send messages to others</li>
+        <li><b><code>inbox</code>:</b>  外界からメッセージを受け取る部分</li>
+        <li><b><code>outbox</code>:</b> 他人へとメッセージを送る部分</li>
       </ul>
 
       <p>
         <img src="illustration/tutorial-1.png"
-             alt="Actor with inbox and outbox" />
+             alt="inbox と outbox に並ぶ actor" />
       </p>
 
       <p>
-        These are endpoints, or really, just URLs which are listed in the
-        ActivityPub actor's ActivityStreams description.
-        (More on ActivityStreams later).
+        これらは、エンドポイントだったり、実際には ActivityPub の actor の ActivityStreams での説明に列挙されているただの URL であったりします（ActivityStreams について後にもう少し説明あり）。
       </p>
 
       <p>
-        Here's an example of the record of our friend Alyssa P. Hacker:
+        これは、我々の友達である Alyssa P. Hacker のレコードの一例です：
       </p>
 
       <pre class="example highlight json">
@@ -199,74 +183,54 @@
       </pre>
 
       <p>
-        ActivityPub uses [[!ActivityStreams]] for its vocabulary.
-        This is pretty great because ActivityStreams includes all the common
-        terms you need to represent all the activities and content flowing
-        around a social network.
-        It's likely that ActivityStreams already includes all the vocabulary
-        you need, but even if it doesn't, ActivityStreams can be extended
-        via [[!JSON-LD]].
-        If you know what JSON-LD is, you can take advantage of the cool linked
-        data approaches provided by JSON-LD.
-        If you don't, don't worry, JSON-LD documents and ActivityStreams can be
-        understood as plain old simple JSON.
-        (If you're going to add extensions, that's the point at which JSON-LD
-        really helps you out).
+        ActivityPub は [[!ActivityStreams]] の語彙を用います。
+        これはとても良いことで、なぜなら ActivityStreams はソーシャルネットワークで流れるすべての activity や内容を表現するのに必要な、共通したあらゆる表現を含んでいるからです。
+        おそらく、ActivityStreams はあなたが必要とする語彙すべてをすでに含んでいると考えられますが、もしそうでなかったとしても、[[!JSON-LD]] を介して ActivityStreams を拡張できます。
+        JSON-LD のことを知っているなら、JSON-LD によって提供されるすてきな linked data の手法によるメリットを得られます。
+        もし知らなかったとしても、落ち込む必要はありません。JSON-LD ドキュメントと ActivityStreams は普通のシンプルな JSON として解釈できます
+        （拡張を追加しようとするときに、JSON-LD が非常に助けとなってくれるのです）。
       </p>
 
       <p>
-        So, okay.
-        Alyssa wants to talk to her friends, and her friends want to talk to
-        her!
-        Luckily these "inbox" and "outbox" things can help us out.
-        They both behave differently for GET and POST.
-        Let's see how that works:
-      </p>
-
+        さて、Alyssa は友達に話し掛けたいと思っていて、彼女の友達もまた彼女に話し掛けたいと思っています！
+        幸運なことに、これらの "inbox" と "outbox" というものが私たちの助けとなります。両者は GET と POST に対して異なる働きをします。どのように動くのか見てみましょう：</p>
       <p>
         <img src="illustration/tutorial-2.png"
-             alt="Actor with messages flowing from rest of world to inbox and from outbox to rest of world" />
+             alt="外界から inbox へ流れるメッセージと、outbox から外界へ流れるメッセージに並ぶ actor" />
       </p>
 
       <p>
-        Hey nice, so just as a recap:
+        要約すると：
       </p>
 
       <ul>
         <li>
-          You can POST to someone's inbox to send them a message
-          (server-to-server / federation only... this <em>is</em> federation!)
+          誰かの inbox に対して POST をすると、メッセージを送ることができる
+          （サーバー間 / 連合でのみ…… これこそが連合です！）
         </li>
         <li>
-          You can GET from your inbox to read your latest messages
-          (client-to-server; this is like reading your social
-          network stream)
+          自分の inbox に対して GET をすると、最新のメッセージを読むことができる
+          （クライアント-サーバー間。これはソーシャルネットワークのストリームを読むようなものです）
         </li>
         <li>
-          You can POST to your outbox to send messages to the world
-          (client-to-server)
+          自分の outbox に対して POST をすると、外界にメッセージを送ることができる
+          （クライアント-サーバー間）
         </li>
         <li>
-          You can GET from someone's outbox to see what messages they've
-          posted (or at least the ones you're authorized to see).
-          (client-to-server and/or server-to-server)
+          誰かの outbox に対して GET をすると、彼らが何を投稿したか見ることができる
+          （少なくとも、見ることを認可されているものについて。クライアント-サーバー間、およびサーバー間）
         </li>
       </ul>
- 
+
       <p>
-        Of course, if that last one (GET'ing from someone's outbox) was the
-        only way to see what people have sent, this wouldn't be a very
-        efficient federation protocol!
-        Indeed, federation happens usually by servers posting messages sent by
-        actors to actors on other servers' inboxes.
+        もちろん、最後のもの（誰かの outbox に対して GET すること）だけが人々の投稿を見るための方法だったら、あまり効率的な連合のプロトコルにはならないでしょう！
+        実際、連合そのものは、サーバー同士が actor から actor へのメッセージをほかのサーバー上の inbox に送ることで起きています。
       </p>
 
       <p>
-        Let's see an example!
-        Let's say Alyssa wants to catch up with her friend, Ben Bitdiddle.
-        She lent him a book recently and she wants to make sure he returns it
-        to her.
-        Here's the message she composes, as an ActivityStreams object:
+        例を見てみましょう！
+        Alyssa が彼女の友達である Ben Bitdiddle の近況を知りたいと思ったとします。彼女は彼に最近本を貸したので、彼がそれを返すことを確かめておきたいです。
+        これは、彼女が綴ったメッセージを、ActivityStreams のオブジェクトとして表現したものです：
       </p>
 
       <pre class="example highlight json">
@@ -278,23 +242,19 @@
       </pre>
 
       <p>
-        This is a note addressed to Ben.
-        She POSTs it to her outbox.
+        これは Ben に向けた note です。
+        彼女は、これを自身の outbox に POST します。
       </p>
 
       <p>
         <img src="illustration/tutorial-3.png"
-             alt="Actor posting message to outbox" />
+             alt="outbox にメッセージを POST する actor" />
       </p>
 
       <p>
-        Since this is a non-activity object, the server recognizes that this is
-        an object being newly created, and does the courtesy of wrapping it in
-        a Create activity.
-        (Activities sent around in ActivityPub generally follow the pattern of
-        some activity by some actor being taken on some object.
-        In this case the activity is a Create of a Note object, posted by a
-        Person).
+        これは activity ではないオブジェクトなので、サーバーはこれが新たに作られたオブジェクトであると認識し、Create activity に包むという特別な扱い方をします
+        （ActivityPub において送信される activity は、一般的に、actor がもたらす何らかのオブジェクトによる何らかの activity、というパターンに従います。
+        この場合での activity は、Person によって投稿された Note オブジェクトの Create になります）。
       </p>
 
 
@@ -308,37 +268,32 @@
               "id": "https://social.example/alyssa/posts/49e2d03d-b53a-4c4c-a95c-94a6abf45a19",
               "attributedTo": "https://social.example/alyssa/",
               "to": ["https://chatty.example/ben/"],
-              "content": "Say, did you finish reading that book I lent you?"}}
+              "content": "そうだ、私が貸したあの本は読み終わった？"}}
       </pre>
 
       <p>
-        Alyssa's server looks up Ben's ActivityStreams actor object, finds his
-        inbox endpoint, and POSTs her object to his inbox.
+        Alyssa のサーバーが Ben の ActivityStreams の actor オブジェクトを探し、彼の inbox エンドポイントを見つけ、彼女のオブジェクトを彼の inbox に POST します。
       </p>
 
       <p>
         <img src="illustration/tutorial-4.png"
-             alt="Server posting to remote actor's inbox" />
+             alt="外部の actor の inbox に送信するサーバー" />
       </p>
 
       <p>
-        Technically these are two separate steps... one is client to server
-        communication, and one is server to server communication (federation).
-        But, since we're using them both in this example, we can abstractly
-        think of this as being a streamlined submission from outbox to inbox:
+        厳密には、これらは2つの別々のステップです…… 一つ目はクライアント-サーバー間の伝達であり、二つ目はサーバー間での伝達（連合）です。
+        しかし、この例では両者を使っているので、このことを outbox から inbox への投稿の流れとして抽象的に捉えることができます。
       </p>
 
       <p>
         <img src="illustration/tutorial-5.png"
-             alt="Note flowing from one actor's outbox to other actor's inbox" />
+             alt="ある actor の outbox から他の actor の inbox へ流れる note" />
       </p>
 
       <p>
-        Cool!
-        A while later, Alyssa checks what new messages she's gotten.
-        Her phone polls her inbox via GET, and amongst a bunch of cat videos
-        posted by friends and photos of her nephew posted by her sister, she
-        sees the following:
+        すばらしい！
+        少し間を置いて、Alyssa は彼女への新しいメッセージを確認します。
+        彼女の携帯は GET で自身の inbox にポーリングし、友達が投稿した大量の猫動画や、姉妹が投稿した甥の写真などの中から、次のものを見つけました：
       </p>
 
       <pre class="example highlight json">
@@ -352,12 +307,12 @@
               "attributedTo": "https://chatty.example/ben/",
               "to": ["https://social.example/alyssa/"],
               "inReplyTo": "https://social.example/alyssa/posts/49e2d03d-b53a-4c4c-a95c-94a6abf45a19",
-              "content": "&lt;p&gt;Argh, yeah, sorry, I'll get it back to you tomorrow.&lt;/p&gt;
-                          &lt;p&gt;I was reviewing the section on register machines,
-                             since it's been a while since I wrote one.&lt;/p&gt;"}}
+              "content": "&lt;p&gt;あー、うん、ごめん、明日返すよ。&lt;/p&gt;
+                          &lt;p&gt;レジスタマシンの章を見直していたんだ、
+                             以前に書いてからだいぶ経ってしまったからね。&lt;/p&gt;"}}
       </pre>
 
-      <p>Alyssa is relieved, and likes Ben's post:</p>
+      <p>Alyssa は安心したので、Ben の投稿に like をつけます：</p>
 
       <pre class="example highlight json">
   {"@context": "https://www.w3.org/ns/activitystreams",
@@ -369,17 +324,13 @@
       </pre>
 
       <p>
-        She POSTs this message to her outbox.
-        (Since it's an activity, her server knows it doesn't need to wrap it in
-        a Create object).
+        彼女はこのメッセージを自身の outbox に POST します
+        （これは activity なため、彼女のサーバーはこれを Create オブジェクトの中に包む必要がないことを知っています）。
       </p>
 
       <p>
-        Feeling happy about things, she decides to post a public message to her
-        followers.
-        Soon the following message is blasted to all the members of her
-        followers collection, and since it has the special Public group
-        addressed, is generally readable by anyone.
+        嬉しさを感じたので、彼女はフォロワーに対して public なメッセージを投稿することを決めました。
+        やがて、次のメッセージが彼女のフォロワーの collection のすべてのメンバーに送信されました。また、特別な Public group が指定されていたので、誰からでも一般に読むことが可能になっています。
       </p>
 
       <pre class="example highlight json">
@@ -394,7 +345,7 @@
               "attributedTo": "https://social.example/alyssa/",
               "to": ["https://social.example/alyssa/followers/",
                      "https://www.w3.org/ns/activitystreams#Public"],
-              "content": "Lending books to friends is nice.  Getting them back is even nicer! :)"}}
+              "content": "友達に本を貸すのは良い。返してもらうことはより良いですね！(^_^)"}}
       </pre>
 
       <section id="social-web-working-group" inlist="" rel="schema:hasPart"
@@ -402,11 +353,7 @@
         <h3 property="schema:name">Social Web Working Group</h3>
         <div datatype="rdf:HTML" property="schema:description">
           <p>
-            <a href="#Overview">ActivityPub</a> is one of several related
-            specifications being produced by the Social Web Working Group.
-            Implementers interested in alternative approaches and complementary
-            protocols should review [[Micropub]] and the overview document
-            [[Social-Web-Protocols]].
+            <a href="#Overview">ActivityPub</a> は Social Web Working Group によって作られた、いくつかの関連する仕様のうちの1つです。別の手法や補完的なプロトコルに興味のある実装者は [[Micropub]] と概要に関する書類 [[Social-Web-Protocols]] を参照してください。
           </p>
         </div>
       </section>
