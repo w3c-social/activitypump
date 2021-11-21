@@ -404,44 +404,41 @@
     </section>
 
     <section id="obj">
-      <h2>Objects</h2>
+      <h2>オブジェクト</h2>
       <p>
-        Objects are the core concept around which both [[!ActivityStreams]] and
-        ActivityPub are built.
-        Objects are often wrapped in Activities and are contained in streams of
-        Collections, which are themselves subclasses of Objects.
-        See the [[!Activity-Vocabulary]] document, particularly the
-        <a href="https://www.w3.org/TR/activitystreams-vocabulary/#types">Core Classes</a>;
-        ActivityPub follows the mapping of this vocabulary very closely.
+        オブジェクトは、[[!ActivityStreams]] と ActivityPub を構成する基本的な概念です。
+        オブジェクトは多くの場合 activity に包まれたり、collection の stream に含まれたりします。
+        collection 自身もまたオブジェクトのサブクラスです。
+        詳しくは、[[!Activity-Vocabulary]] のドキュメントの、特に
+        <a href="https://www.w3.org/TR/activitystreams-vocabulary/#types">Core Classes</a>
+        の章を参照してください。
+        ActivityPub は、この語彙の対応関係に厳密に従っています。
       </p>
       <p>
-        ActivityPub defines some terms in addition to those provided by
-        ActivityStreams.
-        These terms are provided in the ActivityPub
+        ActivityPub は、ActivityStreams が提供するものに加えて、いくつかの用語を定義します。
+        これらの用語は
+        <code>https://www.w3.org/ns/activitystreams</code>
+        にある ActivityPub の
         <a href="http://www.w3.org/TR/json-ld/#the-context">JSON-LD context</a>
-        at
-        <code>https://www.w3.org/ns/activitystreams</code>.
-        Implementers SHOULD include the ActivityPub context in their
-        object definitions.
-        Implementers MAY include additional context as appropriate.
+        で提供されています。
+        実装者は自身のオブジェクトの定義の中に ActivityPub の context を含めるべきです。
+        実装者は適切に追加の context を含めてもよいです。
       </p>
       <p>
-        ActivityPub shares the same
+        ActivityPub は
         <a href="https://www.w3.org/TR/activitystreams-core/#urls">
-          URI / IRI conventions as in ActivityStreams</a>.
+          ActivityStreams の URI / IRI の慣例</a>
+        と同じものを共有しています。
       </p>
       <p>
-        Servers SHOULD validate the content they receive to avoid content
-        spoofing attacks.
-        (A server should do something at least as robust as checking that
-        the object appears as received at its origin, but mechanisms
-        such as checking signatures would be better if available).
-        No particular mechanism for verification is authoritatively specified by
-        this document, but please see <a href="#security-considerations">Security 
-        Considerations</a> for some suggestions and good practices.
+        サーバーは、内容のスプーフィング攻撃を避けるために受け取った内容を検証すべきです
+        （少なくとも、オブジェクトが元の場所で受信されたように見えることを確認するのと同じぐらい堅牢な処理を行うべきですが、
+        署名の確認などの方法が利用できるとより良いでしょう）。
+        検証のための特定の方法がこのドキュメントできちんと指定されている訳ではないですが、
+        <a href="#security-considerations">セキュリティについての考慮事項</a>にある提案やグッドプラクティスには目を通してください。
       </p>
       <div class="informative">
-        As an example, if example.com receives the activity
+        例として、もし example.com が次の activity を受け取ったとき
         <pre class="example">
          {
            "@context": "https://www.w3.org/ns/activitystreams",
@@ -450,163 +447,111 @@
            "to": ["https://hatchat.example/sarah/",
                   "https://example.com/peeps/john/"],
            "object": {
-             "@context": {"@language": "en"},
+             "@context": {"@language": "ja"},
              "id": "https://example.org/~alice/note/23",
              "type": "Note",
              "attributedTo": "https://example.org/~alice",
-             "content": "I'm a goat"
+             "content": "わたしはヤギ"
            }
          }
         </pre>
-        it should dereference the <code>id</code> both to ensure that it exists
-        and is a valid object, and that it is not misrepresenting the object.
-        (In this example, Mallory could be spoofing an object allegedly posted
-        by Alice).
+        <code>id</code> の参照外しを行うことで、それが有効なオブジェクトとして存在していることと、
+        オブジェクトを不正確に表現していないことの両方を確かめるべきです
+        （この例では、Alice が投稿したと伝えられているオブジェクトは Mallory が勝手に作ったものかもしれない）。
       </div>
       <section id="obj-id">
-        <h2>Object Identifiers</h2>
+        <h2>オブジェクトの識別子</h2>
         <p>
-          All Objects in [[!ActivityStreams]] should have unique global
-          identifiers.
-          ActivityPub extends this requirement; all objects distributed by the
-          ActivityPub protocol MUST have unique global identifiers, unless they
-          are intentionally transient (short lived activities that are not
-          intended to be able to be looked up, such as some kinds of chat
-          messages or game notifications).
-          These identifiers must fall into one of the following groups:
+          [[!ActivityStreams]] のすべてのオブジェクトは、固有のグローバルな識別子を持つべきです。
+          ActivityPub はこの要求を拡張しています。ActivityPub プロトコルによって分配されるすべてのオブジェクトは、それらが意図的に一時的なもの（チャットメッセージやゲームの通知などの、生存期間が短くて検索されることを意図していない activity）でない場合には、固有のグローバルな識別子を持たなければいけません。
+          これらの識別子は、次の分類のうちどれか 1 つに入っていなければいけません。
         </p>
         <ol>
           <li>
-            Publicly dereferencable URIs, such as HTTPS URIs, with their
-            authority belonging to that of their originating server.
-            (Publicly facing content SHOULD use HTTPS URIs).
+            public に参照外しができる、HTTPS URI などの URI で、その一存が元のサーバーに属しているようなもの
+            （公開されているコンテンツには HTTPS URI を使うべきです）。
           </li>
-          <li>
-            An ID explicitly specified as the JSON <code>null</code> object,
-            which implies an anonymous object (a part of its parent context)
-          </li>
+          <li>匿名のオブジェクト（親の context の一部となるもの）を示す、明示的に JSON の <code>null</code> オブジェクトが指定された ID</li>
         </ol>
         <p>
-          Identifiers MUST be provided for activities posted in server to
-          server communication, unless the activity is intentionally transient.
-          However, for client to server communication, a server receiving an
-          object posted to the outbox with no specified <code>id</code> SHOULD
-          allocate an object ID in the actor's namespace and attach it to the
-          posted object.
+          識別子は、その activity が意図的に一時的なものでない場合には、サーバー間の伝達において送信される activity に与えられていなければなりません。
+          しかしながら、クライアント-サーバー間の伝達においては、サーバーに対して <code>id</code> が指定されていないオブジェクトが outbox に送信された場合、そのサーバーはその actor の名前空間内でオブジェクトの ID を確保し、それを送信されたオブジェクトに付与すべきです。
         </p>
-        <p>All objects have the following properties:</p>
+        <p>すべてのオブジェクトは次のプロパティを持ちます：</p>
         <dl>
           <dt>id</dt>
           <dd>
-            The object's unique global identifier (unless the object is transient,
-            in which case the <code>id</code> MAY be omitted).
+            オブジェクトの固有のグローバルな識別子（オブジェクトが一時的なものであれば、<code>id</code> を省いてもよい）。
           </dd>
           <dt>type</dt>
           <dd>
-            The type of the object.
+            オブジェクトの型。
           </dd>
         </dl>
       </section>
 
       <section id="retrieving-objects">
-        <h2>Retrieving objects</h2>
+        <h2>オブジェクトの取得</h2>
         <p>
-          The HTTP GET method may be dereferenced against an object's
-          <code>id</code> property to retrieve the activity.
-          Servers MAY use HTTP content negotiation as defined in [[!RFC7231]] to
-          select the type of data to return in response to a request,
-          but MUST present the ActivityStreams object representation
-          in response to
-          <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>,
-          and SHOULD also present the ActivityStreams representation in
-          response to <code>application/activity+json</code> as well.
-          The client MUST specify an <code>Accept</code> header with the
+          HTTP の GET メソッドは、オブジェクトの <code>id</code> に対して参照外しがなされ、activity を取得できます。
+          サーバーは [[!RFC7231]] で定められているように、HTTP コンテントネゴシエーションを利用してリクエストに対するレスポンスで返すデータの型を選択してもよいですが、<code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code> に対するレスポンスでは ActivityStreams のオブジェクトの表現を渡さなければいけませんし、<code>application/activity+json</code> に対するレスポンスでも同様に ActivityStreams の表現を渡すべきです。
+          クライアントは、activity を取得するためには <code>Accept</code> ヘッダーに
           <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>
-          media type in order to retrieve the activity.
+          というメディアタイプを指定しなければいけません。
         </p>
         <p>
-          Servers MAY implement other behavior for requests which do not comply
-          with the above requirement.
-          (For example, servers may implement additional legacy protocols, or
-          may use the same URI for both HTML and ActivityStreams
-          representations of a resource).
+          サーバーは、上記の要件に適合しないようなリクエストへのふるまい方を実装してもよいです
+          （例えば、サーバーは追加でレガシーなプロトコルを実装したり、リソースの HTML および ActivityStreams における表現のために同一の URI を使ってもよい）。
         </p>
         <p>
-          Servers MAY require authorization as specified in
-          <a href="#authorization"></a>, and may additionally implement their
-          own authorization rules.
-          Servers SHOULD fail requests which do not pass their authorization
-          checks with the appropriate HTTP error code, or the 403 Forbidden
-          error code where the existence of the object is considered private.
-          An origin server which does not wish to disclose the existence of
-          a private target MAY instead respond with a status code of
-          404 Not Found.
+          サーバーは <a href="#authorization"></a> で指定されているように認可を要求してもよく、独自の認可ルールを実装することも許されます。
+          サーバーは、認可チェックを通らないようなリクエストについては、適切な HTTP エラーコードまたは 403 Forbidden エラーコードでオブジェクトの存在が秘密であるとみなした上で失敗させるべきです。
+          非公開な対象の存在を明らかにしたくないと願う配信元のサーバーは、404 Not Found ステータスコードで応答してもよいです。
         </p>
       </section>
 
       <section id="source-property">
-        <h2>The source property</h2>
+        <h2>source プロパティ</h2>
         <p>
-          In addition to all the properties defined by the
-	  [[!Activity-Vocabulary]], ActivityPub extends the <code>Object</code> by
-	  supplying the <code>source</code> property.
-          The <code>source</code> property is intended to convey some
-          sort of source from which the <code>content</code> markup
-          was derived, as a form of provenance, or to support future
-          editing by clients.
-          In general, clients do the conversion from <code>source</code>
-          to <code>content</code>, not the other way around.
+          [[!Activity-Vocabulary]] で定められるすべてのプロパティに加えて、ActivityPub は <code>Object</code> に <code>source</code> プロパティを入れるという拡張を行っています。
+          <code>source</code> プロパティは、<code>content</code> のマークアップの出所となる一種のソースを伝えたり、クライアントによる将来の編集を意図したものです。
+          一般に、クライアントは <code>source</code> から <code>content</code> への変換を行い、その反対は行いません。
         </p>
         <p>
           The value of <code>source</code> is itself an object
           which uses its own <code>content</code> and <code>mediaType</code>
           fields to supply source information.
         </p>
+        <p>
+          <code>source</code> の値そのものは、<code>content</code> と <code>mediaType</code> フィールドを持つオブジェクトであり、これでソースの情報を提供します。
+        </p>
         <pre class="example">
           {
             "@context": ["https://www.w3.org/ns/activitystreams",
-                         {"@language": "en"}],
+                         {"@language": "ja"}],
             "type": "Note",
             "id": "http://postparty.example/p/2415",
-            "content": "&lt;p&gt;I &lt;em&gt;really&lt;/em&gt; like strawberries!&lt;/p&gt;",
+            "content": "&lt;p&gt;イチゴが &lt;em&gt;本当に&lt;/em&gt; 好き！&lt;/p&gt;",
             "source": {
-              "content": "I *really* like strawberries!",
+              "content": "イチゴが *本当に* 好き！",
               "mediaType": "text/markdown"}
           }
         </pre>
         <div class="note"
-             title="What to do when clients can't meaningfully handle a mediaType?">
+             title="クライアントが意味を解釈して mediaType を扱えないときにはどうする？">
           <p>
-            In general, it's best to let a user edit their original post
-            in the same source format they originally composed it in.
-            But not all clients can reliably provide a nice interface for
-            all source types, and since clients are expected to do the
-            conversion from <code>source</code> to <code>content</code>,
-            some clients may work with a media type that another client
-            does not know how to work with.
-            While a client could feasibly provide the <code>content</code>
-            markup to be edited and ignore the source, this means that the
-            user will lose the more desirable form of the original
-            <code>source</code> in any future revisions.
-            A client doing so should thus provide a minimally obtrusive warning
-            cautioning that the original source format is not understood and is
-            thus being ignored.
+            一般には、ユーザーに彼らの投稿を編集させるときには、元々書いたときと同じソースのフォーマットで編集させるのが一番です。
+            しかし、すべてのクライアントが確実にすべてのソースの種類に対する立派なインターフェイスを提供できる訳ではないし、クライアントは <code>source</code> から <code>content</code> への変換を行うことを期待されているので、いくつかのクライアントは他のクライアントが扱い方を知らないような media type を扱うようなことがあるでしょう。
+            クライアントがソースを無視して <code>content</code> マークアップを編集できるような形で提供することは可能だとしても、将来の版ではより望ましかったオリジナルの <code>source</code> の形式を失ってしまうことを意味します。
+            したがって、そのような挙動をするクライアントは、元のソースフォーマットは扱えずに無視されてしまうという旨の、最小限の目立ちすぎない警告を提供すべきです。
           </p>
           <p>
-            For example, Alyssa P. Hacker likes to post to her ActivityPub
-            powered blog via an Emacs client she has written, leveraging
-            <a href="http://orgmode.org/">Org mode</a>.
-            Later she switches to editing on her phone's client, which
-            has no idea what <code>text/x-org</code> is or how to render
-            it to HTML, so it provides a text box to edit the original
-            <code>content</code> instead.
-            A helpful warning displays above the edit area saying,
-            "This was originally written in another markup language we don't
-            know how to handle.  If you edit, you'll lose your original
-            source!"
-            Alyssa decides the small typo fix isn't worth losing her nice
-            org-mode markup and decides to make the update when she gets
-            home.
+            例えば、Alyssa P. Hacker は、彼女が書いた Emacs クライアントを使って、<a href="http://orgmode.org/">Org mode</a> を活用して自分の ActivityPub 搭載ブログに投稿するのが好きです。
+            後に、彼女は携帯電話のクライアントで編集を行おうとしましたが、そこでは <code>text/x-org</code> が解釈されず、クライアントはそれを HTML に書き出す方法も知らないので、元の <code>content</code> を編集するためのテキストボックスを表示しました。
+            編集エリアの上には、
+            「この投稿は元々、このクライアントで扱う方法が不明なマークアップ言語で記述されています。編集すると、元のソースを失います！」
+            という有益な警告が表示されました。
+            Alyssa は、ただの typo の修正はすばらしい org-mode のマークアップを失うほど価値がある訳ではないと考え、家に帰ってから更新することにしました。
           </p>
         </div>
       </section>
