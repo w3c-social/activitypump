@@ -555,101 +555,79 @@
     <section id="actors">
       <h2>Actors</h2>
       <p>
-        ActivityPub actors are generally one of the
+        ActivityPub の actor は一般的に
         <a href="https://www.w3.org/TR/activitystreams-vocabulary/#actor-types">
-          ActivityStreams Actor Types</a>,
-        but they don't have to be. For example, a 
+          ActivityStreams の Actor の型</a> のうちのどれかに当てはまりますが、必ずしもそうである必要はありません。
+        例えば、
         <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-profile">
-          Profile</a> object
-        might be used as an actor, or a type from an ActivityStreams extension.
-        Actors are <a href="#retrieving-objects">retrieved</a> like any other
-        Object in ActivityPub.
-        Like other ActivityStreams objects, actors have an <code>id</code>,
-        which is a URI.
-        When entered directly into a user interface (for example on a login
-        form), it is desirable to support simplified naming.
-        For this purpose, ID normalization SHOULD be performed as follows:
+          Profile</a> オブジェクトが actor として使われるかもしれないし、ActivityStreams の拡張からの型が使われるかもしれません。
+          Actor は ActivityPub の他のオブジェクトのように<a href="#retrieving-objects">取得</a>されます。
+          他の ActivityStreams のオブジェクトのように、actor は、URI である <code>id</code> を持ちます。
+          ユーザーインターフェースにそのまま入力された場合（例としてログインフォームなど）、簡単化された名前をサポートすることが望ましいです。
+          この目的のため、ID の正規化は次のように行なわれるべきです。
       </p>
       <ol>
         <li>
-          If the entered ID is a valid URI, then it is to be used directly.
+          入力された ID が正当な URI であったならば、それを直接利用する。
         </li>
         <li>
-          If it appears that the user neglected to add a scheme for a URI that
-          would otherwise be considered valid, such as
-          <code>example.org/alice/</code>, clients MAY attempt to provide
-          a default scheme, preferably <code>https</code>.
+          ユーザーが URI にスキーマを入れ忘れていること以外は正当な URI となる場合（<code>example.org/alice/</code> など）、クライアントはスキーマの既定値を提供することができる。好ましいのは <code>https</code> である。
         </li>
         <li>
-          Otherwise, the entered value should be considered invalid.
+          それ以外の場合は、入力された値は不正であるとすべきである。
         </li>
       </ol>
 
       <p>
-        Once the actor's URI has been identified, it should be dereferenced.
+        actor の URI が識別されたならば、参照外しが行われるべきです。
       </p>
 
       <div class="note">
-        ActivityPub does not dictate a specific relationship between
-        "users" and Actors; many configurations are possible.
-        There may be multiple human users or organizations controlling an
-        Actor, or likewise one human or organization may control multiple
-        Actors. Similarly, an Actor may represent a piece of software,
-        like a bot, or an automated process.
-        More detailed "user" modelling, for example linking together of Actors which
-        are controlled by the same entity, or allowing one Actor to be presented
-        through multiple alternate profiles or aspects, are at the discretion
-        of the implementation.
+        ActivityPub は「ユーザー」と actor の関係を具体的に要求しません。様々な構成が可能です。
+        ある一つの actor を操る複数の人間や組織がいるかもしれないし、一人の人間や組織が複数の actor を操るかもしれません。
+        同様に、actor はボットや自動化された処理などのソフトウェアの一部を表現することもできます。
+        同一の実態によってコントロールされる actor を結びつけることや、一つの actor を複数のプロフィールや側面を通して表現するような、より詳細な「ユーザー」のモデル化については、実装側の裁量によります。
       </div>
 
       <section id="actor-objects">
-        <h2><i>Actor</i> objects</h2>
+        <h2><i>Actor</i> オブジェクト</h2>
         <p>
-          Actor objects MUST have, in addition to the properties mandated by
-          <a href="#obj-id"></a>, the following properties:
+          Actor オブジェクトは <a href="#obj-id"></a> で義務付けられたプロパティに加えて、次のプロパティを持たなければなりません。
         </p>
         <dl>
           <dt id="inbox-property">inbox</dt>
           <dd>
-            A reference to an [[!ActivityStreams]]
+            actor が受け取ったすべてのメッセージを含むような [[!ActivityStreams]] の
             <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
-              <code>OrderedCollection</code></a>
-            comprised of all the messages received by the actor; see
-            <a href="#inbox"></a>.
+              <code>OrderedCollection</code></a> への参照。詳細は <a href="#inbox"></a>
           </dd>
           <dt id="outbox-property">outbox</dt>
           <dd>
-            An [[!ActivityStreams]]
+            actor が生み出したすべてのメッセージを含むような [[!ActivityStreams]] の
             <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
-              <code>OrderedCollection</code></a>
-            comprised of all the messages produced by the actor; see
-            <a href="#outbox"></a>.
+              <code>OrderedCollection</code></a> への参照。詳細は <a href="#outbox"></a>
           </dd>
         </dl>
         <p>
-          Implementations SHOULD, in addition, provide the following
-          properties:
+          実装は、これに加えて次のプロパティを提供すべきです。
         </p>
         <dl>
           <dt id="following-property">following</dt>
           <dd>
-            A link to an [[!ActivityStreams]] collection of the actors that
-            this actor is following; see <a href="#following"></a>
+            この actor がフォローしている actor で構成される [[!ActivityStreams]] の collection へのリンク。詳細は <a href="#following"></a>
           </dd>
           <dt id="followers-property">followers</dt>
           <dd>
-            A link to an [[!ActivityStreams]] collection of the actors that
-            follow this actor; see <a href="#followers"></a>.
+            この actor をフォローしている actor で構成される [[!ActivityStreams]] の collection へのリンク。詳細は <a href="#followers"></a>
           </dd>
         </dl>
         <p>
-          Implementations MAY provide the following properties:
+          実装は次のプロパティを提供してもよいです。
         </p>
         <dl>
           <dt id="liked-property">liked</dt>
           <dd>
-            A link to an [[!ActivityStreams]] collection of objects this
-            actor has liked; see <a href="#liked"></a>.
+            この actor が like したオブジェクトで構成される [[!ActivityStreams]] の collection へのリンク。詳細は <a href="#liked"></a>
           </dd>
         </dl>
         <pre class="example">
@@ -671,125 +649,82 @@
   ]
 }
         </pre>
-        <p>Implementations MAY, in addition, provide the following properties:</p>
+        <p>実装は、これに加えて次のプロパティを提供してもよいです。</p>
         <dl>
           <dt id="streams-property">streams</dt>
           <dd>
-            A list of supplementary Collections which may be of interest.
+            関心があるかもしれない補足的な collection のリスト。
           </dd>
           <dt id="preferredUsername">preferredUsername</dt>
           <dd>
-            A short username which may be used to refer to the actor, with no
-            uniqueness guarantees.
+            固有性の保障はないが、actor へ言及するときに使える短いユーザーネーム。
           </dd>
           <dt id="endpoints">endpoints</dt>
           <dd>
-            A json object which maps additional (typically server/domain-wide)
-            endpoints which may be useful either for this actor or someone
-            referencing this actor.
-            This mapping may be nested inside the actor document as the value
-            or may be a link to a JSON-LD document with these properties.
+            この actor や、この actor を参照する人にとって助けとなるかもしれない、追加の（典型的にはサーバー・ドメイン規模の）エンドポイントを表す JSON オブジェクト。
+            これは actor を表すドキュメントの中で値として含むこともできるし、これらのプロパティを含む JSON-LD ドキュメントへのリンクとすることもできる。
           </dd>
         </dl>
 
         <p>
-          The <code>endpoints</code> mapping MAY include the following
-          properties:
+          <code>endpoints</code> は、次のプロパティを含んでもよいです。
         </p>
         <dl>
           <dt id="proxyUrl">proxyUrl</dt>
           <dd>
-            Endpoint URI so this actor's clients may access remote
-            ActivityStreams objects which require authentication to access.
-            To use this endpoint, the client posts an
-            <code>x-www-form-urlencoded</code> <code>id</code> parameter
-            with the value being the <code>id</code> of the requested
-            ActivityStreams object.
+            actor のクライアントがこのエンドポイント URI によって、アクセスに認証を必要とする外部の ActivityStreams のオブジェクトにアクセスできるようになります。
+            このエンドポイントを使うには、クライアントは
+            <code>x-www-form-urlencoded</code> な <code>id</code> パラメータに、要求する ActivityStreams オブジェクトの <code>id</code> を設定して POST します。
           </dd>
           <dt id="oauthAuthorizationEndpoint">oauthAuthorizationEndpoint</dt>
           <dd>
-            If OAuth 2.0 bearer tokens [[RFC6749]] [[RFC6750]] are being used
-            for authenticating
-            <a href="#client-to-server-interactions">client to server
-              interactions</a>,
-            this endpoint specifies a URI at which a browser-authenticated user
-            may obtain a new authorization grant.
+            OAuth 2.0 bearer tokens [[RFC6749]] [[RFC6750]] が<a href="#client-to-server-interactions">クライアント-サーバー間のやりとり</a>の認証で使われているとき、このエンドポイントはブラウザで認証されたユーザーに新しく認可の許可を与えるための URI を指定します。
           </dd>
           <dt id="oauthTokenEndpoint">oauthTokenEndpoint</dt>
           <dd>
-            If OAuth 2.0 bearer tokens [[RFC6749]] [[RFC6750]] are being used
-            for authenticating
-            <a href="#client-to-server-interactions">client to server
-              interactions</a>,
-            this endpoint specifies a URI at which a client may acquire an
-	    access token.
+            OAuth 2.0 bearer tokens [[RFC6749]] [[RFC6750]] が<a href="#client-to-server-interactions">クライアント-サーバー間のやりとり</a>の認証で使われているとき、このエンドポイントはクライアントがアクセストークンを取得するための URI を指定します。
           </dd>
           <dt id="provideClientKey">provideClientKey</dt>
           <dd>
-            If Linked Data Signatures and HTTP Signatures are being used for
-            authentication and authorization, this endpoint specifies a URI at
-            which browser-authenticated users may authorize a client's public
-            key for
-            <a href="#client-to-server-interactions">client to server
-              interactions</a>.
+            Linked Data 署名と HTTP 署名が認証および認可に使われているとき、このエンドポイントはブラウザで認証されたユーザーが<a href="#client-to-server-interactions">クライアント-サーバー間のやりとり</a>のためのクライアントの公開鍵を認可するための URI を指定します。
           </dd>
           <dt id="signClientKey">signClientKey</dt>
           <dd>
-            If Linked Data Signatures and HTTP Signatures are being used for
-            authentication and authorization, this endpoint specifies a URI at
-            which a client key may be signed by the actor's key for a time
-            window to act on behalf of the actor in interacting with foreign
-            servers.
+            Linked Data 署名と HTTP 署名が認証および認可に使われているとき、このエンドポイントはクライアントが actor の代わりに外部のサーバーとやりとりするために、クライアントの鍵を actor の鍵によってある一定期間だけ署名するための URI を指定します。
           </dd>
           <dt id="sharedInbox">sharedInbox</dt>
           <dd>
-            An optional endpoint
-            <a href="#shared-inbox-delivery">
-              used for wide delivery of publicly addressed activities
-              and activities sent to followers</a>.
-            <code>sharedInbox</code> endpoints SHOULD also be publicly
-            readable <code>OrderedCollection</code> objects containing
-            objects addressed to the <a href="#public-addressing">Public</a>
-            special collection.
-            Reading from the <code>sharedInbox</code> endpoint MUST NOT present
-            objects which are not addressed to the <code>Public</code>
-            endpoint.
+            <a href="#shared-inbox-delivery">公開された activity や、フォロワーに送信される activity を幅広く配信するために使われる</a>任意のエンドポイント。
+            <code>sharedInbox</code> エンドポイントは特殊な <a href="#public-addressing">Public</a> collection 宛てのオブジェクトを含む、誰でも読める <code>OrderedCollection</code> オブジェクトでもあるべきです。
+            <code>sharedInbox</code> エンドポイントから読まれるオブジェクトとして <code>Public</code> エンドポイント宛てでないようなものは提供してはいけません。
           </dd>
         </dl>
 
         <div class="note" id="as2-actor-properties">
           <p>
-            As the upstream vocabulary for ActivityPub, any applicable
-            [[!ActivityStreams]] property may be used on ActivityPub Actors.
-            Some ActivityStreams properties are particularly worth highlighting
-            to demonstrate how they are used in ActivityPub implementations.
+            ActivityPub の上流の語彙として、ActivityPub の actor には適切な [[!ActivityStreams]] のプロパティを使うことができます。
+            いくつかの ActivityStreams のプロパティは特にハイライトする価値があります。それらがどのように ActivityPub の実装で使われるか見てみましょう。
           </p>
 
           <dl>
             <dt id="url-property">url</dt>
             <dd>
-              A link to the actor's "profile web page", if not equal to the
-              value of <code>id</code>.
+              <code>id</code> の値と等しくなければ、actor の「プロフィールの Web ページ」へのリンクを表す。
             </dd>
             <dt id="name-property">name</dt>
             <dd>
-              The preferred "nickname" or "display name" of the actor.
+              actor が望む「ニックネーム」および「ディスプレイネーム」を表す。
             </dd>
             <dt id="summary-property">summary</dt>
-            <dd>A quick summary or bio by the user about themselves.</dd>
+            <dd>ユーザーによる簡素な概要や自己紹介文。</dd>
             <dt id="icon-property">icon</dt>
             <dd>
-              A link to an image or an Image object which represents the user's
-              profile picture (this may be a thumbnail).
+              ユーザーのプロフィール画像を表現する画像へのリンクまたは Image オブジェクト（サムネイルであっても良い）。
             </dd>
           </dl>
         </div>
         <p class="note" id="actor-text-direction">
-          Properties containing natural language values,
-          such as <code>name</code>, <code>preferredUsername</code>, or
-          <code>summary</code>, make use of
-          <a href="https://www.w3.org/TR/activitystreams-core/#naturalLanguageValues">
-            natural language support defined in ActivityStreams</a>.
+          <code>name</code>, <code>preferredUsername</code>, <code>summary</code> のような自然言語の値を含むプロパティは、<a href="https://www.w3.org/TR/activitystreams-core/#naturalLanguageValues">ActivityStreams で定義される自然言語のサポート</a>を活用できます。
         </p>
       </section>
 
