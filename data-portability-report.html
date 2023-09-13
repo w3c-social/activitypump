@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Data Portability in ActivityPub</title>
+    <script
+      src="https://www.w3.org/Tools/respec/respec-w3c"
+      class="remove"
+      defer
+    ></script>
+    <script class="remove">
+      // All config options at https://respec.org/docs/
+      var respecConfig = {
+        specStatus: "CG-DRAFT",
+        editors: [{ name: "Evan Prodromou", url: "https://evanp.me/" }],
+        github: "w3c/activitypub",
+        shortName: "data-portability-report",
+        group: "socialcg",
+      };
+    </script>
+  </head>
+  <body>
+    <section id="abstract">
+      <p>This document describes data portability in ActivityPub.
+        It lists what data exists for an actor. It then describes two modes of data
+        portability for an actor: using a domain, and Mastodon-style <code>Move</code>.
+      </p>
+    </section>
+    <section id="sotd">
+        <p>This is a draft for a future SocialCG report.</p>
+      </section>
+    <section class="informative">
+      <h2>Introduction</h2>
+      <p>
+        Data portability is the ability of a user to move their data on one
+        system to another system. This includes moving between ActivityPub
+        implementations, moving to different installations of the same
+        software, or changing domains.
+      </p>
+    </section>
+    <section>
+      <h2>Data elements</h2>
+      <p>
+        This is a list of data objects that are part of an actor's data.
+      </p>
+      <section id="own-server">
+        <h3>On own server</h3>
+        <p>
+            <ul>
+                <li>Actor ID (https URI)</li>
+                <li>Webfinger identity</li>
+                <li>Actor profile properties
+                    <ul>
+                        <li>name</li>
+                        <li>avatar</li>
+                        <li>content</li>
+                        <li>links</li>
+                        <li>URI</li>
+                    </ul>
+                </li>
+                <li>Outbox
+                    <ul>
+                        <li>Activities</li>
+                        <li>Reactions
+                            <ul>
+                                <li>replies</li>
+                                <li>likes</li>
+                                <li>shares</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>Inbox</li>
+                <li>Uploaded files</li>
+                <li>Followers</li>
+                <li>Following</li>
+                <li>Blocks</li>
+                <li>public key</li>
+            </ul>
+          </p>
+      </section>
+      <section id="other-servers">
+        <h3>Other servers</h3>
+        <p>
+            <ul>
+                <li>ID in others' followers lists</li>
+                <li>ID in others' following lists</li>
+                <li>ID in others' blocked lists</li>
+                <li>Links in @-mentions</li>
+                <li>Object IDs for activities</li>
+                <li>Object IDs for content</li>
+                <li>URIs for uploaded files</li>
+            </ul>
+        </p>
+      </section>
+
+    </section>
+    <section>
+      <h2>Domain portability</h2>
+      <p>
+        This is a process for moving an actor from one ActivityPub server to another.
+        It requires the user to run a server on a domain they control.
+      </p>
+      <section>
+        <h3>Process</h3>
+        <p>
+            <ol>
+                <li>The user backs up all data for the account at username@old.example.</li>
+                <li>The user shuts down the old implementation running at old.example.</li>
+                <li>The user installs the new implementation at old.example.</li>
+                <li>The user restores all data to the account at username@old.example.</li>
+            </ol>
+        </p>
+      </section>
+      <section>
+        <h3>Results</h3>
+        <p>
+            <ol>
+                <li>All user data is available.</li>
+                <li>All links from others' servers are still valid.</li>
+            </ol>
+        </p>
+      </section>
+      <section>
+        <h3>Limitations</h3>
+        <p>
+            <ol>
+                <li>No standard format for backup files exists; see https://github.com/w3c/activitypub/issues/370.</li>
+                <li>The user has to register and maintain their own domain name.</li>
+                <li>The user has to run their own server, or use a hosting service that allows mapping their own domain name.</li>
+            </ol>
+        </p>
+      </section>
+    </section>
+    <section>
+        <h2>Move action</h2>
+        <p>
+            Mastodon and compatible server software use a <code>Move</code> activity
+            to move an actor from one server to another.
+        </p>
+        <section>
+            <h3>Process</h3>
+            <p>
+                <ol>
+                    <li>The user creates a new actor at username@new.example</li>
+                    <li>The user marks the new actor as accepting a move with the <code>alsoKnownAs</code> property.</li>
+                    <li>The user marks the old actor as having moved with the <code>movedTo</code> property.</li>
+                    <li>The user sends a <code>Move</code> activity from the old actor to all followers.
+                        <pre class="language-json"><code>{
+                          "@context": "https://www.w3.org/ns/activitystreams",
+                          "type": "Move",
+                          "actor": "https://old.example/users/username",
+                          "object": "https://old.example/users/username",
+                          "target": "https://new.example/users/username"
+                        }</code></pre>
+                    </li>
+                    <li>Each follower checks the <code>alsoKnownAs</code> property of the new account and <code>movedTo</code> property of the old account.</li>
+                    <li>Each follower sends a <code>Follow</code> activity to the new account.</li>
+                    <li>Each follower sends an <code>Undo Follow</code> activity to the old account.</li>
+                    <li>The old account's profile URI redirects to the new account's profile URI.</li>
+                    <li>(Optional) The user exports the old account's <code>following</code> list as a CSV file.</li>
+                    <li>(Optional) The user imports the CSV file into the new account.</li>
+                    <li>(Optional) The new account sends a <code>Follow</code> activity to each account in the imported CSV file.</li>
+                </ol>
+            </p>
+        </section>
+        <section>
+            <h3>Results</h3>
+            <p>
+                <ul>
+                    <li>The old account's profile URI redirects to the new account.</li>
+                    <li>The new account's followers is a subset of the old account's followers.</li>
+                    <li>The new account's following is a subset of the old account's following.</li>
+                    <li>The old account's followers list is empty.</li>
+                    <li>Each follower's <code>following</code> list includes the ID of the new account.</li>
+                </ul>
+            </p>
+        </section>
+        <section>
+            <h3>Limitations</h3>
+            <p>
+                <ul>
+                    <li>The process will not work if the old account's server is down.</li>
+                    <li>The process will not work if the old account's server is blocked by followers.</li>
+                </ul>
+            </p>
+        </section>
+      </section>
+    <section id="conformance">
+      <p>
+        This is required for specifications that contain normative material.
+      </p>
+    </section>
+  </body>
+</html>
