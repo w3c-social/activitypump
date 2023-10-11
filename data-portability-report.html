@@ -148,13 +148,15 @@
                     <li>The user marks the new actor as accepting a move with the <code>alsoKnownAs</code> property.</li>
                     <li>The user marks the old actor as having moved with the <code>movedTo</code> property.</li>
                     <li>The user sends a <code>Move</code> activity from the old actor to all followers.
-                        <pre class="language-json"><code>{
-                          "@context": "https://www.w3.org/ns/activitystreams",
-                          "type": "Move",
-                          "actor": "https://old.example/users/username",
-                          "object": "https://old.example/users/username",
-                          "target": "https://new.example/users/username"
-                        }</code></pre>
+<pre class="json">
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "type": "Move",
+  "actor": "https://old.example/users/username",
+  "object": "https://old.example/users/username",
+  "target": "https://new.example/users/username"
+}
+</pre>
                     </li>
                     <li>Each follower checks the <code>alsoKnownAs</code> property of the new account and <code>movedTo</code> property of the old account.</li>
                     <li>Each follower sends a <code>Follow</code> activity to the new account.</li>
