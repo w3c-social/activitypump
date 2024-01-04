@@ -8,7 +8,7 @@
     <script class="remove">
       var respecConfig = {
           specStatus: "ED",
-          publishDate: "2018-01-23",
+          publishDate: "2024-01-04",
           previousPublishDate: "2018-01-23",
           previousMaturity: "REC",
           license: "w3c-software-doc",
@@ -252,7 +252,7 @@
           (client-to-server and/or server-to-server)
         </li>
       </ul>
- 
+
       <p>
         Of course, if that last one (GET'ing from someone's outbox) was the
         only way to see what people have sent, this wouldn't be a very
@@ -501,7 +501,7 @@
         the object appears as received at its origin, but mechanisms
         such as checking signatures would be better if available).
         No particular mechanism for verification is authoritatively specified by
-        this document, but please see <a href="#security-considerations">Security 
+        this document, but please see <a href="#security-considerations">Security
         Considerations</a> for some suggestions and good practices.
       </p>
       <div class="informative">
@@ -682,7 +682,7 @@
         ActivityPub actors are generally one of the
         <a href="https://www.w3.org/TR/activitystreams-vocabulary/#actor-types">
           ActivityStreams Actor Types</a>,
-        but they don't have to be. For example, a 
+        but they don't have to be. For example, a
         <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-profile">
           Profile</a> object
         might be used as an actor, or a type from an ActivityStreams extension.
@@ -910,7 +910,7 @@
         </div>
         <p class="note" id="actor-text-direction">
           Properties containing natural language values,
-          such as <code>name</code>, <code>preferredUsername</code>, or
+          such as <code>name</code> or
           <code>summary</code>, make use of
           <a href="https://www.w3.org/TR/activitystreams-core/#naturalLanguageValues">
             natural language support defined in ActivityStreams</a>.
@@ -940,10 +940,13 @@
         or an
         <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
           <code>OrderedCollection</code></a>.
-        An
+        These
         <a href="https://www.w3.org/TR/activitystreams-vocabulary/#dfn-orderedcollection">
           <code>OrderedCollection</code></a>
-        MUST be presented consistently in reverse chronological order.
+        objects MUST be presented consistently in reverse chronological order.
+        Collections defined in other vocabularies, including extensions,
+        are not subject to this requirement and can be unordered or ordered
+        by other criteria.
       </p>
 
       <p class="note">
@@ -1636,9 +1639,9 @@ Location: https://dustycloud.org/likes/345
       <section id="client-to-server-outbox-delivery">
         <h3>Delivery</h3>
         <p>
-          Federated servers MUST perform delivery on all Activities posted to the
-          <strong>outbox</strong> according to <a href="#outbox-delivery">
-          outbox delivery</a>.
+          Federated servers SHOULD perform delivery on all Activities posted to the
+          <strong>outbox</strong> according to <a href="#outbox-delivery">outbox delivery</a>.
+          Servers MAY filter activities for privacy, abuse mitigation, or other reasons.
         </p>
       </section>
 
@@ -1668,8 +1671,8 @@ Location: https://dustycloud.org/likes/345
       <p>
         <code>POST</code> requests (eg. to the inbox) MUST be made with a Content-Type of
         <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>
-        and <code>GET</code> requests (see also <a href="#retrieving-objects"></a>) 
-        with an Accept header of 
+        and <code>GET</code> requests (see also <a href="#retrieving-objects"></a>)
+        with an Accept header of
         <code>application/ld+json; profile="https://www.w3.org/ns/activitystreams"</code>.
         Servers SHOULD interpret a Content-Type or Accept
         header of <code>application/activity+json</code> as equivalent
@@ -1833,7 +1836,7 @@ Location: https://dustycloud.org/likes/345
             <a href="#client-to-server-interactions">Client to Server interactions</a>
             and
             <a href="#server-to-server-interactions">Server to Server Interactions</a>),
-            the server MUST target and deliver to:
+            the server SHOULD target and deliver to:
           </p>
           <ul>
             <li>
@@ -1842,6 +1845,10 @@ Location: https://dustycloud.org/likes/345
               are individuals or Collections owned by the actor.
             </li>
           </ul>
+          <p>
+            Servers MAY filter activities for privacy, abuse mitigation,
+            or other reasons.
+          </p>
           <p>
             These fields will have been <a href="#client-addressing">
             populated appropriately by the client</a> which posted the Activity
@@ -2046,7 +2053,7 @@ Location: https://dustycloud.org/likes/345
             left to the discretion of the delivering server.
           </p>
         </div>
-        
+
       </section>
 
       <section id="accept-activity-inbox">
@@ -2066,7 +2073,7 @@ Location: https://dustycloud.org/likes/345
           <a href="#following">Following Collection</a>.
         </p>
       </section>
-      
+
       <section id="reject-activity-inbox">
         <h3>Reject Activity</h3>
         <p>
@@ -2189,7 +2196,7 @@ Location: https://dustycloud.org/likes/345
 
     <section id="security-considerations" class="appendix informative">
       <h2>Security Considerations</h2>
-      
+
       <section id="authorization">
         <h3>Authentication and Authorization</h3>
         <p>
@@ -2201,9 +2208,9 @@ Location: https://dustycloud.org/likes/345
         <p>
           Unfortunately at the time of standardization, there are no strongly
           agreed upon mechanisms for authentication.
-          Some possible directions for authentication are laid out 
-          <a href="https://www.w3.org/wiki/SocialCG/ActivityPub/Authentication_Authorization">in 
-          the Social Web Community Group Authentication and 
+          Some possible directions for authentication are laid out
+          <a href="https://www.w3.org/wiki/SocialCG/ActivityPub/Authentication_Authorization">in
+          the Social Web Community Group Authentication and
           Authorization best practices report</a>.
         </p>
 
@@ -2318,7 +2325,7 @@ Location: https://dustycloud.org/likes/345
         <h2>Client-to-server response denial-of-service</h2>
         <p>
           In order to prevent a client from being overloaded by oversized
-          Collections, servers should take care to limit the size of Collection 
+          Collections, servers should take care to limit the size of Collection
           pages they return to clients.
           Clients should still be prepared to limit the size of
           responses they are willing to handle in case they connect to malicious or
@@ -2431,6 +2438,19 @@ Location: https://dustycloud.org/likes/345
         You deserve freedom of communication; we hope we have contributed in
         some part, however small, towards that goal and right.
       </p>
+    </section>
+
+    <section class="appendix informative" id="changelog">
+      <h2>Changelog</h2>
+      <p>
+        This section is non-normative.
+      </p>
+      <li>
+        <ul><strong>2024-01-04</strong>: Include erratum allowing filtering in section 6.11.</ul>
+        <ul><strong>2024-01-04</strong>: Include erratum allowing filtering in section 7.1.1.</ul>
+        <ul><strong>2024-01-04</strong>: Include erratum allowing different ordering in collections in section 5.</ul>
+        <ul><strong>2024-01-04</strong>: Include erratum removing preferredUsername from list of natural-language-enabled properties in section 4.1.</ul>
+      </li>
     </section>
   </body>
 </html>
