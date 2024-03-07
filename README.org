@@ -10,6 +10,5 @@ to server API for delivering notifications and subscribing to content.
 
  - [[https://www.w3.org/TR/activitypub/][ActivityPub's standard]]
  - [[https://activitypub.rocks/][Main website]]
- - [[https://test.activitypub.rocks/][Test suite]]
- - [[https://activitypub.rocks/implementation-report/][Implementation Reports]] (you can generate your own using the [[https://test.activitypub.rocks/][test suite]]
+ - [[https://activitypub.rocks/implementation-report/][Implementation Reports]]
    and then file to the [[https://github.com/w3c/activitypub/issues][issue tracker]])
