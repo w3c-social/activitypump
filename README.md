@@ -19,6 +19,12 @@ ActivityPub was developed by the [Social Web Working Group](https://www.w3.org/S
 - The [ActivityPub HTTP Signatures profile](https://swicg.github.io/activitypub-http-signatures/) describes how to use HTTP Signatures with ActivityPub.
 - The [ActivityPub Data Portability task force](https://swicg.github.io/activitypub-data-portability/) describes how to use ActivityPub for data portability.
 
+## Editors
+
+The currently active editors of the AS2 specification(s) are:
+
+- [Evan Prodromou](https://github.com/evanp)
+
 ## Contributions
 
 The main way to make contributions, ask questions, or report errors is to make a [GitHub issue](https://github.com/w3c/activitypub/issues). Because the specification is a published W3C Recommendation, it is *not* helpful to make pull requests to the repository.
