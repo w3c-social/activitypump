@@ -60,6 +60,11 @@ Backwards-compatible changes should usually be implemented as extensions to the 
 
 Many extensions to ActivityPub are proposed and discussed as part of the [Fediverse Enhancement Proposals](https://codeberg.org/fediverse/fep) process. This process is not formally part of the W3C, but it is a useful way to discuss and develop extensions to ActivityPub.
 
+Some backwards-compatible changes cannot be implemented as extensions. They require a new version of the core document; see below for how that process works. Examples include:
+
+- Loosening behavioural requirements
+- Deprecating existing properties or behaviours
+
 ### Non-backwards-compatible changes
 
 Non-backwards-compatible changes to the specification require chartering a new working group at the W3C. It also requires making changes in dozens of ActivityPub implementations and tens of thousands of running servers. This is a lot of work and is not done lightly.
