@@ -21,7 +21,7 @@ ActivityPub was developed by the [Social Web Working Group](https://www.w3.org/S
 
 ## Editors
 
-The currently active editors of the AS2 specification(s) are:
+The currently active editors of the AP specification(s) are:
 
 - [Evan Prodromou](https://github.com/evanp)
 
