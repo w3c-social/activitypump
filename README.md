@@ -29,6 +29,8 @@ The currently active editors of the AP specification(s) are:
 
 The main way to make contributions, ask questions, or report errors is to make a [GitHub issue](https://github.com/w3c/activitypub/issues). Because the specification is a published W3C Recommendation, it is *not* helpful to make pull requests to the repository.
 
+The AS2 vocabulary provides the basic data model for ActivityPub. Questions or issues about the AS2 vocabulary should be directed to the [AS2 repository](https://github.com/w3c/activitystreams). If you're not sure whether an issue should go there or here, feel free to add it here and it will be discussed and moved if necessary.
+
 ## Processes
 
 Because the document is a published W3C Recommendation, the process for making changes to the specification is more formal than for other documents.
