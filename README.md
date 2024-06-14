@@ -67,6 +67,12 @@ Some backwards-compatible changes cannot be implemented as extensions. They requ
 - Loosening behavioural requirements
 - Deprecating existing properties or behaviours
 
+### Lists of implementations
+
+- [delightful activitypub development](https://delightful.club/delightful_activitypub_development/): developer tools
+- [delightful fediverse apps](https://delightful.club/delightful_fediverse_apps/): ActivityPub federation protocol implementations
+- [FediDB software](https://fedidb.org/software): periodically polled software census, with statistics per implementation
+
 ### Non-backwards-compatible changes
 
 Non-backwards-compatible changes to the specification require chartering a new working group at the W3C. It also requires making changes in dozens of ActivityPub implementations and tens of thousands of running servers. This is a lot of work and is not done lightly.
