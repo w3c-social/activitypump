@@ -69,6 +69,8 @@ Some backwards-compatible changes cannot be implemented as extensions. They requ
 
 ### Lists of implementations
 
+These lists are externally maintained and initiated.
+
 - [delightful activitypub development](https://delightful.club/delightful_activitypub_development/): developer tools
 - [delightful fediverse apps](https://delightful.club/delightful_fediverse_apps/): ActivityPub federation protocol implementations
 - [FediDB software](https://fedidb.org/software): periodically polled software census, with statistics per implementation
