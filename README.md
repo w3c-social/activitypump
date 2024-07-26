@@ -67,23 +67,22 @@ Some backwards-compatible changes cannot be implemented as extensions. They requ
 - Loosening behavioural requirements
 - Deprecating existing properties or behaviours
 
-### Lists of implementations
+### Breaking changes
+
+Breaking changes to the specification require chartering a new working group at the W3C. It also requires making changes in dozens of ActivityPub implementations and tens of thousands of running servers. Breaking changes also cause disruption on the working network, since implementations and servers will upgrade gradually, on their own pace, not all at once. This is a lot of work, inhibits the point of the protocol (connecting people and communities), and is not done lightly.
+
+Examples of such changes:
+
+- Making optional features mandatory
+- Forbidding optional features
+- Forbidding required features
+
+To propose a breaking change to ActivityPub, add a new issue. It will be discussed and flagged for the next version of ActivityPub.
+
+## Lists of implementations
 
 These lists are externally maintained and initiated.
 
 - [delightful activitypub development](https://delightful.club/delightful_activitypub_development/): developer tools
 - [delightful fediverse apps](https://delightful.club/delightful_fediverse_apps/): ActivityPub federation protocol implementations
 - [FediDB software](https://fedidb.org/software): periodically polled software census, with statistics per implementation
-
-### Non-backwards-compatible changes
-
-Non-backwards-compatible changes to the specification require chartering a new working group at the W3C. It also requires making changes in dozens of ActivityPub implementations and tens of thousands of running servers. This is a lot of work and is not done lightly.
-
-Examples of such changes:
-
-- Making optional features mandatory
-- Forbidding optional features
-- Deprecating features
-- Making
-
-To propose a breaking change to ActivityPub, add a new issue. It will be discussed and flagged for the next version of ActivityPub.
