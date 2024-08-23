@@ -60,9 +60,9 @@ Backwards-compatible changes to ActivityPub include the following:
 
 Backwards-compatible changes should usually be implemented as extensions to the specification. The [Activity Streams 2.0 primer](https://www.w3.org/wiki/Activity_Streams/Primer/Extensions) describes the extension architecture for ActivityStreams 2.0. The [Extensions Policy](https://swicg.github.io/extensions-policy/) describes the process for incorporating popular extensions into the main Activity Streams 2.0 context document.
 
-Many extensions to ActivityPub are proposed and discussed as part of the [Fediverse Enhancement Proposals](https://codeberg.org/fediverse/fep) process. This process is not formally part of the W3C, but it is a useful way to discuss and develop extensions to ActivityPub.
+The [Fediverse Enhancement Proposals](https://codeberg.org/fediverse/fep) process is a lightweight collaboration process for creating and documenting Activity Streams 2.0 extensions (and other changes to the Fediverse). It's a good place to start if you're considering a backwards-compatible change.
 
-There are many ideas for backwards-compatible changes to ActivityPub that have not yet been written up as a FEP or other document. These are marked [Needs FEP](https://github.com/w3c/activitypub/issues?q=is%3Aopen+is%3Aissue+label%3A%22Needs+FEP%22) in the ActivityPub GitHub issue repository, and contributors are welcome to [submit a FEP](https://codeberg.org/fediverse/fep/src/branch/main#submitting-a-fep) on the topic. Note that issues may be closed without the FEP being created; that does not mean that the FEP is no longer needed.
+There are many ideas for backwards-compatible changes to ActivityPub that have not yet been written up as a FEP or other document. These are marked [Needs FEP](https://github.com/w3c/activitypub/issues?q=is%3Aissue+label%3A%22Needs+FEP%22) in the ActivityPub GitHub issue repository, and contributors are welcome to [submit a FEP](https://codeberg.org/fediverse/fep/src/branch/main#submitting-a-fep) on the topic. Note that issues may be closed without the FEP being created; that does not mean that the FEP is no longer needed.
 
 Some backwards-compatible changes cannot be implemented as extensions. They require a new version of the core document; see below for how that process works. Examples include:
 
