@@ -1,0 +1,23 @@
+name: Add comment to explain Needs FEP label
+on:
+  issues:
+    types:
+      - labeled
+
+jobs:
+  add-comment:
+    if: github.event.label.name == 'Needs FEP'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Add comment
+        run: gh issue comment "$NUMBER" --body "$BODY"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.issue.number }}
+          BODY: >
+            This issue has been labelled as potentially needing a FEP, and contributors are welcome to [submit a FEP](https://codeberg.org/fediverse/fep/src/branch/main#submitting-a-fep) on the topic.
+
+            Note that issues may be closed without the FEP being created; that does not mean that the FEP is no longer needed.
